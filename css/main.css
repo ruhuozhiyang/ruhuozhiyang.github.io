@@ -34,12 +34,12 @@ _________________________________________________
 }
 ::selection {
   background: #e6e6e6;
-  color: #000;
 }
 #page-main {
   margin: 0;
   padding: 0;
-  margin-top: 54px;
+  margin-top: 25px;
+  background-color: #1d1f21;
 }
 .p-dot {
   margin: 0 0.2rem;
@@ -54,7 +54,7 @@ h2 {
   font-size: 1.75rem;
 }
 h3 {
-  font-size: 1.55rem;
+  font-size: 1.2rem;
 }
 h4 {
   font-size: 1.4rem;
@@ -114,6 +114,7 @@ p {
   overflow: hidden;
   cursor: default;
   overflow-wrap: break-word;
+  background-color: #1d1f21;
 }
 .index-card {
   border-radius: 0.5rem;
@@ -132,15 +133,22 @@ p {
   max-width: 650px;
   position: relative;
   width: 100%;
+  background-color: #1d1f21;
 }
 .post-card-center {
   width: 100%;
   display: flex;
   justify-content: center;
   padding-top: 1.8rem;
+  background-color: #1d1f21;
 }
 .index-pin {
   color: var(--third-text-color);
+  color: #f00;
+}
+#post-title {
+  color: #29b177;
+  text-decoration: underline;
 }
 .post-metas {
   color: var(--third-text-color);
@@ -160,21 +168,9 @@ p {
   font-size: 2em;
   margin: 0.5em 0;
   font-weight: 400;
-  font-size: 2rem;
+  font-size: 1.5rem;
   line-height: 1.5em;
   color: var(--first-text-color);
-}
-#banner-name:before {
-  content: "";
-  position: absolute;
-  height: 12px;
-  bottom: 5px;
-  width: 105%;
-  left: -2.5%;
-  z-index: -1;
-  background-color: var(--home-title-color);
-  opacity: 0.3;
-  transition: 0.1s ease background-color;
 }
 .slogan {
   color: var(--third-text-color);
@@ -185,6 +181,13 @@ p {
 }
 .banner-text {
   width: 100%;
+}
+time {
+  font-size: 0.8em;
+  color: #4e4e4e;
+}
+body {
+  background-color: #1d1f21;
 }
 /* Footer */
 footer {
@@ -227,6 +230,7 @@ footer p {
   width: 100%;
   display: flex;
   justify-content: center;
+  background-color: #1d1f21;
 }
 /* Rewrite */
 @media print {

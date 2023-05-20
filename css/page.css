@@ -449,7 +449,7 @@ p.tex-para-indent-full,
 }
 @media (min-width: 768px) {
   article[class='page'] {
-    max-width: 650px;
+    max-width: 750px;
   }
 }
 article img.lazyload-img {
