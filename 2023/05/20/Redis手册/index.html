@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>YCSB测试HBase读写性能 - young&#39;s tech blogs</title>
+    <title>Redis 内存数据库 - young&#39;s tech blogs</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="young">
     <meta name="keywords" content="">
-    <meta property="og:title" content="YCSB测试HBase读写性能"/>
+    <meta property="og:title" content="Redis 内存数据库"/>
     <style>
 
 
@@ -422,7 +422,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 <article class="page">
 <div id="post-meta-m">
     <div class="post-meta" id="post-meta">
-  <h3>YCSB测试HBase读写性能</h3>
+  <h3>Redis 内存数据库</h3>
     
       <span class="post-meta-label">
         young
@@ -431,8 +431,8 @@ header .header__right .dropdown-menus .dropdown-menu {
     
       <span class="post-meta-label">
         <span class="p-dot"></span>
-        <time datetime="2023-05-15 22:38" pubdate>
-          2023-05-15
+        <time datetime="2023-05-20 21:24" pubdate>
+          2023-05-20
         </time>
       </span>
     
@@ -440,7 +440,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 31 字
+        共 1.3k 字
       </span>
     
     
@@ -451,14 +451,44 @@ header .header__right .dropdown-menus .dropdown-menu {
 <div class="article-m">
   <div class="post-toc">
     
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%B5%8B%E8%AF%95%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">1.测试类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-YCSB%E6%B5%8B%E8%AF%95%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">2.YCSB测试命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="toc-number">3.</span> <span class="toc-text">3.性能调优</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 相关概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E4%B8%8E-memcache-%E6%AF%94%E8%BE%83"><span class="toc-number">1.1.</span> <span class="toc-text">1.1. 与 memcache 比较</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%94%AF%E6%8C%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">1.2. 支持的数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="toc-number">1.3.</span> <span class="toc-text">1.3. 主从复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.4.</span> <span class="toc-text">1.4. 持久化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87"><span class="toc-number">1.5.</span> <span class="toc-text">1.5. 数据分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E9%80%89%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.6.</span> <span class="toc-text">1.6. 选用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-redis-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-SDS"><span class="toc-number">1.7.</span> <span class="toc-text">1.7. redis 数据结构 SDS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-%E5%A4%9A%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">1.8.</span> <span class="toc-text">1.8. 多个数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA-redis-%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%9A"><span class="toc-number">1.8.1.</span> <span class="toc-text">单机 redis 情况下：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redis-%E9%9B%86%E7%BE%A4%E6%83%85%E5%86%B5%E4%B8%8B%EF%BC%9A"><span class="toc-number">1.8.2.</span> <span class="toc-text">redis 集群情况下：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-9-%E5%8D%95%E7%BA%BF%E7%A8%8B"><span class="toc-number">1.9.</span> <span class="toc-text">1.9.单线程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">2. 命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9F%A5%E7%9C%8B%E6%9C%89%E5%A4%9A%E5%B0%91%E4%B8%AADB"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 查看有多少个DB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%88%87%E6%8D%A2DB"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 切换DB</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%B8%85%E9%99%A4%E6%9F%90%E4%B8%AA%E5%BA%93%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E6%95%B0%E6%8D%AE"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 清除某个库中的所有数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%9F%A5%E7%9C%8B%E9%94%AE-key-name-%E6%89%80%E5%8D%A0%E7%9A%84%E5%AD%98%E5%82%A8%E7%A9%BA%E9%97%B4"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 查看键 key_name 所占的存储空间</span></a></li></ol></li></ol>
     
   </div>
     <div id="article">
       <div id="post-content" class="markdown-body textretty">
-        <h2 id="1-测试类型"><a href="#1-测试类型" class="headerlink" title="1.测试类型"></a>1.测试类型</h2><p>基准测试、压力测试</p>
-<h2 id="2-YCSB测试命令"><a href="#2-YCSB测试命令" class="headerlink" title="2.YCSB测试命令"></a>2.YCSB测试命令</h2><h2 id="3-性能调优"><a href="#3-性能调优" class="headerlink" title="3.性能调优"></a>3.性能调优</h2><p>CPU、磁盘IO、网卡</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line"></span><br><span class="line">dstat -n</span><br><span class="line"></span><br><span class="line">iostat</span><br><span class="line"></span><br><span class="line">ethtool</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h2 id="1-相关概念"><a href="#1-相关概念" class="headerlink" title="1. 相关概念"></a>1. 相关概念</h2><h3 id="1-1-与-memcache-比较"><a href="#1-1-与-memcache-比较" class="headerlink" title="1.1. 与 memcache 比较"></a>1.1. 与 memcache 比较</h3><p>与缓存服务器 memcache 对比，redis 的一大优势就是支持数据的持久化，而 memcache 一旦重启，内存中保存的数据就完全消失了。</p>
+<h3 id="1-2-支持的数据类型"><a href="#1-2-支持的数据类型" class="headerlink" title="1.2. 支持的数据类型"></a>1.2. 支持的数据类型</h3><p>redis 不仅可以存储普通的字符串键，共支持五种数据类型：</p>
+<ul>
+<li>string（字符串）</li>
+<li>hash（哈希）</li>
+<li>list（列表）</li>
+<li>set（集合）</li>
+<li>zset(sorted set：有序集合)</li>
+</ul>
+<h3 id="1-3-主从复制"><a href="#1-3-主从复制" class="headerlink" title="1.3. 主从复制"></a>1.3. 主从复制</h3><p>为了扩展Redis的读性能和为Redis提供故障转移支持，实现了主从复制特性：主服务器与从服务器。执行复制的从服务器会连接上主服务器，接受主服务器发送的整个数据库的初始副本，之后主服务器执行的写命令，都会发送给所有的从服务器去执行，从而实时的更新从服务器的数据集，从服务器包含的数据会不断地进行更新，所以客户端可以向任意一个从服务器发送读请求，以此来避免对主服务器进行集中式的访问。</p>
+<h3 id="1-4-持久化"><a href="#1-4-持久化" class="headerlink" title="1.4. 持久化"></a>1.4. 持久化</h3><p>拥有两种不同形式的持久化方法。快照RDB和只追加文件AOF。一种是时间点转储(point-in-time dump)，；一种是将所有修改了数据库的命令都写入一个只追加文件里面，用户可以根据数据的重要程度，将只追加写入 设置为从不同步&#x2F;每秒钟同步一次&#x2F;每写入一个命令就同步一次。<br>AOF持久化会将被执行的写命令写到AOF文件的末尾，以此来记录数据发生的变化。因此，Redis只要从头到尾重新执行一次AOF文件包含的所有的写命令，就可以恢复AOF文件所记录的数据集。</p>
+<h3 id="1-5-数据分片"><a href="#1-5-数据分片" class="headerlink" title="1.5. 数据分片"></a>1.5. 数据分片</h3><p>分片是一种将数据划分为多个部分的方法，对数据的划分可以基于键包含的ID、基于键的散列值，或者基于以上两者的某种组合。通过对数据进行分片，用户可以将数据存储到多台机器里面，也可以从多台机器上面获取数据，这种方法在解决某些问题的时候可以获得线性级别的性能提升。</p>
+<h3 id="1-6-选用场景"><a href="#1-6-选用场景" class="headerlink" title="1.6. 选用场景"></a>1.6. 选用场景</h3><p>是否选择 redis 要根据具体的情况，如果程序对性能的要求不高，又或者因为费用原因而没有办法将大量的数据存储到内存里面，那么可能就不需要使用 redis。</p>
+<h3 id="1-7-redis-数据结构-SDS"><a href="#1-7-redis-数据结构-SDS" class="headerlink" title="1.7. redis 数据结构 SDS"></a>1.7. redis 数据结构 SDS</h3><p>C字符串和 redis 的 SDS（simple dynamic string）</p>
+<h3 id="1-8-多个数据库"><a href="#1-8-多个数据库" class="headerlink" title="1.8. 多个数据库"></a>1.8. 多个数据库</h3><h4 id="单机-redis-情况下："><a href="#单机-redis-情况下：" class="headerlink" title="单机 redis 情况下："></a>单机 redis 情况下：</h4><ul>
+<li>redis 是一个字典结构的存储服务器，而实际上一个 redis 实例提供了多个用来存储数据的字典，客户端可以指定将数据存储在哪个字典中，这与我们熟知的在一个关系数据库实例中可以创建多个数据库类似，可以将其中的每个字典都理解成一个独立的数据库。</li>
+<li>redis 数据库的数量是固定的，并在配置文件中设置，默认情况下，有16个数据库，且每个数据库都由一个数字（而不是名称）来标识。</li>
+<li>redis 不支持自定义数据库的名字，每个数据库都以编号命名，开发者必须自己记录哪些数据库存储了哪些数据。</li>
+<li>redis 也不支持为每个数据库设置不同的访问密码，所以一个客户端要么可以访问全部数据库，要么连一个数据库也没有权限访问。</li>
+<li>redis 多个数据库之间并不是完全隔离的，比如 FLUSHALL 命令可以清空一个 redis 实例中所有数据库中的数据。<br>综上，redis 的这些数据库更像是一种命名空间，而不适宜存储不同应用程序的数据。比如可以使用0号数据库存储某个应用生产环境中的数据，使用1号数据库存储测试环境中的数据，但不适宜使用0号数据库存储A应用的数据而使用1号数据库B应用的数据，不同的应用应该使用不同的 redis 实例存储数据。由于 redis 非常轻量级，一个空 redis 实例占用的内存只有 1M 左右，所以不用担心多个 redis 实例会额外占用很多内存。</li>
+</ul>
+<h4 id="redis-集群情况下："><a href="#redis-集群情况下：" class="headerlink" title="redis 集群情况下："></a>redis 集群情况下：</h4><ul>
+<li>redis 支持多个数据库，并且每个数据库的数据是隔离的不能共享，但是基于单机才有，如果是集群就没有数据库的概念。</li>
+</ul>
+<h3 id="1-9-单线程"><a href="#1-9-单线程" class="headerlink" title="1.9.单线程"></a>1.9.单线程</h3><p>redis 是单线程处理请求的。</p>
+<h2 id="2-命令"><a href="#2-命令" class="headerlink" title="2. 命令"></a>2. 命令</h2><h3 id="2-1-查看有多少个DB"><a href="#2-1-查看有多少个DB" class="headerlink" title="2.1. 查看有多少个DB"></a>2.1. 查看有多少个DB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONFIG GET databases</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-切换DB"><a href="#2-2-切换DB" class="headerlink" title="2.2. 切换DB"></a>2.2. 切换DB</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT 14</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-清除某个库中的所有数据"><a href="#2-3-清除某个库中的所有数据" class="headerlink" title="2.3. 清除某个库中的所有数据"></a>2.3. 清除某个库中的所有数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select 2 [先选择其中某个库(比如2号库)]</span><br><span class="line">flushdb</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-查看键-key-name-所占的存储空间"><a href="#2-4-查看键-key-name-所占的存储空间" class="headerlink" title="2.4. 查看键 key_name 所占的存储空间"></a>2.4. 查看键 key_name 所占的存储空间</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MEMORY USAGE key_name</span><br></pre></td></tr></table></figure>
+
+<p>Redis缓存问题<br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c5dbd453b4d0">https://www.jianshu.com/p/c5dbd453b4d0</a></p>
+<p>Redis命令<br><a target="_blank" rel="noopener" href="https://redis.io/commands/">https://redis.io/commands/</a></p>
+
       </div>
     </div>
 </div>

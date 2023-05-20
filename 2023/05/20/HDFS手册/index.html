@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>Tags - young&#39;s tech blogs</title>
+    <title>HDFS 手册 - young&#39;s tech blogs</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="young">
     <meta name="keywords" content="">
-    <meta property="og:title" content="Tags"/>
+    <meta property="og:title" content="HDFS 手册"/>
     <style>
 
 
@@ -418,18 +418,71 @@ header .header__right .dropdown-menus .dropdown-menu {
         <div id="page-main" class="main-content">
             <div class="mg-top">
                 
+
 <article class="page">
-<div id="post-meta-m" style="padding-bottom:0;">
-  <div class="post-meta" id="post-meta">
-    <h3>Tags</h3>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>HDFS 手册</h3>
+    
+      <span class="post-meta-label">
+        young
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-05-20 21:27" pubdate>
+          2023-05-20
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 649 字
+      </span>
+    
+    
+    
   </div>
-</div>
-<div class="tag-page-main" style="padding-top:10px;">
-<div class="text-center tagcloud">
   
 </div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-hdfs-dfs-%E5%92%8C-hadoop-fs-%E5%8C%BA%E5%88%AB"><span class="toc-number">1.1.</span> <span class="toc-text">1.1. hdfs dfs 和 hadoop fs 区别?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-HDFS-%E5%92%8C-MapReduce"><span class="toc-number">1.2.</span> <span class="toc-text">1.2. HDFS 和 MapReduce</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%85%8D%E9%A2%9D"><span class="toc-number">1.3.</span> <span class="toc-text">1.3. 配额</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%AE%89%E5%85%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.4.</span> <span class="toc-text">1.4. 安全模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">2. 命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E5%B0%86-HDFS-%E4%B8%AD%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%88%B0%E6%9C%AC%E5%9C%B0"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 将 HDFS 中文件下载到本地</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9F%A5%E7%9C%8B%E6%9F%90%E4%B8%AA%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 查看某个目录下的所有文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%88%A0%E9%99%A4%E6%9F%90%E4%B8%AA%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 删除某个目录下所有文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%88%9B%E5%BB%BA%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 创建某个文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%88%9B%E5%BB%BA%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. 创建某个文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E4%B8%8A%E4%BC%A0%E6%9F%90%E4%B8%AA%E6%96%87%E4%BB%B6"><span class="toc-number">2.6.</span> <span class="toc-text">2.6. 上传某个文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%A4%B9%E7%9A%84%E9%85%8D%E9%A2%9D"><span class="toc-number">2.7.</span> <span class="toc-text">2.7. 查看文件夹的配额</span></a></li></ol></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-hdfs-dfs-和-hadoop-fs-区别"><a href="#1-1-hdfs-dfs-和-hadoop-fs-区别" class="headerlink" title="1.1. hdfs dfs 和 hadoop fs 区别?"></a>1.1. hdfs dfs 和 hadoop fs 区别?</h3><ul>
+<li>hadoop fs 用的面最广，可以操作任何文件系统，这里 fs 泛指文件系统。</li>
+<li>hdfs dfs 特定用于 HDFS。</li>
+</ul>
+<h3 id="1-2-HDFS-和-MapReduce"><a href="#1-2-HDFS-和-MapReduce" class="headerlink" title="1.2. HDFS 和 MapReduce"></a>1.2. HDFS 和 MapReduce</h3><p>Hadoop 的框架最核心的设计就是：HDFS 和 MapReduce。<br>HDFS 为海量的数据提供了存储，而 MapReduce 为海量的数据提供了计算。<br>HDFS 可以理解为一个分布式的、有冗余备份的、可以动态扩展的用来存储大规模数据的大硬盘；而 MapReduce 则理解为一个计算引擎，按照 MapReduce 的规则编写 Map &#x2F; Reduce 计算的程序，可以完成计算任务。<br>HDFS 是一个分布式文件系统，引入存放文件元数据信息的服务器 Namenode 和实际存放数据的服务器 Datanode，对数据进行分布式储存和读取；而 MapReduce是一个计算框架，MapReduce 的核心思想是把计算任务分配给集群内的服务器里执行，先对计算任务进行拆分【Map 计算 &#x2F; Reduce 计算】，再借助任务调度器 JobTracker 对任务进行分布式计算。</p>
+<h3 id="1-3-配额"><a href="#1-3-配额" class="headerlink" title="1.3. 配额"></a>1.3. 配额</h3><p>HDFS 允许管理员为每一个用户和每一个文件夹设置配额：命名配额和空间配额。<br>name quota：该目录下的名字数量做硬性限制，为文件夹下的数量作出的限制,超过限制则会报错：quota exceed，最大值配额:Long.MAX_Valus。新创建的文件夹没有分配quota。<br>space quota：设置一个文件夹的大小，如果超过则块写入会失败（副本也算）。最大的配额：Long.Max_Value。配额设置为0还是运行文件创建，但是不能向文件中写入块。文件夹不使用主机文件系统不计算在空间配额里面，主机文件系统用来记录文件源数据的数据不算在配额中。</p>
+<h3 id="1-4-安全模式"><a href="#1-4-安全模式" class="headerlink" title="1.4. 安全模式"></a>1.4. 安全模式</h3><p>HDFS 的 block 丢失过多会进入安全模式。<br>需要先退出安全模式，然后检测、修复或删除坏块。</p>
+<h2 id="2-命令"><a href="#2-命令" class="headerlink" title="2. 命令"></a>2. 命令</h2><h3 id="2-1-将-HDFS-中文件下载到本地"><a href="#2-1-将-HDFS-中文件下载到本地" class="headerlink" title="2.1. 将 HDFS 中文件下载到本地"></a>2.1. 将 HDFS 中文件下载到本地</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -get hdfs_file_path local_file_path</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-查看某个目录下的所有文件"><a href="#2-2-查看某个目录下的所有文件" class="headerlink" title="2.2. 查看某个目录下的所有文件"></a>2.2. 查看某个目录下的所有文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls 目录的路径</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-删除某个目录下所有文件"><a href="#2-3-删除某个目录下所有文件" class="headerlink" title="2.3. 删除某个目录下所有文件"></a>2.3. 删除某个目录下所有文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -rm 文件夹路径/*</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-创建某个文件夹"><a href="#2-4-创建某个文件夹" class="headerlink" title="2.4. 创建某个文件夹"></a>2.4. 创建某个文件夹</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -mkdir 文件夹路径</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-创建某个文件"><a href="#2-5-创建某个文件" class="headerlink" title="2.5. 创建某个文件"></a>2.5. 创建某个文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -touchz 文件路径</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-上传某个文件"><a href="#2-6-上传某个文件" class="headerlink" title="2.6. 上传某个文件"></a>2.6. 上传某个文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -put file upload_path</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-查看文件夹的配额"><a href="#2-7-查看文件夹的配额" class="headerlink" title="2.7. 查看文件夹的配额"></a>2.7. 查看文件夹的配额</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -count -q -h -v directory_path</span><br></pre></td></tr></table></figure>
+      </div>
+    </div>
 </div>
+
+
+<div class="post-footer">
+  
+
+</div>
+
 </article>
+
+
             </div>
             
 <footer class="text-center">
@@ -444,6 +497,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     
     <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
@@ -479,8 +534,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 

@@ -390,7 +390,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 		</div>
 	</a>
 	
-	<a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+	<!-- <a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
 		<div>
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
 				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -407,7 +407,7 @@ header .header__right .dropdown-menus .dropdown-menu {
 					fill="currentColor"></path>
 			</svg>
 		</div>
-	</a>
+	</a> -->
 	<div class="dropdown-menus" id="dropdown-menus">
 		
 	</div>
@@ -416,8 +416,8 @@ header .header__right .dropdown-menus .dropdown-menu {
         </header>
         <div id="top"></div>
         <div id="page-main" class="main-content">
-        <div class="mg-top">
-            
+            <div class="mg-top">
+                
 
 <article class="page">
 <div id="post-meta-m">
@@ -440,7 +440,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 252 字
+        共 270 字
       </span>
     
     
@@ -462,6 +462,10 @@ header .header__right .dropdown-menus .dropdown-menu {
 <h3 id="2-重置-Region-的状态"><a href="#2-重置-Region-的状态" class="headerlink" title="2.重置 Region 的状态"></a>2.重置 Region 的状态</h3><p>修改表 hbase:meta 中 region 的状态信息为 offline。<br>还需要清除 WAL 日志，并重启 HMaster。</p>
 <p>问题：<br>将某个表对应的分区的状态都修改为了 CLOSED，但是 drop 删除报错仍然报错需要先 disabled：<br>于是先查看表 hbase:meta 中表的状态，发现为 disabling，于是需要修改表状态为 disabled。</p>
 <h3 id="3-HDFS坏块"><a href="#3-HDFS坏块" class="headerlink" title="3.HDFS坏块"></a>3.HDFS坏块</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[检查路径 path 下是否有坏块]</span><br><span class="line">hdfs fsck path</span><br><span class="line"></span><br><span class="line">[检查路径 path 下是否有坏块，并删除坏块]</span><br><span class="line">hdfs fsck path -delete</span><br></pre></td></tr></table></figure>
+
+
+<p>Hbase永久RIT异常：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangshenghang/article/details/104835735">https://blog.csdn.net/zhangshenghang/article/details/104835735</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/601096">https://developer.aliyun.com/article/601096</a></p>
+
       </div>
     </div>
 </div>
@@ -475,8 +479,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </article>
 
 
-        </div>
-        
+            </div>
+            
 <footer class="text-center">
     
     
@@ -486,8 +490,6 @@ header .header__right .dropdown-menus .dropdown-menu {
     <p>&copy;  2023 - 2023&nbsp;&nbsp;Technical Blogs</p>
     
     <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
-    
-    
 </footer>
 
 <div class="p-btn">
@@ -589,6 +591,5 @@ header .header__right .dropdown-menus .dropdown-menu {
         <div id="css-loading">
             <h3 class="text-center">加载中...</h3>
         </div>
-        
     </body>
 </html>

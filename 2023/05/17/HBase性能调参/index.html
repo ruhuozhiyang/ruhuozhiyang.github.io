@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>Tags - young&#39;s tech blogs</title>
+    <title>HBase 性能调参 - young&#39;s tech blogs</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="young">
     <meta name="keywords" content="">
-    <meta property="og:title" content="Tags"/>
+    <meta property="og:title" content="HBase 性能调参"/>
     <style>
 
 
@@ -418,18 +418,70 @@ header .header__right .dropdown-menus .dropdown-menu {
         <div id="page-main" class="main-content">
             <div class="mg-top">
                 
+
 <article class="page">
-<div id="post-meta-m" style="padding-bottom:0;">
-  <div class="post-meta" id="post-meta">
-    <h3>Tags</h3>
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>HBase 性能调参</h3>
+    
+      <span class="post-meta-label">
+        young
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-05-17 20:15" pubdate>
+          2023-05-17
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 391 字
+      </span>
+    
+    
+    
   </div>
-</div>
-<div class="tag-page-main" style="padding-top:10px;">
-<div class="text-center tagcloud">
   
 </div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%BF%E5%85%8D-regionserver-%E7%BA%A7%E5%88%AB%E7%9A%84%E5%88%B7%E5%86%99"><span class="toc-number">1.</span> <span class="toc-text">避免 regionserver 级别的刷写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%90%88%E7%90%86%E7%9A%84-region-%E6%95%B0%E9%87%8F%E5%92%8C-region-%E5%A4%A7%E5%B0%8F"><span class="toc-number">2.</span> <span class="toc-text">设置合理的 region 数量和 region 大小</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <p>hbase.hregion.memstore.block.multiplier 4&#x3D;&gt;5<br>hbase.hregion.memstore.flush.size 134217728&#x3D;&gt;268435456<br>hbase.hstore.compaction.max 10&#x3D;&gt;15</p>
+<p>regionserver.handler.count 是指单个 regionserver 允许的 rpc 请求的线程数量，默认值是 30，生产环境建议使用 60，也不是越大越好，特别是当请求内容很大的时候，比如 scan&#x2F;put 几 M 的数据，会占用过多的内存，有可能导致频繁的 GC（垃圾回收），甚至出现内存溢出。</p>
+<p>调整 RegionServer 的读和写缓冲区的大小，此处 0.4 为 40%，读写缓存的总和控制在 80% 以内，否则可能造成 Hbase 无法启动的情况。<br>根据写需求，可加大 hbase.regionserver.global.memstore.size 的比例<br><img src="https://bbs-img.huaweicloud.com/blogs/img/1614323853865071161.png"><br><img src="https://bbs-img.huaweicloud.com/blogs/img/1614323855883089512.png"><br>默认读写缓存比例值都为40%<br>如果为了提高写速度，可以将读调整为 10%，写调整为 70%。</p>
+<h2 id="避免-regionserver-级别的刷写"><a href="#避免-regionserver-级别的刷写" class="headerlink" title="避免 regionserver 级别的刷写"></a>避免 regionserver 级别的刷写</h2><p>regionserver 运行在 JVM 之上，regionserver 占用的堆内存是向 JVM 堆内存申请的。</p>
+<p>hbase_heapsize（region server heapsize）是 RegionServer 占用的 JVM 内存大小。</p>
+<p>hbase.regionserver.global.memstore.size 是一个 regionserver 总的写缓存（即所有 memstore 之和）占用 hbase_heapsize 的比例。【默认值是 0.4】</p>
+<p>当一个 regionserver 总的写缓存（即所有 memstore 之和）&gt; hbase_heapsize ✖️ hbase.regionserver.global.memstore.size，就会触发 regionserver 级别刷写，阻塞 regionserver 的所有写请求，且时间较长。</p>
+<h2 id="设置合理的-region-数量和-region-大小"><a href="#设置合理的-region-数量和-region-大小" class="headerlink" title="设置合理的 region 数量和 region 大小"></a>设置合理的 region 数量和 region 大小</h2><p>bulkload 和 put 加载数据？</p>
+<p>Jetty IOException: Too many open files</p>
+<p>client-scan 过滤数据：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shufangreal/article/details/109811702">https://blog.csdn.net/shufangreal/article/details/109811702</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1620694">合理的region数量和region大小</a></p>
+<p><a target="_blank" rel="noopener" href="https://hbase.apache.org/2.0/book.html#shell">https://hbase.apache.org/2.0/book.html#shell</a></p>
+
+      </div>
+    </div>
 </div>
+
+
+<div class="post-footer">
+  
+
+</div>
+
 </article>
+
+
             </div>
             
 <footer class="text-center">
@@ -444,6 +496,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 </footer>
 
 <div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
     
     
     <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
@@ -479,8 +533,50 @@ header .header__right .dropdown-menus .dropdown-menu {
 </script>
 
 
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
 
 
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
 
 
 
