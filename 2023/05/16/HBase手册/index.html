@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>HBase 手册 - young&#39;s tech blogs</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="HBase 手册"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<!-- <a href="/" class="button"><span class="logo__text">young&#39;s technical manual</span></a> -->
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+		<a href="/" class="button">
+			<div class="navbar-menu">首页</div>
+		</a>
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<!-- <a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a> -->
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+		<a href="/" class="dropdown-menu button">首页</a>
+		<br>
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+            <div class="mg-top">
+                
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>HBase 手册</h3>
+    
+      <span class="post-meta-label">
+        young
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-05-16 01:54" pubdate>
+          2023-05-16
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 791 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-hbase-meta-%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">1.1. hbase:meta 表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-hbase-%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E7%9A%84%E8%B7%AF%E5%BE%84"><span class="toc-number">1.2.</span> <span class="toc-text">1.2. hbase 数据存储的路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-HBase-Region%E5%88%86%E8%A3%82%E3%80%82"><span class="toc-number">1.3.</span> <span class="toc-text">1.3. HBase Region分裂。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E4%BA%A4%E4%BA%92%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">2. 交互命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%99%BB%E5%BD%95-shell"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 登录 shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%88%97%E5%87%BA%E6%89%80%E6%9C%89%E7%9A%84%E8%A1%A8"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 列出所有的表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%BB%9F%E8%AE%A1%E4%B8%80%E4%B8%AA%E8%A1%A8%E4%B8%AD%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%8C%E6%95%B0%E3%80%90%E9%80%9F%E5%BA%A6%E5%BE%88%E6%85%A2%EF%BC%8C%E5%BB%BA%E8%AE%AE%E7%94%A8-RowCounter%E3%80%91"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 统计一个表中数据的行数【速度很慢，建议用 RowCounter】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%B8%85%E7%A9%BA%EF%BD%9C%E5%88%A0%E9%99%A4%E8%A1%A8%E6%95%B0%E6%8D%AE"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 清空｜删除表数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%9F%A5%E7%9C%8B%E4%B8%80%E5%BC%A0%E8%A1%A8%E7%9A%84%E5%89%8D-N-%E6%9D%A1%E8%AE%B0%E5%BD%95"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. 查看一张表的前 N 条记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E6%9F%A5%E7%9C%8B%E4%B8%80%E5%BC%A0%E8%A1%A8%E4%B8%AD%E6%8C%87%E5%AE%9A-rowkey-%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">2.6.</span> <span class="toc-text">2.6. 查看一张表中指定 rowkey 的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-Scan-%E6%89%AB%E6%8F%8F%E5%85%A8%E8%A1%A8%E5%B9%B6%E6%8C%87%E5%AE%9A%E8%BF%94%E5%9B%9E%E7%89%B9%E5%AE%9A%E7%9A%84%E5%88%97"><span class="toc-number">2.7.</span> <span class="toc-text">2.7. Scan 扫描全表并指定返回特定的列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-%E5%86%99%E5%85%A5%E5%8E%9F%E7%94%9F%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.8.</span> <span class="toc-text">2.8. 写入原生的数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9-HBaseFsck%EF%BC%88hbck%EF%BC%89"><span class="toc-number">2.9.</span> <span class="toc-text">2.9. HBaseFsck（hbck）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-10-%E9%87%8D%E5%88%86%E9%85%8D-region%EF%BC%8C%E8%A7%A3%E5%86%B3-RIT-%E9%97%AE%E9%A2%98"><span class="toc-number">2.10.</span> <span class="toc-text">2.10. 重分配 region，解决 RIT 问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-11-%E6%9F%A5%E7%9C%8B%E8%A1%A8%E4%BF%A1%E6%81%AF"><span class="toc-number">2.11.</span> <span class="toc-text">2.11. 查看表信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-12-RowCounter-%E7%BB%9F%E8%AE%A1-HBase-%E8%A1%A8%E8%A1%8C%E6%95%B0"><span class="toc-number">2.12.</span> <span class="toc-text">2.12. RowCounter 统计 HBase 表行数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-13-%E6%A3%80%E6%9F%A5%E8%A1%A8%E7%8A%B6%E6%80%81"><span class="toc-number">2.13.</span> <span class="toc-text">2.13. 检查表状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-14-%E6%9F%A5%E7%9C%8B%E5%88%86%E5%8C%BA%E4%BF%A1%E6%81%AF"><span class="toc-number">2.14.</span> <span class="toc-text">2.14. 查看分区信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-15-%E6%89%BE%E5%87%BA%E5%BC%82%E5%B8%B8%E7%9A%84-Region"><span class="toc-number">2.15.</span> <span class="toc-text">2.15. 找出异常的 Region</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-16-%E7%A1%AE%E8%AE%A4%E4%B8%80%E4%B8%8B%E8%A1%A8%E7%9A%84%E4%BF%A1%E6%81%AF%E5%92%8C%E6%95%B0%E6%8D%AE"><span class="toc-number">2.16.</span> <span class="toc-text">2.16. 确认一下表的信息和数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-17-%E6%9B%B4%E6%96%B0-Region-x2F-Table-%E4%BF%A1%E6%81%AF"><span class="toc-number">2.17.</span> <span class="toc-text">2.17. 更新 Region&#x2F;Table 信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-18-%E6%9F%A5%E7%9C%8B%E5%A4%9A%E4%B8%AA%E7%89%88%E6%9C%AC%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">2.18.</span> <span class="toc-text">2.18. 查看多个版本的数据</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%91%A8%E8%BE%B9"><span class="toc-number">3.</span> <span class="toc-text">3. 周边</span></a></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-hbase-meta-表"><a href="#1-1-hbase-meta-表" class="headerlink" title="1.1. hbase:meta 表"></a>1.1. hbase:meta 表</h3><p>hbase 删除会删掉 hbase:meta 中的信息吗?</p>
+<h3 id="1-2-hbase-数据存储的路径"><a href="#1-2-hbase-数据存储的路径" class="headerlink" title="1.2. hbase 数据存储的路径"></a>1.2. hbase 数据存储的路径</h3><p>hdfs 的配置文件中 hbase.rootdir 属性，是 hbase 数据存储的路径。</p>
+<h3 id="1-3-HBase-Region分裂。"><a href="#1-3-HBase-Region分裂。" class="headerlink" title="1.3. HBase Region分裂。"></a>1.3. HBase Region分裂。</h3><p>当Hbase运行时候，region达到了设置的文件大小后，就要开始分裂了。分裂的过程是：<br>老region开始下线，is not online；<br>老region分裂；<br>老region关闭，is closing。</p>
+<h2 id="2-交互命令"><a href="#2-交互命令" class="headerlink" title="2. 交互命令"></a>2. 交互命令</h2><h3 id="2-1-登录-shell"><a href="#2-1-登录-shell" class="headerlink" title="2.1. 登录 shell"></a>2.1. 登录 shell</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase shell</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-列出所有的表"><a href="#2-2-列出所有的表" class="headerlink" title="2.2. 列出所有的表"></a>2.2. 列出所有的表</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">list</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-统计一个表中数据的行数【速度很慢，建议用-RowCounter】"><a href="#2-3-统计一个表中数据的行数【速度很慢，建议用-RowCounter】" class="headerlink" title="2.3. 统计一个表中数据的行数【速度很慢，建议用 RowCounter】"></a>2.3. 统计一个表中数据的行数【速度很慢，建议用 RowCounter】</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#间隔100000条记录打印一次。</span><br><span class="line">count &#x27;表名’, INTERVAL =&gt; 100000</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-清空｜删除表数据"><a href="#2-4-清空｜删除表数据" class="headerlink" title="2.4. 清空｜删除表数据"></a>2.4. 清空｜删除表数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#清空表数据【注意：这会抹掉原本的分区设置，也就是使 region 预分区数变为 1】</span><br><span class="line">truncate &#x27;表名’</span><br><span class="line">#可以使用如下命令代替</span><br><span class="line">truncate_preserve &#x27;表名’</span><br><span class="line"></span><br><span class="line">#删除表</span><br><span class="line">disable &#x27;表名&#x27;</span><br><span class="line">drop &#x27;表名&#x27;</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-查看一张表的前-N-条记录"><a href="#2-5-查看一张表的前-N-条记录" class="headerlink" title="2.5. 查看一张表的前 N 条记录"></a>2.5. 查看一张表的前 N 条记录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan ‘example_table’,&#123;LIMIT=&gt;N&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-6-查看一张表中指定-rowkey-的数据"><a href="#2-6-查看一张表中指定-rowkey-的数据" class="headerlink" title="2.6. 查看一张表中指定 rowkey 的数据"></a>2.6. 查看一张表中指定 rowkey 的数据</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">get ‘example_table’, ‘rowkey’</span><br><span class="line"></span><br><span class="line">get &#x27;表名&#x27;, &#x27;rowkey&#x27;, &#x27;列族1:列1&#x27;, &#x27;列族2:列2&#x27;, ...</span><br><span class="line">get &#x27;表名&#x27;, &#x27;rowkey&#x27;, &#123;COLUMN =&gt; [&#x27;列族1:列1&#x27;, &#x27;列族2:列2&#x27;, ...]&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-Scan-扫描全表并指定返回特定的列"><a href="#2-7-Scan-扫描全表并指定返回特定的列" class="headerlink" title="2.7. Scan 扫描全表并指定返回特定的列"></a>2.7. Scan 扫描全表并指定返回特定的列</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan &#x27;表名&#x27;, &#123;COLUMNS =&gt; [&#x27;column_family:column1&#x27;, &#x27;column_family:column2’]&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://java-er.com/blog/hbase-scan-all-command/">Scan 更多用法</a></p>
+<h3 id="2-8-写入原生的数据类型"><a href="#2-8-写入原生的数据类型" class="headerlink" title="2.8. 写入原生的数据类型"></a>2.8. 写入原生的数据类型</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">put &#x27;表名&#x27;,&#x27;rowkey名&#x27;,&#x27;列族:列名&#x27;,&#x27;数据&#x27;</span><br><span class="line"> </span><br><span class="line">put &#x27;tb2&#x27;,&#x27;r1&#x27;,&#x27;f2&#x27;,Bytes::toBytes(java.lang.Short::valueOf(10).to_java:short)</span><br><span class="line">put &#x27;tb2&#x27;,&#x27;r2&#x27;,&#x27;f2&#x27;,Bytes::toBytes(java.lang.Short::valueOf(10).to_java:int)</span><br><span class="line">put &#x27;tb2&#x27;,&#x27;r3&#x27;,&#x27;f2&#x27;,Bytes::toBytes(java.lang.Short::valueOf(10).to_java:long)</span><br><span class="line">put &#x27;tb2&#x27;,&#x27;r4&#x27;,&#x27;f2&#x27;,Bytes::toBytes(java.lang.Short::valueOf(10).to_java:string)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-9-HBaseFsck（hbck）"><a href="#2-9-HBaseFsck（hbck）" class="headerlink" title="2.9. HBaseFsck（hbck）"></a>2.9. HBaseFsck（hbck）</h3><p>HBaseFsck（hbck）是一个用于检查区域一致性和表完整性问题并修复损坏的HBase的工具。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hbck -summary TableName</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-10-重分配-region，解决-RIT-问题"><a href="#2-10-重分配-region，解决-RIT-问题" class="headerlink" title="2.10. 重分配 region，解决 RIT 问题"></a>2.10. 重分配 region，解决 RIT 问题</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assign &#x27;region name&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-11-查看表信息"><a href="#2-11-查看表信息" class="headerlink" title="2.11. 查看表信息"></a>2.11. 查看表信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">describe &#x27;表名&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-12-RowCounter-统计-HBase-表行数"><a href="#2-12-RowCounter-统计-HBase-表行数" class="headerlink" title="2.12. RowCounter 统计 HBase 表行数"></a>2.12. RowCounter 统计 HBase 表行数</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase org.apache.hadoop.hbase.mapreduce.RowCounter &#x27;表名&#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-13-检查表状态"><a href="#2-13-检查表状态" class="headerlink" title="2.13. 检查表状态"></a>2.13. 检查表状态</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">get &#x27;hbase:meta&#x27;,&#x27;KYLIN_0054K9NLSU&#x27;,&#x27;table:state&#x27;</span><br><span class="line"></span><br><span class="line">表状态信息：</span><br><span class="line">ENABLED,对应meta表里的值\x08\x00</span><br><span class="line">DISABLED, 对应meta表里的值\x08\x01</span><br><span class="line">DISABLING, 对应meta表里的值\x08\x02</span><br><span class="line">ENABLING, 对应meta表里的值\x08\x03</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-14-查看分区信息"><a href="#2-14-查看分区信息" class="headerlink" title="2.14. 查看分区信息"></a>2.14. 查看分区信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scan &#x27;hbase:meta&#x27;,&#123;FILTER =&gt; org.apache.hadoop.hbase.filter.PrefixFilter.new(org.apache.hadoop.hbase.util.Bytes.toBytes(&#x27;KYLIN_0054K9NLSU&#x27;))&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-15-找出异常的-Region"><a href="#2-15-找出异常的-Region" class="headerlink" title="2.15. 找出异常的 Region"></a>2.15. 找出异常的 Region</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;scan &#x27;hbase:meta&#x27;,&#123;FILTER =&gt; org.apache.hadoop.hbase.filter.PrefixFilter.new(org.apache.hadoop.hbase.util.Bytes.toBytes(&#x27;KYLIN_0354K9NLSU&#x27;))&#125;&quot;|hbase shell -n|grep OPENING</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-16-确认一下表的信息和数据"><a href="#2-16-确认一下表的信息和数据" class="headerlink" title="2.16. 确认一下表的信息和数据"></a>2.16. 确认一下表的信息和数据</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hbck -summary TableName</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-17-更新-Region-x2F-Table-信息"><a href="#2-17-更新-Region-x2F-Table-信息" class="headerlink" title="2.17. 更新 Region&#x2F;Table 信息"></a>2.17. 更新 Region&#x2F;Table 信息</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">put &#x27;hbase:meta&#x27;,&#x27;KYLIN_0354K9NLSU,,1561953520536.30b7d24eaa3209c6e5e8de764ad04855.&#x27;,&#x27;info:state&#x27;,&#x27;CLOSED&#x27;,1562117738678</span><br><span class="line"></span><br><span class="line">put &#x27;hbase:meta&#x27;,&#x27;KYLIN_0354K9NLSU&#x27;,&#x27;table:state&#x27;,&quot;\x08\x01&quot;,1562120793251</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-18-查看多个版本的数据"><a href="#2-18-查看多个版本的数据" class="headerlink" title="2.18. 查看多个版本的数据"></a>2.18. 查看多个版本的数据</h3><p>get ‘tmp_mutilversion’,’rk1114’,{COLUMN &#x3D;&gt; ‘f:q1’, VERSIONS &#x3D;&gt; 2}</p>
+<h2 id="3-周边"><a href="#3-周边" class="headerlink" title="3. 周边"></a>3. 周边</h2><p>Apache Phoenix 用 SQL 语法和 HBase 交互，且支持二级索引。</p>
+
+      </div>
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+</div>
+
+</article>
+
+
+            </div>
+            
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2023 - 2023&nbsp;&nbsp;Technical Blogs</p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+    </body>
+</html>

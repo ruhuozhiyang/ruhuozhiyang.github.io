@@ -377,6 +377,10 @@ header .header__right .dropdown-menus .dropdown-menu {
 <div class="header__right">
 	<div class="navbar__menus">
 		
+		<a href="/" class="button">
+			<div class="navbar-menu">首页</div>
+		</a>
+		
 	</div>
 	
 	<a href="/search/" class="button">
@@ -410,6 +414,9 @@ header .header__right .dropdown-menus .dropdown-menu {
 	</a> -->
 	<div class="dropdown-menus" id="dropdown-menus">
 		
+		<a href="/" class="dropdown-menu button">首页</a>
+		<br>
+		
 	</div>
 </div>
 
@@ -440,7 +447,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 391 字
+        共 471 字
       </span>
     
     
@@ -468,6 +475,10 @@ header .header__right .dropdown-menus .dropdown-menu {
 <p>client-scan 过滤数据：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shufangreal/article/details/109811702">https://blog.csdn.net/shufangreal/article/details/109811702</a></p>
 <p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1620694">合理的region数量和region大小</a></p>
 <p><a target="_blank" rel="noopener" href="https://hbase.apache.org/2.0/book.html#shell">https://hbase.apache.org/2.0/book.html#shell</a></p>
+<p>HBase是稀疏的，不像 Mysql 那样需要用 Null 表示空值，HBase 的空值是不需要存储的。</p>
+<p>KV存储系统</p>
+<p>HBase客户端设置缓存，批量提交，但是可能会因客户端崩溃损失数据。</p>
+<p>HBase RegionServer可能会因为并发的请求太多陷入 TooBusyException 状态。</p>
 
       </div>
     </div>

@@ -370,6 +370,10 @@ header .header__right .dropdown-menus .dropdown-menu {
 <div class="header__right">
 	<div class="navbar__menus">
 		
+		<a href="/" class="button">
+			<div class="navbar-menu">首页</div>
+		</a>
+		
 	</div>
 	
 	<a href="/search/" class="button">
@@ -403,6 +407,9 @@ header .header__right .dropdown-menus .dropdown-menu {
 	</a> -->
 	<div class="dropdown-menus" id="dropdown-menus">
 		
+		<a href="/" class="dropdown-menu button">首页</a>
+		<br>
+		
 	</div>
 </div>
 
@@ -431,13 +438,13 @@ header .header__right .dropdown-menus .dropdown-menu {
         
         <article class="index-card-info">
           <h3 class="index-header">
-            <a id="post-title" href="/2023/05/20/HDFS%E6%89%8B%E5%86%8C/">
+            <a id="post-title" href="/2023/05/27/%E7%AE%97%E6%B3%95/">
               
-              HDFS 手册
+              常见算法及示例题
             </a>
             
-              <time datetime="2023-05-20 21:27" pubdate>
-                2023-05-20
+              <time datetime="2023-05-27 18:46" pubdate>
+                2023-05-27
               </time>
             
           </h3>
@@ -446,194 +453,89 @@ header .header__right .dropdown-menus .dropdown-menu {
             
               
             
-            1. 概念1.1. hdfs dfs 和 hadoop fs 区别?
-hadoop fs 用的面最广，可以操作任何文件系统，这里 fs 泛指文件系统。
-hdfs dfs 特定用于 HDFS。
+            1. 常见算法2. 示例题
+将一个整数除符号位倒序输出为字符串形式123456789101112131415public class test &#123;  public static void m
+            ...
+          </p>
+          <div class="index-btm post-metas">
+            <!-- 
+              <time datetime="2023-05-27 18:46" pubdate>
+                2023-05-27
+              </time>
+             -->
+            
+          </div>
+        </article>
+      </div>
+    
+  
+    
+      <div >
+        
+        <article class="index-card-info">
+          <h3 class="index-header">
+            <a id="post-title" href="/2023/05/27/ClickHouse%E6%89%8B%E5%86%8C/">
+              
+              ClickHouse 手册
+            </a>
+            
+              <time datetime="2023-05-27 12:28" pubdate>
+                2023-05-27
+              </time>
+            
+          </h3>
+          <p class="index-excerpt">
+            
+            
+              
+            
+            ClickHouse 适合大批量插入ClickHouse 不支持高并发写入，写入线程太多的话例如150，可能会报异常Too Many Part等，我选择是10个并发写入线程。ClickHouse 更适
+            ...
+          </p>
+          <div class="index-btm post-metas">
+            <!-- 
+              <time datetime="2023-05-27 12:28" pubdate>
+                2023-05-27
+              </time>
+             -->
+            
+          </div>
+        </article>
+      </div>
+    
+  
+    
+      <div >
+        
+        <article class="index-card-info">
+          <h3 class="index-header">
+            <a id="post-title" href="/2023/05/27/Java%E5%AE%9E%E7%94%A8%E7%9F%A5%E8%AF%86%E7%82%B9/">
+              
+              Java 实用知识点
+            </a>
+            
+              <time datetime="2023-05-27 12:01" pubdate>
+                2023-05-27
+              </time>
+            
+          </h3>
+          <p class="index-excerpt">
+            
+            
+              
+            
+            
+有必要在ConcurrentHashMap前加上volatile吗?
 
-1.2
-            ...
-          </p>
-          <div class="index-btm post-metas">
-            <!-- 
-              <time datetime="2023-05-20 21:27" pubdate>
-                2023-05-20
-              </time>
-             -->
-            
-          </div>
-        </article>
-      </div>
-    
-  
-    
-      <div >
-        
-        <article class="index-card-info">
-          <h3 class="index-header">
-            <a id="post-title" href="/2023/05/20/Redis%E6%89%8B%E5%86%8C/">
-              
-              Redis 内存数据库
-            </a>
-            
-              <time datetime="2023-05-20 21:24" pubdate>
-                2023-05-20
-              </time>
-            
-          </h3>
-          <p class="index-excerpt">
-            
-            
-              
-            
-            1. 相关概念1.1. 与 memcache 比较与缓存服务器 memcache 对比，redis 的一大优势就是支持数据的持久化，而 memcache 一旦重启，内存中保存的数据就完全消失了。
-1.
-            ...
-          </p>
-          <div class="index-btm post-metas">
-            <!-- 
-              <time datetime="2023-05-20 21:24" pubdate>
-                2023-05-20
-              </time>
-             -->
-            
-          </div>
-        </article>
-      </div>
-    
-  
-    
-      <div >
-        
-        <article class="index-card-info">
-          <h3 class="index-header">
-            <a id="post-title" href="/2023/05/18/ES%E6%89%8B%E5%86%8C/">
-              
-              ElasticSearch 手册
-            </a>
-            
-              <time datetime="2023-05-18 19:48" pubdate>
-                2023-05-18
-              </time>
-            
-          </h3>
-          <p class="index-excerpt">
-            
-            
-              
-            
-            1. 概念Index-库、Type-表、Document-数据Hits数组默认返回10个。scroll 查询可以用来对 Elasticsearch 有效地执行大批量的文档查询，而又不用付出深度分页那种
-            ...
-          </p>
-          <div class="index-btm post-metas">
-            <!-- 
-              <time datetime="2023-05-18 19:48" pubdate>
-                2023-05-18
-              </time>
-             -->
-            
-          </div>
-        </article>
-      </div>
-    
-  
-    
-      <div >
-        
-        <article class="index-card-info">
-          <h3 class="index-header">
-            <a id="post-title" href="/2023/05/17/JVM%E8%B0%83%E4%BC%98/">
-              
-              JVM 调优手册
-            </a>
-            
-              <time datetime="2023-05-17 20:24" pubdate>
-                2023-05-17
-              </time>
-            
-          </h3>
-          <p class="index-excerpt">
-            
-            
-              
-            
-            
-            ...
-          </p>
-          <div class="index-btm post-metas">
-            <!-- 
-              <time datetime="2023-05-17 20:24" pubdate>
-                2023-05-17
-              </time>
-             -->
-            
-          </div>
-        </article>
-      </div>
-    
-  
-    
-      <div >
-        
-        <article class="index-card-info">
-          <h3 class="index-header">
-            <a id="post-title" href="/2023/05/17/HBase%E6%80%A7%E8%83%BD%E8%B0%83%E5%8F%82/">
-              
-              HBase 性能调参
-            </a>
-            
-              <time datetime="2023-05-17 20:15" pubdate>
-                2023-05-17
-              </time>
-            
-          </h3>
-          <p class="index-excerpt">
-            
-            
-              
-            
-            hbase.hregion.memstore.block.multiplier 4&#x3D;&gt;5hbase.hregion.memstore.flush.size 134217728&#x3D
-            ...
-          </p>
-          <div class="index-btm post-metas">
-            <!-- 
-              <time datetime="2023-05-17 20:15" pubdate>
-                2023-05-17
-              </time>
-             -->
-            
-          </div>
-        </article>
-      </div>
-    
-  
-    
-      <div >
-        
-        <article class="index-card-info">
-          <h3 class="index-header">
-            <a id="post-title" href="/2023/05/16/ZooKeeper%E6%89%8B%E5%86%8C/">
-              
-              ZooKeeper 手册
-            </a>
-            
-              <time datetime="2023-05-16 13:21" pubdate>
-                2023-05-16
-              </time>
-            
-          </h3>
-          <p class="index-excerpt">
-            
-            
-              
-            
-            hbase:mate 表所在的RegionServer 信息被存储到了zookeeper 中的 &#x2F;hbase&#x2F;meta-region-server 节点
+volatile&#x2F;synchronized&#x2F;原子类，区别和联系。
 
+Java实体类中的基本类型成员变量默认
             ...
           </p>
           <div class="index-btm post-metas">
             <!-- 
-              <time datetime="2023-05-16 13:21" pubdate>
-                2023-05-16
+              <time datetime="2023-05-27 12:01" pubdate>
+                2023-05-27
               </time>
              -->
             
@@ -647,13 +549,13 @@ hdfs dfs 特定用于 HDFS。
         
         <article class="index-card-info">
           <h3 class="index-header">
-            <a id="post-title" href="/2023/05/16/HBase%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%8B%E5%86%8C/">
+            <a id="post-title" href="/2023/05/27/%E5%8A%A0%E9%80%9F%E5%BC%80%E5%8F%91%E7%9A%84%E8%BD%AE%E5%AD%90/">
               
-              HBase 命令行手册
+              轮子(避免重复开发)
             </a>
             
-              <time datetime="2023-05-16 01:54" pubdate>
-                2023-05-16
+              <time datetime="2023-05-27 10:42" pubdate>
+                2023-05-27
               </time>
             
           </h3>
@@ -662,15 +564,13 @@ hdfs dfs 特定用于 HDFS。
             
               
             
-            1. 登录 shell1hbase shell
-2. 列出所有的表1list
-3. 统计一个表中数据的行数12#间隔100000条记录打印一次。count &#x27;表名’, INTERVAL =&
+            1. 简介不要重复造轮子。该模块是一些可以复用的代码，包括工具类、处理逻辑类代码等，工具类就是为了帮我们减少重复性代码的，多用会使项目的可读性变得更高。至于这些工具包能干什么，可以通过他们的 Guid
             ...
           </p>
           <div class="index-btm post-metas">
             <!-- 
-              <time datetime="2023-05-16 01:54" pubdate>
-                2023-05-16
+              <time datetime="2023-05-27 10:42" pubdate>
+                2023-05-27
               </time>
              -->
             
@@ -684,13 +584,13 @@ hdfs dfs 特定用于 HDFS。
         
         <article class="index-card-info">
           <h3 class="index-header">
-            <a id="post-title" href="/2023/05/16/Nodejs%20&%20Npm%20%E7%9A%84%E5%85%B3%E7%B3%BB/">
+            <a id="post-title" href="/2023/05/26/Maven&Gradle/">
               
-              Nodejs &amp; Npm 的关系
+              Maven &amp; Gradle 手册
             </a>
             
-              <time datetime="2023-05-16 01:47" pubdate>
-                2023-05-16
+              <time datetime="2023-05-26 23:08" pubdate>
+                2023-05-26
               </time>
             
           </h3>
@@ -699,13 +599,15 @@ hdfs dfs 特定用于 HDFS。
             
               
             
-            1.问题我们知道，JavaScript 的出现可以说是 Java Applet 的掘墓人，它因为是浏览器原生支持的，无需像 Applet 那样还要额外安装 Applet 相关程序，一来很方便，二来执行
+            1. Maven1.1. 相关概念1.2. 常见操作
+打包1mvn clean package
+打包时跳过单元测试123456789101112131415mvn clean package -Dsk
             ...
           </p>
           <div class="index-btm post-metas">
             <!-- 
-              <time datetime="2023-05-16 01:47" pubdate>
-                2023-05-16
+              <time datetime="2023-05-26 23:08" pubdate>
+                2023-05-26
               </time>
              -->
             
@@ -719,13 +621,13 @@ hdfs dfs 特定用于 HDFS。
         
         <article class="index-card-info">
           <h3 class="index-header">
-            <a id="post-title" href="/2023/05/15/YCSB%E6%B5%8B%E8%AF%95HBase%E8%AF%BB%E5%86%99%E6%80%A7%E8%83%BD/">
+            <a id="post-title" href="/2023/05/26/Bugs%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
               
-              YCSB测试HBase读写性能
+              Bugs 解决方案
             </a>
             
-              <time datetime="2023-05-15 22:38" pubdate>
-                2023-05-15
+              <time datetime="2023-05-26 15:59" pubdate>
+                2023-05-26
               </time>
             
           </h3>
@@ -734,15 +636,18 @@ hdfs dfs 特定用于 HDFS。
             
               
             
-            1.测试类型基准测试、压力测试
-2.YCSB测试命令3.性能调优CPU、磁盘IO、网卡
-12345678topdstat -niostatethtool
+            
+使用 Mysql 报错 Can’t find .&#x2F;ranger&#x2F;*.frm
+
+解决跨域问题的参考链接
+
+FTP response 421 received，server clos
             ...
           </p>
           <div class="index-btm post-metas">
             <!-- 
-              <time datetime="2023-05-15 22:38" pubdate>
-                2023-05-15
+              <time datetime="2023-05-26 15:59" pubdate>
+                2023-05-26
               </time>
              -->
             
@@ -756,13 +661,13 @@ hdfs dfs 特定用于 HDFS。
         
         <article class="index-card-info">
           <h3 class="index-header">
-            <a id="post-title" href="/2023/05/14/HBase%E7%9A%84RIT%E9%97%AE%E9%A2%98/">
+            <a id="post-title" href="/2023/05/24/Ranger%E6%89%8B%E5%86%8C/">
               
-              HBase 的 RIT 问题
+              Ranger 手册
             </a>
             
-              <time datetime="2023-05-14 23:07" pubdate>
-                2023-05-14
+              <time datetime="2023-05-24 19:56" pubdate>
+                2023-05-24
               </time>
             
           </h3>
@@ -771,13 +676,55 @@ hdfs dfs 特定用于 HDFS。
             
               
             
-            背景：Region-In-Trasition机制：从字面意思来看，Region-In-Transition说的是Region变迁机制，实际上是指在一次特定操作行为中Region状态的变迁，例如merg
+            
             ...
           </p>
           <div class="index-btm post-metas">
             <!-- 
-              <time datetime="2023-05-14 23:07" pubdate>
-                2023-05-14
+              <time datetime="2023-05-24 19:56" pubdate>
+                2023-05-24
+              </time>
+             -->
+            
+          </div>
+        </article>
+      </div>
+    
+  
+    
+      <div >
+        
+        <article class="index-card-info">
+          <h3 class="index-header">
+            <a id="post-title" href="/2023/05/22/%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E7%BD%91%E5%9D%80/">
+              
+              常用工具网址
+            </a>
+            
+              <time datetime="2023-05-22 11:51" pubdate>
+                2023-05-22
+              </time>
+            
+          </h3>
+          <p class="index-excerpt">
+            
+            
+              
+            
+            ChatGPT
+ARP 8.0 苹果版【密码:f8yi】
+韦氏大词典牛津词典剑桥词典
+Sci-Hub
+鸟哥的Linux私房菜
+提取图片中的文字Base64和图片相互转换
+删除图片背景
+广告人的网址导航
+            ...
+          </p>
+          <div class="index-btm post-metas">
+            <!-- 
+              <time datetime="2023-05-22 11:51" pubdate>
+                2023-05-22
               </time>
              -->
             
@@ -791,7 +738,7 @@ hdfs dfs 特定用于 HDFS。
 
     <nav aria-label="navigation">
       <span class="pagination" id="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&gt;</a>
       </span>
     </nav>
 
