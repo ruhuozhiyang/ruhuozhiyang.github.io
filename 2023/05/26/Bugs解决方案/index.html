@@ -447,7 +447,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 626 字
+        共 672 字
       </span>
     
     
@@ -474,7 +474,9 @@ header .header__right .dropdown-menus .dropdown-menu {
 </li>
 <li><p>访问 HBase 中的对象，报异常“NotServingRegionException”，且前端是无响应状态。<br>原因：是目标文件对象所处的 Region 因为某些原因（例如 HBase 突然宕机或者重启）没有分配给特定的 RegionServer，表现为报异常“NotServingRegionException”，当连接重试次数设置为36时，就会出现无响应状态。<br>解决方法：<br>（1）通过 HBase Master 的监控工具（端口号默认 16010），查看表的分区信息，发现目标表的 Table Regions 信息模块有12个 region，但是 Regions by Region Server 信息模块显示只有 11 个 region 被分配给了三个 regionservers。<br>（2）锁定没有被分配给任何 RegionServer 的 region，且该 region 并没有显示在 Regions in Transition 信息模块。<br>（3）通过 Hbase shell 交互命令 assign regionname，将 region 强制分配给一个 RegionServer。<br>注意：所以如果 Regions in Transition 信息模块没有任何内容，并不代表 Region 就都没问题。</p>
 </li>
-<li><p>提交了 HBase 的 RowCounter 任务，yarn 显示任务状态为 accepted，但任务一直不执行，队列资源也都还有很多。<br>原因：使用 <code>hbase hbck tablename</code> 检测目标表，存在 unconsistent 的问题。<br>解决方法：通过 assign 命令解决了 unconsistent 的问题，然后任务就开始运行了。<br>需要注意：运行的用户是否有要求，例如需要 yarn 或 admin 用户才能运行。</p>
+<li><p>提交了 HBase 的 RowCounter 任务，yarn 显示任务状态为 accepted，但任务一直不执行，队列资源也都还有很多。<br>原因：使用 <code>hbase hbck tablename</code> 检测目标表，存在 unconsistent 的问题。<br>解决方法：通过 assign 命令解决了 unconsistent 的问题，然后任务就开始运行了。<br>需要注意：运行是否加了权限，即对运行用户是否有要求，例如需要 yarn 或 admin 用户才能运行。</p>
+</li>
+<li><p>使用 Maven 打包，报错“Duplicate method name “***“ with signature …”。<br>解决方法：先执行 mvn clean 进行构建清空，然后再次执行打包任务。</p>
 </li>
 </ul>
 
