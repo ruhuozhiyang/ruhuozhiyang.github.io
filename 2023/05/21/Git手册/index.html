@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/null">
     <link rel="icon" type="image/png" href="/null">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <title>Git 手册 - young&#39;s tech blogs</title>
+    <title>Git 手册 - young&#39;s personal tech manuals</title>
     
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     
@@ -381,6 +381,14 @@ header .header__right .dropdown-menus .dropdown-menu {
 			<div class="navbar-menu">首页</div>
 		</a>
 		
+		<a href="/categories/" class="button">
+			<div class="navbar-menu">分类</div>
+		</a>
+		
+		<a href="/tags/" class="button">
+			<div class="navbar-menu">标签</div>
+		</a>
+		
 	</div>
 	
 	<a href="/search/" class="button">
@@ -417,6 +425,12 @@ header .header__right .dropdown-menus .dropdown-menu {
 		<a href="/" class="dropdown-menu button">首页</a>
 		<br>
 		
+		<a href="/categories/" class="dropdown-menu button">分类</a>
+		<br>
+		
+		<a href="/tags/" class="dropdown-menu button">标签</a>
+		<br>
+		
 	</div>
 </div>
 
@@ -447,7 +461,7 @@ header .header__right .dropdown-menus .dropdown-menu {
       
       <span class="post-meta">
         <span class="p-dot"></span>
-        共 0 字
+        共 3.5k 字
       </span>
     
     
@@ -458,13 +472,112 @@ header .header__right .dropdown-menus .dropdown-menu {
 <div class="article-m">
   <div class="post-toc">
     
-      
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">1. 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Git-%E5%92%8C-GitHub-%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.</span> <span class="toc-text">1.1. Git 和 GitHub 关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-Mac%E8%87%AA%E5%B8%A6Git%EF%BD%9CHomeBrew%E5%AE%89%E8%A3%85Git"><span class="toc-number">1.2.</span> <span class="toc-text">1.2. Mac自带Git｜HomeBrew安装Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E5%9B%9B%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84-object"><span class="toc-number">1.3.</span> <span class="toc-text">1.3. 四种类型的 object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-origin%EF%BD%9CHEAD%EF%BD%9Cmaster"><span class="toc-number">1.4.</span> <span class="toc-text">1.4. origin｜HEAD｜master</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E9%BB%98%E8%AE%A4%E4%B8%BB%E5%88%86%E6%94%AF%E5%90%8D%E7%A7%B0"><span class="toc-number">1.5.</span> <span class="toc-text">1.5. 默认主分支名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E9%80%9A%E8%BF%87ssh%E6%96%B9%E5%BC%8F%E4%B8%8A%E4%BC%A0%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text">1.6. 通过ssh方式上传代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-%E8%AE%BE%E7%BD%AE%E5%BD%93%E5%89%8D%E4%BD%BF%E7%94%A8%E7%9A%84%E7%94%A8%E6%88%B7"><span class="toc-number">1.7.</span> <span class="toc-text">1.7. 设置当前使用的用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-git-reset-%E5%8F%82%E6%95%B0"><span class="toc-number">1.8.</span> <span class="toc-text">1.8. git reset 参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-9-git-log-%E5%92%8C-git-reflog-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.9.</span> <span class="toc-text">1.9. git log 和 git reflog 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-10-Remote-amp-Repository-amp-Workspace-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.10.</span> <span class="toc-text">1.10. Remote &amp; Repository &amp; Workspace 的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">2. 命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9C%89%E5%85%B3%E4%BA%8E%E3%80%8C%E7%BC%96%E8%BE%91%E7%8A%B6%E6%80%81%E3%80%8D%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 有关于「编辑状态」的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%89%E5%85%B3%E3%80%8C%E5%88%86%E6%94%AF%E3%80%8D%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.2.</span> <span class="toc-text">2.2. 有关「分支」的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%9C%89%E5%85%B3%E4%BA%8E%E3%80%8C%E6%9A%82%E5%AD%98%E3%80%8D%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.</span> <span class="toc-text">2.3. 有关于「暂存」的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%9C%89%E5%85%B3%E4%BA%8E%E3%80%8C%E4%BB%93%E5%BA%93%E3%80%8D%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.4.</span> <span class="toc-text">2.4. 有关于「仓库」的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%9C%89%E5%85%B3%E4%BA%8E%E3%80%8C%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81%E3%80%8D%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.5.</span> <span class="toc-text">2.5. 有关于「历史版本代码」的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E6%9C%89%E5%85%B3%E4%BA%8E%E3%80%8C%E4%BB%A3%E7%A0%81%E4%B8%8A%E4%BC%A0%E4%B8%8B%E8%BD%BD%E3%80%8D%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">2.6.</span> <span class="toc-text">2.6. 有关于「代码上传下载」的操作</span></a></li></ol></li></ol>
     
   </div>
     <div id="article">
       <div id="post-content" class="markdown-body textretty">
-        
+        <h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><h3 id="1-1-Git-和-GitHub-关系"><a href="#1-1-Git-和-GitHub-关系" class="headerlink" title="1.1. Git 和 GitHub 关系"></a>1.1. Git 和 GitHub 关系</h3><p>Git 是源代码的版本管理工具，类似地还有 SVN&#x2F;VSS&#x2F;VCS。<br>GitHub 是一个网站，允许广大的开发者通过 Git 上传代码。</p>
+<h3 id="1-2-Mac自带Git｜HomeBrew安装Git"><a href="#1-2-Mac自带Git｜HomeBrew安装Git" class="headerlink" title="1.2. Mac自带Git｜HomeBrew安装Git"></a>1.2. Mac自带Git｜HomeBrew安装Git</h3><p>Mac 系统自带 git，放在了 &#x2F;usr&#x2F;bin 目录下。<br>但往往版本过于老旧，可以通过 homebrew 安装最新的git，路径为 &#x2F;usr&#x2F;local&#x2F;Cellar&#x2F;git&#x2F;2.20.1，然后将默认 git 指向到 homebrew 新安装的 git。</p>
+<h3 id="1-3-四种类型的-object"><a href="#1-3-四种类型的-object" class="headerlink" title="1.3. 四种类型的 object"></a>1.3. 四种类型的 object</h3><p>在 git 的世界里，有四种类型的 object，分别是：tree、blob、commit、tag。<br>笼统地说，<br>tree 代表的是目录结构，或者简单地理解为代表一个目录。<br>blob 用来存储文件内容， 或者说表示一个文件。<br>commit 存储一次提交的信息，包括所在的tree，parent是谁，作者及message等信息。<br>tag 就是标签的意思， 实际就是commit的别名。</p>
+<p>git 之所以能够作为版本控制系统，是因为GIT会把对文件的每次修改结果作为一个对象保存起来。</p>
+<h3 id="1-4-origin｜HEAD｜master"><a href="#1-4-origin｜HEAD｜master" class="headerlink" title="1.4. origin｜HEAD｜master"></a>1.4. origin｜HEAD｜master</h3><ul>
+<li>origin：是 Git 中默认的远程仓库名称，它通常指向存储代码的远程服务器。<br>当我们通过 <code>git clone</code> 命令克隆一个 Git 仓库时，Git 会自动设置一个默认的远程仓库，名称为 origin。</li>
+<li>HEAD：HEAD 是 Git 中表示当前分支的指针，它指向当前所在的分支，可以理解为”当前分支的别名”。<br>当我们切换分支时，HEAD 指针会自动指向新的分支。</li>
+<li>master：master 是 Git 中默认的主分支名称。<br>当我们在一个新的 Git 仓库中创建了第一个提交时，Git 会自动创建一个名为 master 的分支，并将 HEAD 指向此分支。</li>
+</ul>
+<p>我们可以自定义远程仓库名称、分支名称以及默认主分支名称。</p>
+<h3 id="1-5-默认主分支名称"><a href="#1-5-默认主分支名称" class="headerlink" title="1.5. 默认主分支名称"></a>1.5. 默认主分支名称</h3><p>在 Git 2.28 版本之前，Git 的默认主分支名称为 master。<br>但是，由于 master 这个词汇的含义可能会引起争议和不适，以及对历史背景的负面影响，因此 Git 官方决定将默认主分支名称更改为 main。因此，如果使用的是 Git 2.28 版本及以上，使用 git branch -M main 命令可以将当前分支名称更改为 main，以符合默认设置。</p>
+<h3 id="1-6-通过ssh方式上传代码"><a href="#1-6-通过ssh方式上传代码" class="headerlink" title="1.6. 通过ssh方式上传代码"></a>1.6. 通过ssh方式上传代码</h3><p>通过命令生成公钥&#x2F;私钥文件，私钥自己留着，公钥给 GitHub 网站。实现不需要验证用户名密码就能上传代码。<br>生成公钥和私钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;邮箱&quot;</span><br></pre></td></tr></table></figure>
+<p>然后进入公钥和私钥，将公钥中的内容复制，进入 GitHub 用户中心setting，创建一个新的ssh，将内容复制进去。<br>就可以用仓库的ssh上传了。</p>
+<h3 id="1-7-设置当前使用的用户"><a href="#1-7-设置当前使用的用户" class="headerlink" title="1.7. 设置当前使用的用户"></a>1.7. 设置当前使用的用户</h3><p>就是在 git 中设置当前使用的用户是谁，每次备份都把当前备份者的信息存储起来，命令如下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置用户名</span><br><span class="line">git config --global user.name &quot;&quot;</span><br><span class="line">配置邮箱</span><br><span class="line">git config --global user.email &quot;&quot;</span><br></pre></td></tr></table></figure>
+<p>–global 参数表示设置全局用户配置，即对 Git 仓库中的所有项目都生效。如果要设置本地用户配置，可以去掉 –global 参数，并在需要的 Git 仓库中单独设置。<br>设置用户姓名和电子邮件地址后，Git 就可以将这些信息作为提交记录的作者和提交者信息。这样，其他人就可以通过这些信息来了解谁提交了哪些修改。<br>需要注意的是，在设置用户配置时，用户姓名和电子邮件地址应该与您的实际信息一致，以便其他人可以识别和联系到您。<br>同时，如果您在多个 Git 仓库中使用不同的身份，可以为每个 Git 仓库单独设置用户配置，以避免混淆。</p>
+<h3 id="1-8-git-reset-参数"><a href="#1-8-git-reset-参数" class="headerlink" title="1.8. git reset 参数"></a>1.8. git reset 参数</h3><p><code>git reset</code> 命令只适用于本地仓库，如果想要撤销已经推送到远程仓库的提交，应该使用 <code>git revert</code> 命令。<br><code>git reset</code> 命令用于将当前分支的 HEAD 指针指向指定的提交，并可以选择是否更新工作区和索引。<br>具体来说，<code>git reset</code> 命令有以下几种常见的参数：</p>
+<ul>
+<li><code>--soft</code>：只重置 HEAD 指针，不更新工作区和索引。此时，之前的更改会保留在工作区和索引中，但是 HEAD 指针会指向之前的提交，相当于撤销之前的提交。</li>
+<li><code>--mixed</code>：重置 HEAD 指针，并更新索引，但不更新工作区。此时，之前的更改会保留在工作区中，但是索引会被更新为之前的提交，相当于取消之前的提交并将更改暂存。</li>
+<li><code>--hard</code>：重置 HEAD 指针，并更新工作区和索引。此时，之前的更改会被全部删除，并恢复到重置后的状态，相当于彻底取消之前的提交并删除之前的更改。<br>因此，<code>--hard</code> 参数是一种比较危险的操作，因为它会彻底删除之前的更改，包括未提交的更改。如果使用不当，可能会导致数据丢失。在使用 <code>--hard</code> 参数时，需要特别小心，并确保已经备份了所有重要的更改。</li>
+</ul>
+<h3 id="1-9-git-log-和-git-reflog-的区别"><a href="#1-9-git-log-和-git-reflog-的区别" class="headerlink" title="1.9. git log 和 git reflog 的区别"></a>1.9. git log 和 git reflog 的区别</h3><p><code>git log</code> 和 <code>git reflog</code> 都是 Git 中用于查看提交记录的命令，区别如下。</p>
+<ul>
+<li>显示的提交记录不同：<code>git log</code> 显示的是当前分支的提交历史，包括所有已经提交的更改记录，而 <code>git reflog</code> 显示的是当前仓库 HEAD 指针的变化历史，包括所有的提交、分支合并、重置等操作记录。</li>
+<li>显示的信息不同：<code>git log</code> 显示的提交记录包括提交的作者、提交时间、提交信息等详细信息，而 <code>git reflog</code> 显示的是 HEAD 指针的<strong>变化记录</strong>，包括变化时间、变化前后的指针位置等信息。</li>
+<li>作用不同：<code>git log</code> 主要用于查看提交历史，以便了解代码的修改情况和版本演化过程，而 <code>git reflog</code> 主要用于恢复误操作或者回退到之前的某个状态，以便在代码回滚或者分支合并等操作中更好地控制状态。<br>因此，<code>git log</code> 和 <code>git reflog</code> 在实际使用中有不同的用途，可以根据需要选择不同的命令进行查看。如果想要了解代码的版本演化过程和详细信息，可以使用 <code>git log</code> 命令；如果想要恢复误操作或者回滚到之前的某个状态，可以使用 <code>git reflog</code> 命令。</li>
+</ul>
+<h3 id="1-10-Remote-amp-Repository-amp-Workspace-的关系"><a href="#1-10-Remote-amp-Repository-amp-Workspace-的关系" class="headerlink" title="1.10. Remote &amp; Repository &amp; Workspace 的关系"></a>1.10. Remote &amp; Repository &amp; Workspace 的关系</h3><p>(Remote) ——————————-pull————————————&gt;|<br>|——–fetch&#x2F;clone——–&gt;(Repository)—————Checkout———-&gt;Workspace<br>|&lt;——–push——————–|&lt;——–commit——–(index)&lt;————-|</p>
+<h2 id="2-命令"><a href="#2-命令" class="headerlink" title="2. 命令"></a>2. 命令</h2><h3 id="2-1-有关于「编辑状态」的内容"><a href="#2-1-有关于「编辑状态」的内容" class="headerlink" title="2.1. 有关于「编辑状态」的内容"></a>2.1. 有关于「编辑状态」的内容</h3><ul>
+<li>查看状态<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br><span class="line"></span><br><span class="line">&quot;Changes to be committed&quot;：已暂存状态，可以提交。</span><br><span class="line">&quot;Changes not staged for commit&quot;：已更改但尚未添加到暂存区域。</span><br><span class="line">&quot;Untracked files&quot;：未被追踪的文件。</span><br></pre></td></tr></table></figure></li>
+<li>显示具体修改的内容<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-2-有关「分支」的操作"><a href="#2-2-有关「分支」的操作" class="headerlink" title="2.2. 有关「分支」的操作"></a>2.2. 有关「分支」的操作</h3><ul>
+<li>创建分支「刚创建的分支内容和 master 内容是一样的」<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch 分支名字</span><br></pre></td></tr></table></figure></li>
+<li>查看当前有哪些分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></li>
+<li>重命名分支<br>将当前分支的名称更改为 main，并更新 Git 仓库中的所有引用（例如 HEAD 引用和远程跟踪分支）以反映该更改。<br>应该确保当前分支确实是主分支，并且没有其他分支基于当前分支进行了提交。否则，该命令可能会丢失提交历史，并导致数据丢失。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -M main</span><br></pre></td></tr></table></figure></li>
+<li>切换分支<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout 分支名字</span><br></pre></td></tr></table></figure></li>
+<li>合并分支「合并当前分支和指定分支，如果存在冲突，需要手动处理」<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge 指定分支名字</span><br></pre></td></tr></table></figure></li>
+<li>将新建的分支推送到远程仓库中<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin 新建的分支名</span><br></pre></td></tr></table></figure></li>
+<li>删除主机的分支<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --delete master  「删除 origin 主机的 master 分支」</span><br></pre></td></tr></table></figure></li>
+<li>查看本地分支和远程分支的关联情况<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -vv</span><br></pre></td></tr></table></figure></li>
+<li>复制其它分支的多个提交 commit 到当前分支<br>git cherry-pick 的作用是合并其它分支的若干个 commit 到当前分支，这些若干个 commit 代码提交可以是其它分支的 commit 提交。<br>例如：当前 master 分支打算把 develop 分支的 C、D、E 这三次提交复制到当前 master 分支。<br>首先需要从 develop 切换到分支 master。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure>
+然后执行 cherry-pick。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git cherry-pick &lt;C commit-id&gt; &lt;D commit-id&gt; &lt;E commit-id&gt;</span><br></pre></td></tr></table></figure>
+其中 C、D、E 三次提交的 commit-id 可以在 develop 分支下通过 <code>git log</code> 查看。</li>
+</ul>
+<h3 id="2-3-有关于「暂存」的操作"><a href="#2-3-有关于「暂存」的操作" class="headerlink" title="2.3. 有关于「暂存」的操作"></a>2.3. 有关于「暂存」的操作</h3><ul>
+<li>场景：正写代码，又想拉取新代码，但不想提交正在写的代码<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash //暂存（存储在本地，并将项目本次操作还原）</span><br><span class="line">git pull </span><br><span class="line">git stash pop //使用上一次暂存，并将这个暂存删除，使用该命令后，如果有冲突，终端会显示，如果有冲突需要先解决冲突（这就避免了冲突提交服务器，将冲突留在本地，然后解决）</span><br></pre></td></tr></table></figure></li>
+<li>查看所有的暂存<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash list</span><br></pre></td></tr></table></figure></li>
+<li>清空所有的暂存<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash clear</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-4-有关于「仓库」的操作"><a href="#2-4-有关于「仓库」的操作" class="headerlink" title="2.4. 有关于「仓库」的操作"></a>2.4. 有关于「仓库」的操作</h3><ul>
+<li>初始化本地仓库<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure></li>
+<li>显示所有的远程仓库<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br><span class="line">origin  https://github.com/ruhuozhiyang/ruhuozhiyang.github.io.git (fetch)</span><br><span class="line">origin  https://github.com/ruhuozhiyang/ruhuozhiyang.github.io.git (push)</span><br></pre></td></tr></table></figure></li>
+<li>查看远程仓库别名<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote  「origin」</span><br></pre></td></tr></table></figure></li>
+<li>显示某个远程仓库的信息<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote show [remote]</span><br></pre></td></tr></table></figure></li>
+<li>修改仓库名<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote rename old_name new_name</span><br></pre></td></tr></table></figure></li>
+<li>将创建的本地 git 仓库和分支同步到远程<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://github.com/ruhuozhiyang/ruhuozhiyang.github.io.git</span><br><span class="line">git branch -M main</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure></li>
+<li>删除远程库<br>删除其实是解除了本地和远程的绑定关系，并不是物理上删除了远程库。远程库本身并没有任何改动。要真正删除远程库，需要登录到GitHub，在后台页面找到删除按钮再删除。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote rm &lt;name&gt;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-5-有关于「历史版本代码」的操作"><a href="#2-5-有关于「历史版本代码」的操作" class="headerlink" title="2.5. 有关于「历史版本代码」的操作"></a>2.5. 有关于「历史版本代码」的操作</h3><ul>
+<li>查看日志<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br><span class="line">git log --pretty=oneline  //简洁版的日志</span><br></pre></td></tr></table></figure></li>
+<li>查看操作历史<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure></li>
+<li>回退到某个历史版本代码<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^  //回退到上一版本的代码</span><br><span class="line">或</span><br><span class="line">git reset --hard HEAD~3  //回退到前3次提交之前，以此类推，回退到n次提交之前</span><br><span class="line">或</span><br><span class="line">git reset --hard commit_id  //退到｜进到 指定commit的sha码</span><br></pre></td></tr></table></figure></li>
+<li>只是修改上次提交的代码，做一次更完美的 commit<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git log  //查看上一次提交的id</span><br><span class="line">git reset commitId  //回到上一个版本【不要带--hard】</span><br><span class="line">git stash  //暂存修改</span><br><span class="line">git push --force  //强制push，远程的最新一次commit被删除</span><br><span class="line">git stash pop  //释放暂存的修改，开始修改代码</span><br><span class="line">git add .</span><br><span class="line">git commit -m&quot;message&quot;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure></li>
+<li>git reset commitId 和 git reset –hard commitId 的差别</li>
+</ul>
+<h3 id="2-6-有关于「代码上传下载」的操作"><a href="#2-6-有关于「代码上传下载」的操作" class="headerlink" title="2.6. 有关于「代码上传下载」的操作"></a>2.6. 有关于「代码上传下载」的操作</h3><ul>
+<li><p>克隆项目代码「第一次，会得到远程仓库相同的数据，如果多次执行会覆盖本地内容」</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone [地址]</span><br></pre></td></tr></table></figure></li>
+<li><p>场景：试图将内网中的 git 服务器上的项目代码克隆到本地。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone -c http.proxy=&quot;socks://proxy-ip:proxy-port&quot; git仓库地址</span><br><span class="line">然后输入用户名、密码，因为可能并不像 github 那样通过将公钥放在服务端就可以免密。</span><br><span class="line">其中，[socks://proxy-ip:proxy-port] 是搭建的代理服务，用于将请求转发给内网。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拉取代码「会将远程分支的数据得到（注意本地要初始一个仓库），pull不会覆盖，而是合并」</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git pull [地址] master</span><br><span class="line">git pull  「将远程主机的最新内容拉下来后直接合并，即git pull = git fetch + git merge，可能会产生冲突，需要手动解决」</span><br><span class="line"></span><br><span class="line">git fetch  「将远程主机的最新内容拉到本地，用户在检查了以后决定是否合并到工作本机分支中」</span><br></pre></td></tr></table></figure></li>
+<li><p>把代码存储到 .git 仓库中<br>会将当前目录下所有改动的文件放到大门口。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add ./</span><br></pre></td></tr></table></figure>
+<p>将所有修改后的文件直接放入仓库房间，即版本库。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -a -m &quot;要添加的说明&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>推送代码<br><code>git push</code> 用于从将本地的分支版本上传到远程并合并。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git push &lt;远程主机名&gt; &lt;本地分支名&gt;:&lt;远程分支名&gt;</span><br><span class="line">git push &lt;远程主机名&gt; &lt;本地分支名&gt;  「如果本地分支名与远程分支名相同，则可以省略冒号」</span><br><span class="line">git push origin master 或 git push origin master:master  『将本地的 master 分支推送到 origin 主机的 master 分支」</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>推送代码 <code>git push</code> 的 -u 参数<br><code>git push</code> 将本地分支 <code>main</code> 推送到远程仓库 <code>origin</code> 中名为 <code>main</code> 的分支。<br>如果远程仓库中不存在该分支，则会自动创建。<br>使用 <code>-u</code> 选项将本地分支 <code>main</code> 设置为远程跟踪分支，以便在以后的推送和拉取操作中自动关联远程分支和本地分支。<br>需要注意的是，在使用 <code>git push -u</code> 命令时，我们需要先进行一次初始推送，以建立本地分支和远程分支的关联。<br>在以后的推送和拉取操作中，我们就可以使用 <code>git push</code> 和 <code>git pull</code> 命令，而不需要指定远程分支的名称。</p>
+<ul>
+<li>发起「合并分支」请求<br>先 <code>git merge 目标分支</code>;<br>然后再 <code>git push</code>;<br>点击链接发起请求。</li>
+</ul>
+
       </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+              
+                <a class="hover-with-bg" href="/categories/manuals/">manuals</a>
+              
+          
+          
     </div>
 </div>
 

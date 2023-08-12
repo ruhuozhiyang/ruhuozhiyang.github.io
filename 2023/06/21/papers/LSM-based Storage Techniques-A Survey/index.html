@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>LSM-based Storage Techniques: A Survey - young&#39;s personal tech manuals</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="LSM-based Storage Techniques: A Survey"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn{
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    bottom: 1.2rem;
+    right: 1.2rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: var(--sec-bkg);
+    display: block;
+    padding: 0.9rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+    <body>
+        <header>
+            
+<div class="header__left">
+	<!-- <a href="/" class="button"><span class="logo__text">young&#39;s technical manual</span></a> -->
+</div>
+<div class="header__right">
+	<div class="navbar__menus">
+		
+		<a href="/" class="button">
+			<div class="navbar-menu">首页</div>
+		</a>
+		
+		<a href="/categories/" class="button">
+			<div class="navbar-menu">分类</div>
+		</a>
+		
+		<a href="/tags/" class="button">
+			<div class="navbar-menu">标签</div>
+		</a>
+		
+	</div>
+	
+	<a href="/search/" class="button">
+		<div id="btn-search">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32">
+				<path
+					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
+				</path>
+			</svg>
+		</div>
+	</a>
+	
+	<!-- <a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
+		<div>
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
+				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+			</svg>
+		</div>
+	</a>
+	<a href="javaScript:void(0);" class="dropdown-icon button">
+		<div id="btn-dropdown">
+			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
+				stroke="currentColor" stroke-width="32" stroke-linecap="round">
+				<path
+					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
+					fill="currentColor"></path>
+			</svg>
+		</div>
+	</a> -->
+	<div class="dropdown-menus" id="dropdown-menus">
+		
+		<a href="/" class="dropdown-menu button">首页</a>
+		<br>
+		
+		<a href="/categories/" class="dropdown-menu button">分类</a>
+		<br>
+		
+		<a href="/tags/" class="dropdown-menu button">标签</a>
+		<br>
+		
+	</div>
+</div>
+
+        </header>
+        <div id="top"></div>
+        <div id="page-main" class="main-content">
+            <div class="mg-top">
+                
+
+<article class="page">
+<div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3>LSM-based Storage Techniques: A Survey</h3>
+    
+      <span class="post-meta-label">
+        young
+      </span>
+    
+    
+      <span class="post-meta-label">
+        <span class="p-dot"></span>
+        <time datetime="2023-06-21 15:16" pubdate>
+          2023-06-21
+        </time>
+      </span>
+    
+    
+      
+      <span class="post-meta">
+        <span class="p-dot"></span>
+        共 2.1k 字
+      </span>
+    
+    
+    
+  </div>
+  
+</div>
+<div class="article-m">
+  <div class="post-toc">
+    
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E7%AB%A0%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.</span> <span class="toc-text">1. 文章基本信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%8F%91%E8%A1%A8%E5%B9%B4%E4%BB%BD"><span class="toc-number">1.1.</span> <span class="toc-text">1.1. 发表年份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%89%80%E5%9C%A8%E4%BC%9A%E8%AE%AE%E7%AE%80%E7%A7%B0"><span class="toc-number">1.2.</span> <span class="toc-text">1.2. 所在会议简称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E6%96%87%E7%AB%A0%E4%BD%9C%E8%80%85%E5%88%97%E8%A1%A8"><span class="toc-number">1.3.</span> <span class="toc-text">1.3. 文章作者列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E7%AC%AC%E4%B8%80%E4%BD%9C%E8%80%85%E5%8D%95%E4%BD%8D"><span class="toc-number">1.4.</span> <span class="toc-text">1.4. 第一作者单位</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E6%8A%A5%E5%91%8A"><span class="toc-number">2.</span> <span class="toc-text">2. 论文阅读报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E8%AE%BA%E6%96%87%E7%A0%94%E7%A9%B6%E8%83%8C%E6%99%AF-amp-Motivation"><span class="toc-number">2.1.</span> <span class="toc-text">2.1. 论文研究背景 &amp; Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-LSM-tree-%E7%9A%84%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">2.2.</span> <span class="toc-text">2.1.1. LSM-tree 的基础知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-1-LSM-tree-%E7%9A%84%E5%8E%86%E5%8F%B2"><span class="toc-number">2.3.</span> <span class="toc-text">2.1.1.1. LSM-tree 的历史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-2-LSM-tree-%E7%9A%84%E7%8E%B0%E7%8A%B6"><span class="toc-number">2.4.</span> <span class="toc-text">2.1.1.2. LSM-tree 的现状</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-2-1-%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">2.5.</span> <span class="toc-text">2.1.1.2.1. 基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-2-2-%E8%91%97%E5%90%8D%E7%9A%84%E4%BC%98%E5%8C%96%E6%89%8B%E6%AE%B5%E3%80%90%E5%B7%B2%E5%BA%94%E7%94%A8%E3%80%91"><span class="toc-number">2.6.</span> <span class="toc-text">2.1.1.2.2. 著名的优化手段【已应用】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-2-3-Concurrency-Control-and-Recovery"><span class="toc-number">2.7.</span> <span class="toc-text">2.1.1.2.3. Concurrency Control and Recovery</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1-3-LSM-tree-%E7%9A%84-Cost-Analysis"><span class="toc-number">2.8.</span> <span class="toc-text">2.1.1.3. LSM-tree 的 Cost Analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-Motivation"><span class="toc-number">2.9.</span> <span class="toc-text">2.1.2. Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.10.</span> <span class="toc-text">2.2. 解决的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%B8%BB%E8%A6%81%E5%88%9B%E6%96%B0%E7%82%B9"><span class="toc-number">2.11.</span> <span class="toc-text">2.3. 主要创新点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-1-%E4%BB%8B%E7%BB%8D%E4%BA%86%E4%B8%80%E7%A7%8D%E5%AF%B9%E5%B7%B2%E6%8F%90%E5%87%BA%E7%9A%84-LSM-tree-%E6%94%B9%E8%BF%9B%E6%96%B9%E6%B3%95%E7%9A%84%E5%88%86%E7%B1%BB%E6%B3%95%EF%BC%8C%E5%B9%B6%E6%A0%B9%E6%8D%AE%E8%AF%A5%E5%88%86%E7%B1%BB%E6%B3%95%E8%B0%83%E7%A0%94%E4%BA%86%E7%8E%B0%E6%9C%89%E7%9A%84%E7%A0%94%E7%A9%B6%E5%B7%A5%E4%BD%9C%E3%80%82"><span class="toc-number">2.12.</span> <span class="toc-text">2.3.1. 介绍了一种对已提出的 LSM-tree 改进方法的分类法，并根据该分类法调研了现有的研究工作。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-2-%E9%87%8D%E7%82%B9%E8%B0%83%E7%A0%94%E4%B8%80%E4%BA%9B%E4%BB%A3%E8%A1%A8%E6%80%A7%E7%9A%84%E5%9F%BA%E4%BA%8E-LSM-tree-%E7%9A%84-NoSQL-%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AD%98%E5%82%A8%E5%B1%82%E3%80%82"><span class="toc-number">2.13.</span> <span class="toc-text">2.3.2. 重点调研一些代表性的基于 LSM-tree 的 NoSQL 系统的存储层。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-3-%E6%80%BB%E7%BB%93%E8%B0%83%E7%A0%94%E7%BB%93%E6%9E%9C%EF%BC%8C%E5%B9%B6%E4%B8%BA%E6%9C%AA%E6%9D%A5%E5%9F%BA%E4%BA%8E-LSM-tree-%E7%9A%84%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%B7%A5%E4%BD%9C%E7%A1%AE%E5%AE%9A%E4%BA%86%E5%87%A0%E4%B8%AA-outages-%E5%92%8C%E6%9C%BA%E4%BC%9A%E3%80%82"><span class="toc-number">2.14.</span> <span class="toc-text">2.3.3. 总结调研结果，并为未来基于 LSM-tree 的存储系统的工作确定了几个 outages 和机会。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%AE%9E%E9%AA%8C%E6%95%88%E6%9E%9C"><span class="toc-number">2.15.</span> <span class="toc-text">2.4. 实验效果</span></a></li></ol></li></ol>
+    
+  </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-文章基本信息"><a href="#1-文章基本信息" class="headerlink" title="1. 文章基本信息"></a>1. 文章基本信息</h2><h3 id="1-1-发表年份"><a href="#1-1-发表年份" class="headerlink" title="1.1. 发表年份"></a>1.1. 发表年份</h3><p>【2018】</p>
+<h3 id="1-2-所在会议简称"><a href="#1-2-所在会议简称" class="headerlink" title="1.2. 所在会议简称"></a>1.2. 所在会议简称</h3><p>VLDB【CCF A类】</p>
+<h3 id="1-3-文章作者列表"><a href="#1-3-文章作者列表" class="headerlink" title="1.3. 文章作者列表"></a>1.3. 文章作者列表</h3><p>Chen Luo<br>Michael J. Carey</p>
+<h3 id="1-4-第一作者单位"><a href="#1-4-第一作者单位" class="headerlink" title="1.4. 第一作者单位"></a>1.4. 第一作者单位</h3><p>University of California, Irvine</p>
+<h2 id="2-论文阅读报告"><a href="#2-论文阅读报告" class="headerlink" title="2. 论文阅读报告"></a>2. 论文阅读报告</h2><h3 id="2-1-论文研究背景-amp-Motivation"><a href="#2-1-论文研究背景-amp-Motivation" class="headerlink" title="2.1. 论文研究背景 &amp; Motivation"></a>2.1. 论文研究背景 &amp; Motivation</h3><h3 id="2-1-1-LSM-tree-的基础知识"><a href="#2-1-1-LSM-tree-的基础知识" class="headerlink" title="2.1.1. LSM-tree 的基础知识"></a>2.1.1. LSM-tree 的基础知识</h3><h3 id="2-1-1-1-LSM-tree-的历史"><a href="#2-1-1-1-LSM-tree-的历史" class="headerlink" title="2.1.1.1. LSM-tree 的历史"></a>2.1.1.1. LSM-tree 的历史</h3><p>通常来说，一个 index structure 可以从以下两种策略中选择其一去处理更新，in-place updates 和 out-of-place updates。</p>
+<ul>
+<li>in-place updates structure<br>例如 B+ 树就是 in-place updates structure，直接重写旧记录以存储新记录。这些结构通常是读取优化的，因为只存储每个记录的最新版本。然而，这种设计牺牲了写入性能，因为更新会导致随机 I&#x2F;O。此外，Index Page 可能被更新和删除操作分割，从而降低空间利用率。</li>
+<li>out-of-place updates structure<br>例如 LSM-tree，这种设计提高了写入性能，因为它可以利用顺序 I&#x2F;O 来处理写入。它还可以通过不覆盖旧数据来简化恢复过程。然而，这种设计的主要问题是牺牲读取性能，因为记录可能存储在多个位置中的任何一个。此外，这些结构通常需要单独的数据重组过程来持续地提高存储和查询效率。</li>
+</ul>
+<p>sequential, out-of-place updates 的想法并不新鲜，自 1970 年代以来，它已经成功地应用于数据库系统。1976 年提出的 Differential files 是 out-of-place updates 结构的早期例子。在此设计中，所有 updates 首先应用于 a differential file，后者周期性地和 main file 合并。</p>
+<p>后来，在 1980 年代，Postgres 项目开创了 log-structured 数据库存储的思想，Postgres 将所有写入追加到一个顺序日志中，实现了快速恢复和 time-travel 查询，与此同时它使用一个名为 vacuum cleaner 的后台进程从日志中不断地 GC 过时的记录。文件系统社区也采用了类似的想法来充分利用磁盘写入带宽，例如 Log-Structured File System (LFS)。</p>
+<p>在 LSM-tree 出现之前，log-structured 存储的方法存在几个关键问题。<br>首先，将数据存储到 append-only 日志中会导致查询性能低下，因为相关记录分散在日志中。<br>另一个问题是由于尚未删除的过时记录导致的低空间利用率。<br>即使设计了各种 data reorganization 过程，也没有原则性的成本模型来分析 <strong>写入成本、读取成本和空间利用率</strong> 之间的权衡，这使得早期的 log-structured storage 难以调优， data reorganization 很容易成为性能瓶颈。</p>
+<p>1996 年提出的 LSM-tree 通过设计 merge 过程来解决这些问题，merge 过程集成到 structure 自身中，提供了具有有限查询性能和空间利用率的高写入性能。<br><img src="/doc/original-lsmtree-design.png" width="500"><br>如图所示，最初的 LSM-tree 包含了一系列的 components，如 C0, C1, ···, Ck，每个 component 的结构都是 B+ 树。C0 存储在内存中，用于服务接收到来的写请求，剩余的组件 component 存储在磁盘中。当Ci 已满时，将触发 rolling merge 过程，将 Ci 中的一系列 leaf pages 合并到 Ci+1 中。这种设计现在通常被称为 leveling merge 策略。然而，正如我们将在后面看到的，最初提出的 rolling merge 过程由于其实现的复杂性而不被今天的基于 LSM-tree 的存储系统所使用。关于 LSM-tree 的原始论文进一步表明，在稳定的工作负载下，当所有相邻 component 之间的大小比 Ti&#x3D;|Ci+1| &#x2F; |Ci| 相同时，写入性能得到优化。这一原则影响了 LSM-trees 的所有后续实现和改进。</p>
+<p>与 LSM-tree 同时，Jagadish 等人提出了一种具有 stepped-merge 策略的类似结构，以实现更好的写入性能。它将这些 components 组织成多个 level，当 level L 充满 T 个 component 时，这 T 个 component 在 level L+1 合并成一个新 component 。这个策略成为了今天的 LSM-tree 实现中使用的  tiering merge 策略。</p>
+<h3 id="2-1-1-2-LSM-tree-的现状"><a href="#2-1-1-2-LSM-tree-的现状" class="headerlink" title="2.1.1.2. LSM-tree 的现状"></a>2.1.1.2. LSM-tree 的现状</h3><h3 id="2-1-1-2-1-基本结构"><a href="#2-1-1-2-1-基本结构" class="headerlink" title="2.1.1.2.1. 基本结构"></a>2.1.1.2.1. 基本结构</h3><p>今天的 LSM-tree 实现仍然采用的是 out-of-place 的更新方式，用以减少随机 I&#x2F;O。对于 insert 和 update 操作只是简单地插入一条新的项，对于 delete 操作，是添加一个 anti-matter entry 表明该 key 已经被删除了。</p>
+<p>memory components using a concurrent data structure such as a skip-list or a B+-tree<br>organize their disk components using B+-trees or sorted-string tables (SSTables)</p>
+<p>随着磁盘 components 随着时间的推移而积累，LSM-tee 的查询性能往往会下降，因为必须检查更多的 components。为了解决这个问题，磁盘 components 逐渐合并，以减少 components 的总数。在实践中，基于 LSM-tree 的 NoSQL 数据库通常使用如下两种类型的合并（Compaction &#x2F; Merge）策略，这两种策略都将磁盘 component 组织成逻辑 level（或 tiers），并由 <code>a size ratio T</code> 控制。<br>Leveling 合并策略</p>
+<ul>
+<li>每一 level 仅维护一个 component，但 level L 的 component 比 level L-1 的 component 大 T 倍。</li>
+<li>每一 level L 的 component 将与 level L-1 到来的 components 合并 T-1 次，直到层满写入下一层。</li>
+<li>每一 level 的 Key-Value 之间是没有重叠的。</li>
+<li>读性能更好，因为只需要检索更少的 Components。</li>
+</ul>
+<p>Tiering 合并策略</p>
+<ul>
+<li>每一 level 至多维护 T 个 components。</li>
+<li>每一 level 层满时，T 个 components 只合并一次，并直接写入下一层。</li>
+<li>每一层 Key-Value 之间允许有重叠。</li>
+<li>拥有更好的写性能，因为减少了合并频率。</li>
+</ul>
+<p>如果 level L 已经是配置的最大 level，则生成的 component 保持在 level L。实践中，对于 insert 量等于 delete 量的稳定工作负载，level 的总数保持不变，即使对于以 append 为主的工作负载，level 的总数也会增长得非常缓慢，因为随着 level 数量的增加，LSM-tree 可以存储的最大条目数量以因子 T 呈指数级增长。</p>
+<img src="/doc/lsmtree-merge-policies.png" width="450">
+
+<h3 id="2-1-1-2-2-著名的优化手段【已应用】"><a href="#2-1-1-2-2-著名的优化手段【已应用】" class="headerlink" title="2.1.1.2.2. 著名的优化手段【已应用】"></a>2.1.1.2.2. 著名的优化手段【已应用】</h3><ul>
+<li>Bloom Filter<br>提升点查询性能；可能假阳性，但不会假阴性。</li>
+<li>Partitioning<br>即将大 Disk Component 拆分为更小的分区 partition，我们用术语 <code>SSTable</code> 表示这么一个分区 partition。<br>Partitioning 优点：<br>1）Partitioning 将一个大的 component compaction 操作分成多个较小的 compaction 操作，限制了每个小 compaction 操作的处理时间以及创建新 component 所需的临时的磁盘空间。<br>2）Partitioning 可以通过仅合并具有重叠键范围的 component 来优化具有顺序创建的键或倾斜更新的工作负载。对于顺序创建的键，基本上不执行合并，因为没有具有重叠键范围的组件。对于倾斜更新，具有冷更新范围的组件的合并频率可以大大降低。应该注意的是，原始的LSM树自动利用 Partitioning ，因为它有 rolling merge。<br>然而，由于 rolling merge 的实现复杂性，今天的 LSM-tree 实现通常选择实际的<code>物理分区</code>，而不是 rolling merge。</li>
+</ul>
+<p>注意 Partitioning 和 Merge Policy 是正交的，如下所示。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Leveling Merge Policy</th>
+<th>Tiering Merge Policy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Partitioning</td>
+<td>RocksDB、LevelDB</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="2-1-1-2-3-Concurrency-Control-and-Recovery"><a href="#2-1-1-2-3-Concurrency-Control-and-Recovery" class="headerlink" title="2.1.1.2.3. Concurrency Control and Recovery"></a>2.1.1.2.3. Concurrency Control and Recovery</h3><h3 id="2-1-1-3-LSM-tree-的-Cost-Analysis"><a href="#2-1-1-3-LSM-tree-的-Cost-Analysis" class="headerlink" title="2.1.1.3. LSM-tree 的 Cost Analysis"></a>2.1.1.3. LSM-tree 的 Cost Analysis</h3><p>Cost Analysis 包括写、读、空间利用率。<br><img src="/doc/complexity-of-lsmtree.png" width="500" height=""></p>
+<h3 id="2-1-2-Motivation"><a href="#2-1-2-Motivation" class="headerlink" title="2.1.2. Motivation"></a>2.1.2. Motivation</h3><h3 id="2-2-解决的问题"><a href="#2-2-解决的问题" class="headerlink" title="2.2. 解决的问题"></a>2.2. 解决的问题</h3><h3 id="2-3-主要创新点"><a href="#2-3-主要创新点" class="headerlink" title="2.3. 主要创新点"></a>2.3. 主要创新点</h3><h3 id="2-3-1-介绍了一种对已提出的-LSM-tree-改进方法的分类法，并根据该分类法调研了现有的研究工作。"><a href="#2-3-1-介绍了一种对已提出的-LSM-tree-改进方法的分类法，并根据该分类法调研了现有的研究工作。" class="headerlink" title="2.3.1. 介绍了一种对已提出的 LSM-tree 改进方法的分类法，并根据该分类法调研了现有的研究工作。"></a>2.3.1. 介绍了一种对已提出的 LSM-tree 改进方法的分类法，并根据该分类法调研了现有的研究工作。</h3><img src="/doc/taxonomy-of-lsmtree-improvements.png" width="">
+
+<ul>
+<li><p><span style="color: yellow">Write Amplification</span><br>Tiering<br>Merge Skipping<br>Exploiting Data Skew</p>
+</li>
+<li><p><span style="color: yellow">Merge Operation</span><br>Improving Merge Performance<br>Minimizing Write Stalls<br>Reducing Buffer Cache Misses</p>
+</li>
+<li><p><span style="color: yellow">Hardware</span><br>Large Memory<br>Multi-Core<br>SSD &#x2F; NVM<br>Native Storage</p>
+</li>
+<li><p>Handling Special Workloads<br>Temporal Data时空数据<br><span style="color: yellow">Small Data小体积数据</span><br>Semi-Sorted Data半排序数据<br>Append-mostly Data大部分追加数据</p>
+</li>
+<li><p>Auto-Tuning<br>Parameter Tuning<br>Tuning Merge Policies<br>Dynamic Bloom Filter Memory Allocation<br>Optimizing Data Placement</p>
+</li>
+<li><p><span style="color: yellow">Secondary Indexing</span><br>Index Structure<br>Index Maintenance<br>Statistics Collection<br>Distributed Indexing</p>
+</li>
+</ul>
+<h3 id="2-3-2-重点调研一些代表性的基于-LSM-tree-的-NoSQL-系统的存储层。"><a href="#2-3-2-重点调研一些代表性的基于-LSM-tree-的-NoSQL-系统的存储层。" class="headerlink" title="2.3.2. 重点调研一些代表性的基于 LSM-tree 的 NoSQL 系统的存储层。"></a>2.3.2. 重点调研一些代表性的基于 LSM-tree 的 NoSQL 系统的存储层。</h3><h3 id="2-3-3-总结调研结果，并为未来基于-LSM-tree-的存储系统的工作确定了几个-outages-和机会。"><a href="#2-3-3-总结调研结果，并为未来基于-LSM-tree-的存储系统的工作确定了几个-outages-和机会。" class="headerlink" title="2.3.3. 总结调研结果，并为未来基于 LSM-tree 的存储系统的工作确定了几个 outages 和机会。"></a>2.3.3. 总结调研结果，并为未来基于 LSM-tree 的存储系统的工作确定了几个 outages 和机会。</h3><h3 id="2-4-实验效果"><a href="#2-4-实验效果" class="headerlink" title="2.4. 实验效果"></a>2.4. 实验效果</h3>
+      </div>
+    </div>
+</div>
+
+<div class="post-category">
+
+    <div id="p-meta-i">
+        
+              
+                <a class="hover-with-bg" href="/categories/papers/">papers</a>
+              
+          
+          
+              
+                <a class="hover-with-bg" href="/tags/%E7%BB%BC%E8%BF%B0/"># 综述</a>
+              
+                <a class="hover-with-bg" href="/tags/LSM-tree/"># LSM-tree</a>
+              
+          
+    </div>
+</div>
+
+
+<div class="post-footer">
+  
+
+</div>
+
+</article>
+
+
+            </div>
+            
+<footer class="text-center">
+    
+    
+    
+    
+    
+    <p>&copy;  2023 - 2023&nbsp;&nbsp;Technical Blogs</p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+    
+    
+    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+      <i id="i-up"></i>
+    </a>
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <div id="css-loading">
+            <h3 class="text-center">加载中...</h3>
+        </div>
+    </body>
+</html>
