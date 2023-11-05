@@ -4,10 +4,9 @@
 .textretty {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  color: var(--second-text-color);
-  line-height: 1.5;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  font-size: 16px;
+  color: #c9cacc;
+  line-height: 1.725;
+  font-family: "Menlo", "Meslo LG", monospace;
   word-wrap: break-word;
   box-sizing: border-box;
 }
@@ -16,7 +15,6 @@
 }
 .textretty a {
   background-color: transparent;
-  color: var(--second-text-color);
   text-decoration: none;
   border-bottom: 2px solid #ccc;
   transition: opacity 0.2s;
@@ -29,10 +27,9 @@
 }
 .textretty strong {
   font-weight: bolder;
-  font-weight: 600;
+  font-weight: 400;
 }
 .textretty h1 {
-  font-size: 2em;
   margin: 0.67em 0;
   font-size: 2em;
 }
@@ -50,20 +47,20 @@
 }
 .textretty h1,
 .textretty h2 {
-  font-weight: 600;
-  padding-bottom: 0.3em;
+  font-weight: 400;
+  padding-bottom: 0em;
 }
 .textretty h2 {
   font-size: 24px;
-  font-size: 1.5em;
+  font-size: 1.2rem;
 }
 .textretty h3 {
   font-size: 20px;
-  font-size: 1.25em;
+  font-size: 1.15em;
 }
 .textretty h3,
 .textretty h4 {
-  font-weight: 600;
+  font-weight: 400;
 }
 .textretty h4 {
   font-size: 16px;
@@ -75,11 +72,10 @@
 }
 .textretty h5,
 .textretty h6 {
-  font-weight: 600;
+  font-weight: 400;
 }
 .textretty h6 {
   font-size: 12px;
-  color: var(--third-text-color);
   font-size: 0.85em;
 }
 .textretty h1,
@@ -89,9 +85,10 @@
 .textretty h5,
 .textretty h6 {
   font-weight: 600;
-  line-height: 1.25;
-  margin-bottom: 16px;
-  margin-top: 1.5rem;
+  line-height: 1.725;
+  margin-bottom: 0px;
+  margin-top: 0rem;
+  color: #29b177;
 }
 .textretty img {
   box-sizing: initial;
@@ -102,15 +99,13 @@
   margin: 1.5rem auto;
   display: block;
 }
-.textretty code,
-.textretty kbd,
-.textretty pre {
-  font-family: monospace, monospace;
+.textretty kbd {
+  font-family: "Menlo", "Meslo LG", monospace;
   font-size: 1em;
 }
 .textretty code,
 .textretty pre {
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  font-family: "Menlo", "Meslo LG", monospace;
   font-size: 12px;
 }
 .textretty pre {
@@ -118,14 +113,12 @@
   margin-top: 0;
   word-wrap: normal;
   background-color: #f6f8fa;
-  border-radius: 2px;
   font-size: 85%;
-  line-height: 1.45;
+  line-height: 1.725;
   overflow: auto;
-  padding: 16px;
+  padding: 0px;
 }
 .textretty code {
-  background-color: var(--code-color);
   border-radius: 3px;
   font-size: 85%;
   margin: 0;
@@ -145,7 +138,6 @@
   overflow: visible;
   word-wrap: normal;
   max-height: 80vh;
-  color: var(--second-text-color);
 }
 .textretty pre::-webkit-scrollbar {
   height: 3px;
@@ -332,6 +324,8 @@ p.tex-para-indent-full,
   content: " ]";
 }
 .all-category-list {
+  color: #f00;
+  font-family: "Menlo", "Meslo LG", monospace;
   padding: 0 10px;
   line-height: 1.8rem;
 }
@@ -449,7 +443,7 @@ p.tex-para-indent-full,
 }
 @media (min-width: 768px) {
   article[class='page'] {
-    max-width: 1050px;
+    max-width: 650px;
   }
 }
 article img.lazyload-img {
@@ -471,21 +465,24 @@ article img.lazyload-img:not(.loaded):not(.loading) {
   padding: 0;
 }
 .post-toc {
-  max-height: 70vh;
+  max-height: 40vh;
   overflow: scroll;
   border-radius: 0.3rem;
   width: 15vh;
   position: fixed;
-  bottom: 12rem;
+  top: 6rem;
   right: 0;
   z-index: 9;
-  background-color: var(--bg-t);
+  background-color: #212326;
   box-shadow: var(--shadow);
+  font-family: "Menlo", "Meslo LG", monospace;
+  color: #c9cacc;
+  font-size: 0.8rem;
 }
 .post-toc ol {
   list-style: none;
   padding-inline-start: 1rem;
-  font-family: Optima-Regular, Optima, -apple-system, system-ui, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial;
+  font-family: "Menlo", "Meslo LG", monospace;
 }
 .post-toc .toc-list-item a {
   color: var(--second-text-color);
@@ -500,7 +497,7 @@ article img.lazyload-img:not(.loaded):not(.loading) {
   display: none;
 }
 .post-toc {
-  width: 250px;
+  width: 300px;
 }
 @media (max-width: 300px) {
   .post-toc {
@@ -509,31 +506,39 @@ article img.lazyload-img:not(.loaded):not(.loading) {
 }
 #post-meta {
   color: var(--third-text-color);
+  font-family: "Menlo", "Meslo LG", monospace;
 }
 #post-meta h3 {
   color: var(--first-text-color);
+}
+.post-header {
+  position: fixed;
+  top: 1.2rem;
+  right: 4rem;
+  z-index: 9;
+  display: none;
 }
 article[class='page'] {
   position: relative;
   width: 80%;
   height: 100%;
   box-shadow: var(--shadow);
-  padding: 15px 30px;
+  padding: 0px 0px;
   box-sizing: border-box;
   border-radius: 0.5rem;
-  background-color: var(--post-bkg-color);
+  background-color: none;
   color: var(--second-text-color);
   display: block;
-  margin: 84px auto 30px auto;
+  margin: 0px auto 0px auto;
   transition: all 0.3s;
 }
 #post-meta-m {
-  padding-bottom: 15px;
+  padding-bottom: 8px;
   border-bottom: 0.1rem solid var(--hr-color);
 }
 #article {
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 8px;
+  padding-bottom: 0px;
   border-bottom: 0.1rem solid var(--hr-color);
 }
 .post-category {
@@ -647,11 +652,11 @@ th {
   color: var(--first-text-color);
 }
 .highlight {
-  margin: 10px 0;
+  margin: 1rem 0;
   display: block;
   width: 100%;
-  background-color: #181c27;
-  border-radius: 5px;
+  background-color: #212326;
+  font-family: "Menlo", "Meslo LG", monospace;
 }
 .highlight table {
   width: 100%;
@@ -672,28 +677,25 @@ th {
   background-color: #181c27;
 }
 .highlight .code {
-  background: #181c27;
+  background: #212326;
 }
 .highlight .code pre {
   width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #181c27 !important;
-  padding: 10px;
+  background-color: #212326 !important;
   overflow: auto;
-  font-size: 0.9rem;
-  line-height: 1.2;
+  font-size: 13px;
+  line-height: 22px;
   color: #ccc !important;
 }
 .highlight .gutter,
 .highlight .gutter pre {
   color: #999;
-  background: #1b1b1b;
+  background: #212326;
   border-radius: 0;
-  padding: 10px;
+  padding: 5px;
   overflow: auto;
-  font-size: 0.9rem;
-  line-height: 1.2;
+  font-size: 13px;
+  line-height: 22px;
 }
 hljs {
   display: block;
@@ -705,7 +707,7 @@ hljs {
 .highlight .code pre .comment,
 .highlight .code pre .quote {
   color: #5c6370;
-  font-style: italic;
+  font-style: none;
 }
 .highlight .code pre .doctag,
 .highlight .code pre .formula,
@@ -752,7 +754,7 @@ hljs {
   color: #61aeee;
 }
 .highlight .code pre .emphasis {
-  font-style: italic;
+  font-style: none;
 }
 .highlight .code pre .strong {
   font-weight: 700;

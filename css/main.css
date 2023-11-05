@@ -105,6 +105,14 @@ p {
 .bouncingLoader:after {
   animation-delay: 0.4s;
 }
+.navbar-menu {
+  color: #2bbc8a;
+  font-family: "Menlo", "Meslo LG", monospace;
+  font-size: 0.8rem;
+  font-weight: 200;
+  font-style: normal;
+  letter-spacing: 0.01em;
+}
 /* Home */
 #index-banner {
   z-index: 0;
@@ -119,7 +127,7 @@ p {
 .index-card {
   border-radius: 0.5rem;
   margin: auto;
-  max-width: 700px;
+  max-width: 650px;
   box-shadow: var(--shadow);
   padding: 28px;
   margin-bottom: 1.8rem;
@@ -135,26 +143,39 @@ p {
   width: 100%;
   background-color: #1d1f21;
 }
+.post-card-main time {
+  color: #666;
+  font-size: 14px;
+  margin-right: 16px;
+  min-width: 100px;
+  font-family: "Menlo", "Meslo LG", monospace;
+}
+.post-card-main div {
+  margin: 0;
+  line-height: 0.725;
+}
 .post-card-center {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 1.8rem;
+  padding-top: 0rem;
   background-color: #1d1f21;
 }
 .index-pin {
   color: var(--third-text-color);
-  color: #f00;
 }
 #post-title {
-  color: #29b177;
+  color: #c9cacc;
   text-decoration: underline;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: "Menlo", "Meslo LG", monospace;
 }
 .post-metas {
   color: var(--third-text-color);
 }
 #index-banner {
-  top: 30px;
+  top: 15px;
   text-align: center;
 }
 @media (max-width: 576px) {
@@ -165,22 +186,22 @@ p {
 #banner-name {
   position: relative;
   display: inline-block;
-  font-size: 2em;
   margin: 0.5em 0;
-  font-weight: 400;
+  font-family: "Menlo", "Meslo LG", monospace;
+  font-weight: 700;
   font-size: 1.5rem;
-  line-height: 1.5em;
-  color: var(--first-text-color);
-}
-.slogan {
-  color: var(--third-text-color);
-  margin: 0.3em 0;
-  max-width: 95%;
-  text-align: center;
-  margin: 0 auto;
+  font-style: normal;
+  line-height: 2rem;
+  color: #c9cacc;
 }
 .banner-text {
+  position: relative;
+  text-align: left;
+  max-width: 650px;
   width: 100%;
+}
+header {
+  display: flex;
 }
 time {
   font-size: 0.8em;
@@ -191,14 +212,15 @@ body {
 }
 /* Footer */
 footer {
-  margin: 0;
-  padding: 0;
-  color: var(--third-text-color);
-  margin-top: 10px;
-  padding: 5px;
+  padding: 0 5px;
+  text-align: center;
 }
 footer p {
   font-size: 0.95rem;
+  font-family: 'Menlo', 'Meslo LG', monospace;
+  font-weight: 400;
+  font-size: 11px;
+  color: #666;
 }
 .pagination span {
   color: var(--third-text-color);
