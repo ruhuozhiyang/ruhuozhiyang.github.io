@@ -107,7 +107,7 @@
 
 
 <style>
-#page-main,footer,.p-btn{
+#page-main,footer,.p-btn {
     display: none;
 }
 html, body {
@@ -274,8 +274,8 @@ header .header__right .dropdown-menus .dropdown-menu {
 }
 .p-btn{
     position: fixed;
-    bottom: 1.2rem;
-    right: 1.2rem;
+    top: 1rem;
+    right: 1rem;
     contain: layout;
 }
 .toc-btn,.click-btn{
@@ -286,9 +286,9 @@ header .header__right .dropdown-menus .dropdown-menu {
     align-items: center;
     margin-top: .5rem;
     font-size: .75rem;
-    background-color: var(--sec-bkg);
+    background-color: none;
     display: block;
-    padding: 0.9rem;
+    padding: 0rem;
     box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
     border: none;
     border-radius: 0.5rem;
@@ -368,98 +368,69 @@ header .header__right .dropdown-menus .dropdown-menu {
     
 <meta name="generator" content="Hexo 6.3.0"></head>
 
-    <body>
-        <header>
+<body>
+    <div id="top"></div>
+    <div id="page-main" class="main-content">
+        <div class="mg-top">
             
-<div class="header__left">
-	<!-- <a href="/" class="button"><span class="logo__text">young&#39;s technical manual</span></a> -->
-</div>
-<div class="header__right">
-	<div class="navbar__menus">
-		
-		<a href="/" class="button">
-			<div class="navbar-menu">首页</div>
-		</a>
-		
-		<a href="/categories/" class="button">
-			<div class="navbar-menu">分类</div>
-		</a>
-		
-		<a href="/tags/" class="button">
-			<div class="navbar-menu">标签</div>
-		</a>
-		
-	</div>
-	
-	<a href="/search/" class="button">
-		<div id="btn-search">
-			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
-				stroke="currentColor" stroke-width="32">
-				<path
-					d="M192 448c0-141.152 114.848-256 256-256s256 114.848 256 256-114.848 256-256 256-256-114.848-256-256z m710.624 409.376l-206.88-206.88A318.784 318.784 0 0 0 768 448c0-176.736-143.264-320-320-320S128 271.264 128 448s143.264 320 320 320a318.784 318.784 0 0 0 202.496-72.256l206.88 206.88 45.248-45.248z">
-				</path>
-			</svg>
-		</div>
-	</a>
-	
-	<!-- <a href="javaScript:void(0);" class="button" id="btn-toggle-dark">
-		<div>
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewbox="0 0 24 24" fill="none"
-				stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-				<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-			</svg>
-		</div>
-	</a>
-	<a href="javaScript:void(0);" class="dropdown-icon button">
-		<div id="btn-dropdown">
-			<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 1024 1024" width="24" height="24" fill="currentColor"
-				stroke="currentColor" stroke-width="32" stroke-linecap="round">
-				<path
-					d="M903.43 561.52H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 204.31H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24zM903.43 918.73H148.8c-13.25 0-24-10.75-24-24s10.75-24 24-24h754.63c13.25 0 24 10.75 24 24s-10.75 24-24 24z"
-					fill="currentColor"></path>
-			</svg>
-		</div>
-	</a> -->
-	<div class="dropdown-menus" id="dropdown-menus">
-		
-		<a href="/" class="dropdown-menu button">首页</a>
-		<br>
-		
-		<a href="/categories/" class="dropdown-menu button">分类</a>
-		<br>
-		
-		<a href="/tags/" class="dropdown-menu button">标签</a>
-		<br>
-		
-	</div>
-</div>
 
-        </header>
-        <div id="top"></div>
-        <div id="page-main" class="main-content">
-            <div class="mg-top">
-                
-<article class="page">
-<div id="post-meta-m" style="padding-bottom:0;">
-    <div class="post-meta" id="post-meta">
-      <h3>Categories</h3>
-    </div>
-  </div>
-    <div class="archive-list" style="padding-top:10px;">
-        <div class="category-list-content">
-            <ul class="all-category-list"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/manuals/">manuals</a><span class="all-category-list-count">12</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/papers/">papers</a><span class="all-category-list-count">12</span></li></ul>
+  <div id="index-banner" class="text-center middle-center">
+    <div class="banner-text">
+        <div id="banner-name">
+            Young's Personal Tech Manual
+        </div>
+        <div class="slogan">
+          <!-- 一款简洁的单栏 Hexo -->
+          
+            <a href="/">
+              <span class="navbar-menu">Home</span>
+            </a>
+          
+            <a href="/archives/">
+              <span class="navbar-menu">Archives</span>
+            </a>
+          
+            <a href="/categories/">
+              <span class="navbar-menu">Categories</span>
+            </a>
+          
+            <a href="/tags/">
+              <span class="navbar-menu">Tags</span>
+            </a>
+          
         </div>
     </div>
-  </article>
-            </div>
-            
-<footer class="text-center">
+  </div>
+
+
+<div class="post-card-center">
+  <div class="post-card-main">
+    <h3 style="color: rgb(41,177,119);font-family: 'Menlo', 'Meslo LG', monospace">
+      Categories
+    </h3>
+    <div class="archive-list">
+      <div class="category-list-content">
+        <ul class="all-category-list"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/academic-research/">academic_research</a><span class="all-category-list-count">13</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/academic-research/papers-read/">papers_read</a><span class="all-category-list-count">12</span></li></ul></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/basic-concepts/">basic_concepts</a><span class="all-category-list-count">4</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/">hadoop</a><span class="all-category-list-count">16</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/clickhouse/">clickhouse</a><span class="all-category-list-count">1</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/hbase/">hbase</a><span class="all-category-list-count">9</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/hbase/hbase-advanced/">hbase_advanced</a><span class="all-category-list-count">2</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/hbase/hbase-basic-concepts/">hbase_basic_concepts</a><span class="all-category-list-count">7</span></li></ul></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/redis/">redis</a><span class="all-category-list-count">1</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop/zookeeper/">zookeeper</a><span class="all-category-list-count">1</span></li></ul></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop-ext/">hadoop_ext</a><span class="all-category-list-count">7</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop-ext/es/">es</a><span class="all-category-list-count">7</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop-ext/es/es-advanced/">es_advanced</a><span class="all-category-list-count">1</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/hadoop-ext/es/es-basic-concepts/">es_basic_concepts</a><span class="all-category-list-count">6</span></li></ul></li></ul></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/java/">java</a><span class="all-category-list-count">3</span><ul class="all-category-list-child"><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/java/java-advanced/">java_advanced</a><span class="all-category-list-count">1</span></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/java/java-basic-concepts/">java_basic_concepts</a><span class="all-category-list-count">2</span></li></ul></li><li class="all-category-list-item"><a class="all-category-list-link" href="/categories/manuals/">manuals</a><span class="all-category-list-count">6</span></li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+        </div>
+        
+<footer>
     
     
     
     
     
-    <p>&copy;  2023 - 2023&nbsp;&nbsp;Technical Blogs</p>
+      <p>
+        Copyright &copy;
+         
+          2023 - 
+        
+        2023
+        Young
+      </p>
     
     <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
 </footer>
@@ -467,9 +438,6 @@ header .header__right .dropdown-menus .dropdown-menu {
 <div class="p-btn">
     
     
-    <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
-      <i id="i-up"></i>
-    </a>
 </div>
 
 <!-- SCRIPTS -->
@@ -515,9 +483,9 @@ header .header__right .dropdown-menus .dropdown-menu {
 
 
 
-        </div>
-        <div id="css-loading">
-            <h3 class="text-center">加载中...</h3>
-        </div>
-    </body>
+    </div>
+    <div id="css-loading">
+        <h3 class="text-center">加载中...</h3>
+    </div>
+</body>
 </html>

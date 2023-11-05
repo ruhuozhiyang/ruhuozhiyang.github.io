@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>File Type/Format - young&#39;s personal tech manuals</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="File Type/Format"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn {
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: none;
+    display: block;
+    padding: 0rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="top"></div>
+    <div id="page-main" class="main-content">
+        <div class="mg-top">
+            <div class="post-header">
+  <!-- 一款简洁的单栏 Hexo -->
+  
+    <a href="/">
+      <span class="navbar-menu">Home</span>
+    </a>
+  
+    <a href="/archives/">
+      <span class="navbar-menu">Archives</span>
+    </a>
+  
+    <a href="/categories/">
+      <span class="navbar-menu">Categories</span>
+    </a>
+  
+    <a href="/tags/">
+      <span class="navbar-menu">Tags</span>
+    </a>
+  
+</div>
+
+<article class="page">
+  <div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3 style="color: rgb(41,177,119);font-family: 'Menlo', 'Meslo LG', monospace">
+    File Type/Format
+  </h3>
+  
+    <span class="post-meta-label">
+      young
+    </span>
+  
+  
+    <span class="post-meta-label">
+      <span class="p-dot"></span>
+      <time datetime="2023-10-23 17:22" pubdate>
+        2023-10-23
+      </time>
+    </span>
+  
+  
+  
+  
+</div>
+  
+  </div>
+  <div class="article-m">
+    <div class="post-toc">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90-x2F-%E8%B5%84%E6%BA%90"><span class="toc-text">1.系统资源&#x2F;资源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%96%87%E4%BB%B6"><span class="toc-text">2.计算机文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B-x2F-%E6%A0%BC%E5%BC%8F"><span class="toc-text">3.文件类型&#x2F;格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91%E5%99%A8"><span class="toc-text">4.文件编辑器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%96%87%E6%9C%AC%E6%96%87%E4%BB%B6-%E7%BA%AF%E6%96%87%E6%9C%AC-%E5%AF%8C%E6%96%87%E6%9C%AC"><span class="toc-text">5.文本文件 纯文本 富文本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E6%96%87%E6%9C%AC-%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">6.文本 字符串</span></a></li></ol>
+      
+    </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-系统资源-x2F-资源"><a href="#1-系统资源-x2F-资源" class="headerlink" title="1.系统资源&#x2F;资源"></a>1.系统资源&#x2F;资源</h2><p>在计算中，系统资源或资源是计算机系统中【可用性有限的】任何物理或虚拟组件。<br>所有连接的设备和内部的系统组件都是资源。<br>虚拟系统资源包括：</p>
+<ul>
+<li>文件（具体来说是文件句柄）</li>
+<li>网络连接（具体来说是网络套接字）</li>
+<li>内存区域<br>管理资源被称为资源管理，包括防止资源泄漏（当一个进程用完资源时不释放资源）和处理资源争用（当多个进程希望访问有限的资源时）。</li>
+</ul>
+<h2 id="2-计算机文件"><a href="#2-计算机文件" class="headerlink" title="2.计算机文件"></a>2.计算机文件</h2><p>在计算中，计算机文件是用于在计算机存储设备上记录数据的资源，主要通过其文件名来标识。正如文字可以写在纸上一样，数据也可以写在计算机文件中。文件可以通过可移动介质、网络或互联网在计算机和移动设备之间共享和传输。不同类型的计算机文件是为不同的目的而设计的。文件可以被设计成存储图像、书面消息、视频、程序或任何种类的其他数据。某些文件可以一次存储多种数据类型。通过使用计算机程序，人们可以打开、读取、更改、保存和关闭计算机文件。计算机文件可以被重新打开、修改和复制任意次数。文件通常组织在文件系统中，该系统跟踪磁盘上的文件位置并允许用户访问。</p>
+<p>在大多数现代操作系统上，文件被组织成一维数组字节数组。文件的格式由其内容定义，因为文件只是数据的容器。在某些平台上，格式由其文件扩展名表示，指定了字节必须如何有意义地组织和解释的规则。例如，纯文本文件的字节数据（Windows中的txt）与ASCII或UTF-8字符相关联，而图像、视频和音频文件的字节则以其他方式解释。大多数文件类型还为元数据分配了几个字节，这允许文件携带一些关于自身的基本信息。</p>
+<p>一些文件系统可以存储文件格式之外的任意（不由文件系统解释）特定于文件的数据，但链接到文件，例如扩展属性或分叉。然而，所有这些方法都比容器和归档文件格式更容易丢失元数据。</p>
+<h2 id="3-文件类型-x2F-格式"><a href="#3-文件类型-x2F-格式" class="headerlink" title="3.文件类型&#x2F;格式"></a>3.文件类型&#x2F;格式</h2><p>文件格式是将信息编码存储在计算机文件中的标准方式。它规定了如何使用位对数字存储介质中的信息进行编码。文件格式可以是专有的，也可以是免费的。例如以下一些常见的文件类型：</p>
+<ul>
+<li>二进制文件（Binary File）<br>基于值编码的文件，可以根据具体应用，指定某个值（可以看作是自定义编码）。<br>二进制文件可看成是变长编码的，因为是值编码，多少个比特代表一个值，完全由自己决定。</li>
+<li>文本文件（Text File）<br>基于字符编码的文件，常见的<a href="../character_encoding">字符编码</a>有 ASCII 编码，UNICODE 编码等等。<br>文本文件基本上是定长编码的(也有非定长的编码如UTF-8)，基于字符，每个字符在具体编码中是固定的，ASCII码是8个比特的编码，UNICODE一般占16个比特。</li>
+<li>位图文件（BitMap File）</li>
+</ul>
+<p>不管什么类型的文件，其实本质上都是 01 二进制数据，而文件类型正是规定了这些 01 数据的正确解码方式。<br>例如，对于如下的二进制序列</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0100100001100101011011000110110001101111</span><br></pre></td></tr></table></figure>
+<p>二进制文件只会将其看作是一些数，例如可以4位为一组，将序列分成若干组，并转为 16 进制数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0100 1000 0110 0101 0110 1100 0110 1100 0110 1111</span><br><span class="line">4 8 6 5 6 c 6 c 6 f</span><br></pre></td></tr></table></figure>
+<p>还可以 3 位为一组，将序列分成若干组（多出一个 bit 忽略），并转为 8 进制数</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">010 010 000 110 010 101 101 100 011 011 000 110 111</span><br><span class="line">2 2 0 6 2 5 5 4 3 3 0 5 7</span><br></pre></td></tr></table></figure>
+<p>二进制文件仅止步于此。</p>
+<p>但是文本文件会基于字符编码进一步解析文件内容。<br>例如基于 ASCII 编码（一个字节为分组，且其十进制值对应一个字符）来解析该二进制数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">01001000 01100101 01101100 01101100 01101111</span><br><span class="line">72 101 108 108 111</span><br><span class="line">H e l l o</span><br></pre></td></tr></table></figure>
+
+<p>位图文件则会依据一定的解码规则，将二进制序列分组，并得到一些十进制数，且将这些十进制数看作是像素值。</p>
+<h2 id="4-文件编辑器"><a href="#4-文件编辑器" class="headerlink" title="4.文件编辑器"></a>4.文件编辑器</h2><p>文件编辑器，我认为就是：<br>（1）文件中 01 数据 &#x3D;&gt; 按文件格式正确解码 &#x3D;&gt; 用户可读<br>（2）用户输入 &#x3D;&gt; 按文件格式正确编码 &#x3D;&gt; 文件中 01 数据<br>所以，不同的文件格式就需要有相应的文件编辑器。</p>
+<ul>
+<li>二进制文件编辑器</li>
+<li>文本文件编辑器，例如 vim</li>
+<li>位图文件编辑器</li>
+</ul>
+<h2 id="5-文本文件-纯文本-富文本"><a href="#5-文本文件-纯文本-富文本" class="headerlink" title="5.文本文件 纯文本 富文本"></a>5.文本文件 纯文本 富文本</h2><p>文本文件是一种容器，而纯文本是指一种内容，文本文件可以包含纯文本。<br>除了纯文本外，还有富文本，前者如记事本，后者如 Word。</p>
+<ul>
+<li>纯文本<br>只有文字和基本的标点，不保存文字的样式等，例如：.txt。</li>
+<li>富文本<br>可以有图和各种特殊标点，分段等格式，例如 .doc .docx 等。</li>
+</ul>
+<h2 id="6-文本-字符串"><a href="#6-文本-字符串" class="headerlink" title="6.文本 字符串"></a>6.文本 字符串</h2><p>字符串是用于存储和处理文本数据的数据类型，而文本则是由字符串组成的有意义的语言表达。<br>在计算机科学和自然语言处理中，字符串和文本密不可分，相互依存，常常需要使用字符串操作来处理和操作文本数据。</p>
+
+      </div>
+    </div>
+  </div>
+  
+    <div class="post-category">
+      <div id="p-meta-i">
+        
+          
+            <a class="hover-with-bg" href="/categories/basic-concepts/">basic_concepts</a>
+          
+        
+        
+      </div>
+    </div>
+  
+  <div class="post-footer">
+    
+    
+  </div>
+  
+</article>
+
+
+        </div>
+        
+<footer>
+    
+    
+    
+    
+    
+      <p>
+        Copyright &copy;
+         
+          2023 - 
+        
+        2023
+        Young
+      </p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+        <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+          <i id="i-up"></i>
+        </a>
+    
+    
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+                toggleClass(".post-header", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div id="css-loading">
+        <h3 class="text-center">加载中...</h3>
+    </div>
+</body>
+</html>

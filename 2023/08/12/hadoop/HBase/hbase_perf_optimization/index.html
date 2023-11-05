@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>HBase Write/Read Performance Optimization - young&#39;s personal tech manuals</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="HBase Write/Read Performance Optimization"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn {
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: none;
+    display: block;
+    padding: 0rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="top"></div>
+    <div id="page-main" class="main-content">
+        <div class="mg-top">
+            <div class="post-header">
+  <!-- 一款简洁的单栏 Hexo -->
+  
+    <a href="/">
+      <span class="navbar-menu">Home</span>
+    </a>
+  
+    <a href="/archives/">
+      <span class="navbar-menu">Archives</span>
+    </a>
+  
+    <a href="/categories/">
+      <span class="navbar-menu">Categories</span>
+    </a>
+  
+    <a href="/tags/">
+      <span class="navbar-menu">Tags</span>
+    </a>
+  
+</div>
+
+<article class="page">
+  <div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3 style="color: rgb(41,177,119);font-family: 'Menlo', 'Meslo LG', monospace">
+    HBase Write/Read Performance Optimization
+  </h3>
+  
+    <span class="post-meta-label">
+      young
+    </span>
+  
+  
+    <span class="post-meta-label">
+      <span class="p-dot"></span>
+      <time datetime="2023-08-12 11:13" pubdate>
+        2023-08-12
+      </time>
+    </span>
+  
+  
+  
+  
+</div>
+  
+  </div>
+  <div class="article-m">
+    <div class="post-toc">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-HBase-%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%82%E6%95%B0%E5%90%AB%E4%B9%89"><span class="toc-text">1.HBase 配置文件参数含义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-regionserver-handler-count"><span class="toc-text">1.1.regionserver.handler.count</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-hbase-hregion-memstore-block-multiplier"><span class="toc-text">1.2.hbase.hregion.memstore.block.multiplier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-hbase-hregion-memstore-flush-size"><span class="toc-text">1.3.hbase.hregion.memstore.flush.size</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-hbase-hstore-compaction-max"><span class="toc-text">1.4.hbase.hstore.compaction.max</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-hbase-regionserver-global-memstore-size"><span class="toc-text">1.5.hbase.regionserver.global.memstore.size</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E8%AF%BB%E5%86%99%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98"><span class="toc-text">2.读写性能调优</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E9%81%BF%E5%85%8D-regionserver-%E7%BA%A7%E5%88%AB%E7%9A%84%E5%88%B7%E5%86%99"><span class="toc-text">2.1.避免 regionserver 级别的刷写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E8%AE%BE%E7%BD%AE%E5%90%88%E7%90%86%E7%9A%84-region-%E6%95%B0%E9%87%8F%E5%92%8C-region-%E5%A4%A7%E5%B0%8F"><span class="toc-text">2.2.设置合理的 region 数量和 region 大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-focus-on-CPU-%E7%BB%91%E6%A0%B8"><span class="toc-text">2.3.focus on CPU 绑核</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-JVM-GC-%E8%BE%83%E5%A4%9A%EF%BC%8C%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91-GC%EF%BC%9F"><span class="toc-text">2.4.JVM GC 较多，如何减少 GC？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-try-changing-the-configurations-of-hbase-clusters"><span class="toc-text">2.5.try changing the configurations of hbase clusters.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-20230531-3new-servers-which-settings-are-alligned-with-x86"><span class="toc-text">2.6.20230531 3new servers which settings are alligned with x86</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-20230602terms-collected"><span class="toc-text">2.7.20230602terms collected</span></a></li></ol></li></ol>
+      
+    </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-HBase-配置文件参数含义"><a href="#1-HBase-配置文件参数含义" class="headerlink" title="1.HBase 配置文件参数含义"></a>1.HBase 配置文件参数含义</h2><h3 id="1-1-regionserver-handler-count"><a href="#1-1-regionserver-handler-count" class="headerlink" title="1.1.regionserver.handler.count"></a>1.1.regionserver.handler.count</h3><p>regionserver.handler.count 是指单个 regionserver 允许的 rpc 请求的线程数量，默认值是 30，生产环境建议使用 60，也不是越大越好，特别是当请求内容很大的时候，比如 scan&#x2F;put 几 M 的数据，会占用过多的内存，有可能导致频繁的 GC（垃圾回收），甚至出现内存溢出。</p>
+<h3 id="1-2-hbase-hregion-memstore-block-multiplier"><a href="#1-2-hbase-hregion-memstore-block-multiplier" class="headerlink" title="1.2.hbase.hregion.memstore.block.multiplier"></a>1.2.hbase.hregion.memstore.block.multiplier</h3><p>hbase.hregion.memstore.block.multiplier 4&#x3D;&gt;5</p>
+<h3 id="1-3-hbase-hregion-memstore-flush-size"><a href="#1-3-hbase-hregion-memstore-flush-size" class="headerlink" title="1.3.hbase.hregion.memstore.flush.size"></a>1.3.hbase.hregion.memstore.flush.size</h3><p>hbase.hregion.memstore.flush.size 134217728&#x3D;&gt;268435456</p>
+<h3 id="1-4-hbase-hstore-compaction-max"><a href="#1-4-hbase-hstore-compaction-max" class="headerlink" title="1.4.hbase.hstore.compaction.max"></a>1.4.hbase.hstore.compaction.max</h3><p>hbase.hstore.compaction.max 10&#x3D;&gt;15</p>
+<h3 id="1-5-hbase-regionserver-global-memstore-size"><a href="#1-5-hbase-regionserver-global-memstore-size" class="headerlink" title="1.5.hbase.regionserver.global.memstore.size"></a>1.5.hbase.regionserver.global.memstore.size</h3><p>调整 RegionServer 的读和写缓冲区的大小，此处 0.4 为 40%，读写缓存的总和控制在 80% 以内，否则可能造成 Hbase 无法启动的情况。<br>根据写需求，可加大 hbase.regionserver.global.memstore.size 的比例<br><img src="https://bbs-img.huaweicloud.com/blogs/img/1614323853865071161.png"><br><img src="https://bbs-img.huaweicloud.com/blogs/img/1614323855883089512.png"><br>默认读写缓存比例值都为40%<br>如果为了提高写速度，可以将读调整为 10%，写调整为 70%。</p>
+<h2 id="2-读写性能调优"><a href="#2-读写性能调优" class="headerlink" title="2.读写性能调优"></a>2.读写性能调优</h2><h3 id="2-1-避免-regionserver-级别的刷写"><a href="#2-1-避免-regionserver-级别的刷写" class="headerlink" title="2.1.避免 regionserver 级别的刷写"></a>2.1.避免 regionserver 级别的刷写</h3><p>regionserver 运行在 JVM 之上，regionserver 占用的堆内存是向 JVM 堆内存申请的。</p>
+<p>hbase_heapsize（region server heapsize）是 RegionServer 占用的 JVM 内存大小。</p>
+<p>hbase.regionserver.global.memstore.size 是一个 regionserver 总的写缓存（即所有 memstore 之和）占用 hbase_heapsize 的比例。【默认值是 0.4】</p>
+<p>当一个 regionserver 总的写缓存（即所有 memstore 之和）&gt; hbase_heapsize ✖️ hbase.regionserver.global.memstore.size，就会触发 regionserver 级别刷写，阻塞 regionserver 的所有写请求，且时间较长。</p>
+<h3 id="2-2-设置合理的-region-数量和-region-大小"><a href="#2-2-设置合理的-region-数量和-region-大小" class="headerlink" title="2.2.设置合理的 region 数量和 region 大小"></a>2.2.设置合理的 region 数量和 region 大小</h3><p>bulkload 和 put 加载数据？</p>
+<p>Jetty IOException: Too many open files</p>
+<p>client-scan 过滤数据：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shufangreal/article/details/109811702">https://blog.csdn.net/shufangreal/article/details/109811702</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1620694">合理的region数量和region大小</a><br><a target="_blank" rel="noopener" href="https://hbase.apache.org/2.0/book.html#shell">https://hbase.apache.org/2.0/book.html#shell</a></p>
+<p>HBase客户端设置缓存，批量提交，但是可能会因客户端崩溃损失数据。</p>
+<p>HBase RegionServer可能会因为并发的请求太多陷入 TooBusyException 状态。</p>
+<h3 id="2-3-focus-on-CPU-绑核"><a href="#2-3-focus-on-CPU-绑核" class="headerlink" title="2.3.focus on CPU 绑核"></a>2.3.focus on CPU 绑核</h3><p>网卡亲和性</p>
+<h3 id="2-4-JVM-GC-较多，如何减少-GC？"><a href="#2-4-JVM-GC-较多，如何减少-GC？" class="headerlink" title="2.4.JVM GC 较多，如何减少 GC？"></a>2.4.JVM GC 较多，如何减少 GC？</h3><p>通过 Java 进程监控，发现 GC 的问题。<br>添加了内存，但是发现没有效果。</p>
+<h3 id="2-5-try-changing-the-configurations-of-hbase-clusters"><a href="#2-5-try-changing-the-configurations-of-hbase-clusters" class="headerlink" title="2.5.try changing the configurations of hbase clusters."></a>2.5.try changing the configurations of hbase clusters.</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">lscpu</span><br><span class="line">free -g</span><br><span class="line">cat /proc/cmdline</span><br><span class="line">vim /etc/sysctl.conf</span><br><span class="line">vim /etc/fstab</span><br><span class="line">df -th</span><br><span class="line">df -Th</span><br><span class="line">lsblk</span><br><span class="line">iostat -xk 1 3333</span><br><span class="line">ip a</span><br><span class="line">!进程号</span><br><span class="line">sar -d DEV 1 33</span><br><span class="line">sar -n DEV 1 33</span><br><span class="line">sar -d -p 1 33</span><br><span class="line">sar -u 1 33</span><br><span class="line">vmstat 1 33</span><br><span class="line">perf top</span><br><span class="line">jconsole</span><br><span class="line">jstat -compiler -p 21542</span><br><span class="line">jstat -gc -p 21542</span><br><span class="line">numastat</span><br><span class="line">pidstat -p 26501 1 333</span><br><span class="line">dmidecode -t 17</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ehtool eth4</span><br><span class="line">ehtool eth4 mtu 9000</span><br><span class="line">ifconfig eth4 mtu 9000</span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag</span><br><span class="line">echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled</span><br><span class="line"></span><br><span class="line">ulimit -a </span><br><span class="line">dstat</span><br></pre></td></tr></table></figure>
+<p>内存分页详解<a target="_blank" rel="noopener" href="https://blog.csdn.net/u010002184/article/details/77039135">https://blog.csdn.net/u010002184/article/details/77039135</a><br>关闭透明大页</p>
+<p>时钟同步问题导致 HBase 的多 Region Server 实例启不来。</p>
+<h3 id="2-6-20230531-3new-servers-which-settings-are-alligned-with-x86"><a href="#2-6-20230531-3new-servers-which-settings-are-alligned-with-x86" class="headerlink" title="2.6.20230531 3new servers which settings are alligned with x86"></a>2.6.20230531 3new servers which settings are alligned with x86</h3><p>三台服务器均摊一下SATA盘，每台机器都是13块硬盘<br>插网线登录IBMS管理界面<br>装openeuler系统<br>接显示器、键盘鼠标，操作进行 BIOS 设置<br>做 RAID 操作<br>分配IP<br>登录主机，修改主机名 hostnamectl<br>主机名IP映射缓存<br>可信认证，不用每次输密码<br>时钟同步<br>设置自己的YUM源（打包在了IOS镜像中），可供安装集群<br>把 ambari HDP 等要用到的包放在 httpd 的 &#x2F;var&#x2F;www&#x2F;html 路径下供 HTTP 访问<br>配置 ambari 的 yum 源，安装 ambari<br>安装 MariaDB<br>导入建表语句<br>启动 ambari，访问 Web UI，安装 HDP<br>配置 HDFS 的 namenode 和 datanode 的存储路径时，发现硬盘还没格式化<br>用 linux 命令格式化硬盘<br>mount 命令挂载硬盘</p>
+<h3 id="2-7-20230602terms-collected"><a href="#2-7-20230602terms-collected" class="headerlink" title="2.7.20230602terms collected"></a>2.7.20230602terms collected</h3><p>单核能力、内存通道、916芯片<br>内存页<br>内存频率 内存带宽<br>磁盘转速、带宽、单通道<br>ARM单核的比不过X86，试图调度更多的核<br>X86机器的内存页是4K 鲲鹏是64K？<br>透明大页 TLB<br>鲲鹏的 TLB 的 Miss很大<br>内存的布局也是有讲究的，会影响内存速率<br>带R和不带R的英特尔芯片<br>intel的有超频，虽然40核但是80线程，arm的虽然60核但是没超频就是60线程<br>X86是4K内存页大小，ARM的是64MB的内存页大小。</p>
+<p>系统盘&#x2F;硬盘，格式化硬盘，系统盘不格式化<br>软件的配置文件在系统盘中吗？格式化硬盘并不影响配置文件</p>
+<p>rm 并不删的彻底，要进一步格式化？</p>
+<p>numactl 绑核<br>不绑核，会产生 CPU 跨内存调用的损耗。<br>强制绑核，会使得 CPU 核心与相近的内存绑定。<br>但是一旦绑定，会使得 CPU 核的内存变得有限，从而可能会使用交换空间 Swap。</p>
+<p>交换空间关闭与否</p>
+<p>内置的管理网页，例如华为服务器的IBMS、路由器的设置界面</p>
+<p>CPU、磁盘IO、网卡</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">top</span><br><span class="line">dstat -n</span><br><span class="line">iostat</span><br><span class="line">ethtool</span><br></pre></td></tr></table></figure>
+
+
+
+<p>将Compaction下推到存储层(HDFS)执行，这样，每一个DateNode在本地合并自己的文件，这样可以降低一半以上的网络IO请求，但本地磁盘IO请求会增大，这事实上是用磁盘IO资源来换取昂贵的网络IO资源。在我们自己的测试中，我们也发现，将Compaction下推到HDFS侧执行，能够明显的优化读写时延毛刺问题。</p>
+
+      </div>
+    </div>
+  </div>
+  
+    <div class="post-category">
+      <div id="p-meta-i">
+        
+          
+            <a class="hover-with-bg" href="/categories/hadoop/">hadoop</a>
+          
+            <a class="hover-with-bg" href="/categories/hadoop/hbase/">hbase</a>
+          
+            <a class="hover-with-bg" href="/categories/hadoop/hbase/hbase-advanced/">hbase_advanced</a>
+          
+        
+        
+      </div>
+    </div>
+  
+  <div class="post-footer">
+    
+    
+  </div>
+  
+</article>
+
+
+        </div>
+        
+<footer>
+    
+    
+    
+    
+    
+      <p>
+        Copyright &copy;
+         
+          2023 - 
+        
+        2023
+        Young
+      </p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+        <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+          <i id="i-up"></i>
+        </a>
+    
+    
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+                toggleClass(".post-header", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div id="css-loading">
+        <h3 class="text-center">加载中...</h3>
+    </div>
+</body>
+</html>

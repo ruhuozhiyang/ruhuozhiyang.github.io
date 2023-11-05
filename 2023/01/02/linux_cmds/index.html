@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>Linux 手册 - young&#39;s personal tech manuals</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="Linux 手册"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn {
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: none;
+    display: block;
+    padding: 0rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="top"></div>
+    <div id="page-main" class="main-content">
+        <div class="mg-top">
+            <div class="post-header">
+  <!-- 一款简洁的单栏 Hexo -->
+  
+    <a href="/">
+      <span class="navbar-menu">Home</span>
+    </a>
+  
+    <a href="/archives/">
+      <span class="navbar-menu">Archives</span>
+    </a>
+  
+    <a href="/categories/">
+      <span class="navbar-menu">Categories</span>
+    </a>
+  
+    <a href="/tags/">
+      <span class="navbar-menu">Tags</span>
+    </a>
+  
+</div>
+
+<article class="page">
+  <div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3 style="color: rgb(41,177,119);font-family: 'Menlo', 'Meslo LG', monospace">
+    Linux 手册
+  </h3>
+  
+    <span class="post-meta-label">
+      young
+    </span>
+  
+  
+    <span class="post-meta-label">
+      <span class="p-dot"></span>
+      <time datetime="2023-01-02 18:13" pubdate>
+        2023-01-02
+      </time>
+    </span>
+  
+  
+  
+  
+</div>
+  
+  </div>
+  <div class="article-m">
+    <div class="post-toc">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%A6%82%E5%BF%B5"><span class="toc-text">1. 概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%91%BD%E4%BB%A4"><span class="toc-text">2. 命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E9%98%85%E8%A7%88%EF%BD%9C%E7%AD%9B%E9%80%89%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="toc-text">2.1. 阅览｜筛选文件内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%E3%80%90CentOS%E3%80%91"><span class="toc-text">2.2. 查看当前的操作系统信息【CentOS】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%BE%93%E5%87%BA%E6%9F%90%E4%B8%AA%E7%9B%AE%E5%BD%95%E4%B8%8B%E6%89%80%E6%9C%89%E5%86%85%E5%AE%B9"><span class="toc-text">2.3. 输出某个目录下所有内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E6%8E%A7%E5%88%B6%E7%94%A8%E6%88%B7%E5%AF%B9%E6%96%87%E4%BB%B6%E7%9A%84%E6%9D%83%E9%99%90"><span class="toc-text">2.4. 控制用户对文件的权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="toc-text">2.5. 定时任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E6%9F%A5%E7%9C%8B%E6%9C%BA%E5%99%A8%E7%9A%84%E7%A1%AC%E4%BB%B6%E6%83%85%E5%86%B5"><span class="toc-text">2.6. 查看机器的硬件情况</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%EF%BD%9C%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-text">2.7. 删除文件｜文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-%E7%94%A8%E6%88%B7%E6%93%8D%E4%BD%9C"><span class="toc-text">2.8. 用户操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9-%E5%8E%8B%E7%BC%A9%EF%BD%9C%E6%98%BE%E7%A4%BA%E5%86%85%E5%AE%B9%EF%BD%9C%E8%A7%A3%E5%8E%8B-tar-amp-tar-gz-%E6%96%87%E4%BB%B6"><span class="toc-text">2.9. 压缩｜显示内容｜解压 tar &amp; tar.gz 文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-10-%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6%EF%BD%9C%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-text">2.10. 查找文件｜文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-11-%E6%98%BE%E7%A4%BA%E7%9B%AE%E5%89%8D%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6%E7%9A%84%E8%AE%BE%E5%AE%9A"><span class="toc-text">2.11. 显示目前资源限制的设定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-12-Netcat"><span class="toc-text">2.12. Netcat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-13-%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95"><span class="toc-text">2.13. 复制文件和目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-14-%E6%98%BE%E7%A4%BA%E7%94%B5%E8%84%91%E4%BB%A5%E5%8F%8A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF"><span class="toc-text">2.14. 显示电脑以及操作系统信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-15-%E7%AB%AF%E5%8F%A3"><span class="toc-text">2.15. 端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-16-%E6%98%BE%E7%A4%BA%E7%B3%BB%E7%BB%9F%E4%B8%AD%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9A%84%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-text">2.16. 显示系统中已存在的环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-17-%E6%96%87%E4%BB%B6%E8%BF%BD%E5%8A%A0%E5%86%85%E5%AE%B9"><span class="toc-text">2.17. 文件追加内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-18-%E5%BB%BA%E7%AB%8B%E8%BD%AF%E9%93%BE%E6%8E%A5"><span class="toc-text">2.18. 建立软链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-19-%E6%9F%A5%E7%9C%8B%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%AE%89%E8%A3%85%E8%B7%AF%E5%BE%84"><span class="toc-text">2.19. 查看软件的安装路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-20-sudo-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86"><span class="toc-text">2.20. sudo 权限管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-21-su-%E5%88%87%E6%8D%A2%E7%94%A8%E6%88%B7"><span class="toc-text">2.21. su 切换用户</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-22-ps"><span class="toc-text">2.22. ps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-23-jps"><span class="toc-text">2.23. jps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-24-firewall"><span class="toc-text">2.24. firewall</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-25-%E6%9F%A5%E8%AF%A2-DNS-%E7%9A%84%E8%AE%B0%E5%BD%95"><span class="toc-text">2.25. 查询 DNS 的记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-26-tmux-%E5%B7%A5%E5%85%B7"><span class="toc-text">2.26. tmux 工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-27-kill"><span class="toc-text">2.27. kill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-28-mv-%E7%A7%BB%E5%8A%A8%E5%8C%85"><span class="toc-text">2.28. mv 移动包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-29-nohup"><span class="toc-text">2.29. nohup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-30-%E7%AE%A1%E9%81%93%E8%BE%93%E5%87%BA-%E2%80%93stdin"><span class="toc-text">2.30. 管道输出 –stdin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-31-seq%E5%91%BD%E4%BB%A4"><span class="toc-text">2.31. seq命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-32-xargs%E5%91%BD%E4%BB%A4"><span class="toc-text">2.32. xargs命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-33-dd%E5%91%BD%E4%BB%A4"><span class="toc-text">2.33. dd命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-34-wc%E5%91%BD%E4%BB%A4"><span class="toc-text">2.34. wc命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-35-%E7%BD%91%E5%8F%A3"><span class="toc-text">2.35. 网口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-35-1-%E7%BD%91%E7%BB%9C%E5%B8%A6%E5%AE%BD%E5%8D%95%E4%BD%8D"><span class="toc-text">2.35.1. 网络带宽单位</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-35-2-%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84%E7%89%A9%E7%90%86%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="toc-text">2.35.2. 网络设备的物理接口类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-36-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-text">2.36. 命令行快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-38-%E4%BA%A4%E6%8D%A2%E7%A9%BA%E9%97%B4Swap"><span class="toc-text">2.38. 交换空间Swap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-39-%E5%86%85%E5%AD%98"><span class="toc-text">2.39. 内存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-39-1-%E5%86%85%E5%AD%98%E6%95%B0%E6%8D%AE%E9%A1%B5"><span class="toc-text">2.39.1. 内存数据页</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-39-2-%E6%9F%A5%E7%9C%8B%E9%A1%B5%E5%A4%A7%E5%B0%8F"><span class="toc-text">2.39.2.查看页大小</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-40-sar%E5%91%BD%E4%BB%A4"><span class="toc-text">2.40. sar命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-41-%E6%97%B6%E9%92%9F%E5%90%8C%E6%AD%A5"><span class="toc-text">2.41. 时钟同步</span></a></li></ol></li></ol>
+      
+    </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-概念"><a href="#1-概念" class="headerlink" title="1. 概念"></a>1. 概念</h2><ol>
+<li><p>Linux 一切皆文件。</p>
+</li>
+<li><p>符号｜在 Linux 中是管道的意思，前一步处理的结果传入下一步处理，所以不同的命令可以通过｜结合使用。</p>
+</li>
+<li><p>～ 与 &#x2F;home，～ 是当前用户的家目录，&#x2F;home 是家目录。</p>
+</li>
+<li><p>常见的文件目录功能：</p>
+</li>
+</ol>
+<ul>
+<li>&#x2F;dev，dev 是 device的英文缩写。<br>&#x2F;dev 这个目录对所有的用户都十分重要，因为在这个目录中包含了所有Linux系统中使用的外部设备。但是这里并不是放的外部设备的驱动程序，这一点和 windows,dos 操作系统不一样。它实际上是一个访问这些外部设备的端口。我们可以非常方便地去访问这些外部设备，和访问一个文件，一个目录没有任何区别。<br>设备文件一般存放在 &#x2F;dev 目录下，设备文件分为两种：块设备文件(b)和字符设备文件(c)。<br>&#x2F;dev&#x2F;null，该设备是空设备，也称为位桶（bit bucket）或者黑洞(black hole)。你可以向它输入任何数据，但任何写入它的数据都会被抛弃。通常用于处理不需要的输出流。（当然，它也可以作为空的输入流）<br>&#x2F;dev&#x2F;zero，该设备无穷尽地提供空字符（ASCII NUL, 0x00），可以使用任何你需要的数目。它通常用于向设备或文件写入字符串0，用于初始化数据存储。（当然，也可作为输出流的接受容器）。</li>
+<li>&#x2F;etc  配置目录</li>
+<li>&#x2F;usr  用户程序目录</li>
+<li>&#x2F;tmp  临时目录</li>
+<li>&#x2F;bin  用户二进制</li>
+<li>&#x2F;sbin  系统二进制</li>
+<li>&#x2F;usr&#x2F;bin  集中了几乎所有用户命令，是系统的软件库，另有些命令在 &#x2F;bin 或 &#x2F;usr&#x2F;local&#x2F;bin 中</li>
+<li>主目录：&#x2F;root、&#x2F;home&#x2F;username</li>
+<li>用户可执行文件：&#x2F;bin、&#x2F;usr&#x2F;bin、&#x2F;usr&#x2F;local&#x2F;bin</li>
+<li>系统可执行文件：&#x2F;sbin、&#x2F;usr&#x2F;sbin、&#x2F;usr&#x2F;local&#x2F;sbin</li>
+<li>其他挂载点：&#x2F;media、&#x2F;mnt</li>
+<li>内核和Bootloader：&#x2F;boot</li>
+<li>服务器数据：&#x2F;var、&#x2F;srv</li>
+<li>系统信息：&#x2F;proc、&#x2F;sys</li>
+<li>共享库：&#x2F;lib、&#x2F;usr&#x2F;lib、&#x2F;usr&#x2F;local&#x2F;lib</li>
+</ul>
+<ol start="5">
+<li>压缩文件 .tar｜.tar.gz｜.zip<br>.tar 是格式压缩，.tar.gz 是进一步压缩的二次压缩。<br>.tar.gz 压缩格式用于 Unix 操作系统，而 Zip 用于 Windows 操作系统。</li>
+</ol>
+<p>tar：tar是*nix下的打包工具，生成的包通常也用tar作为扩展名，其实tar只是负责打包，不一定有压缩，事实上可以压缩，也可以不压缩，通常你看到xxxx.tar.gz，就表示这个tar包是压缩的，并且使用的压缩算法是GNU ZIP，而xxxx.tar.bz2就表示这个包使用了bzip2算法进行压缩，当然这样的命名只是一种惯例，并非强制。简单地说，tar就仅是打包。</p>
+<p>jar：即Java Archive，Java的包，Java编译好之后生成class文件，但如果直接发布这些class文件的话会很不方便，所以就把许多的class文件打包成一个jar，jar中除了class文件还可以包括一些资源和配置文件，通常一个jar包就是一个java程序或者一个java库。</p>
+<p>war：Web application Archive，与jar基本相同，但它通常表示这是一个Java的Web应用程序的包，tomcat这种Servlet容器会认出war包并自动部署。</p>
+<p>tar是通用的另一种打包格式，为了部署到服务器时方便。而jar是java app server识别的java部署格式，其实是Zip文件，只是内部的文件有规范。war是专用于web app的jar。另外还有用于enterprise app的ear后缀。</p>
+<ol start="6">
+<li>scp 和 sftp</li>
+</ol>
+<ul>
+<li>两者都是基于 ssh 安全协议的文件传输命令；</li>
+<li>scp 比较简单，是轻量级的，sftp 的功能则比较多；</li>
+<li>sftp 在文件传输过程中中断的话，连接后还可以继续传输，但 scp 不行；</li>
+</ul>
+<ol start="7">
+<li>Linux 环境变量</li>
+</ol>
+<ul>
+<li>按照生命周期来分，可以分为两类：<br>永久的：需要用户修改相关的 profile 配置文件，source 重新加载，变量永久生效。<br>临时的：用户利用 export 命令，在当前终端下声明环境变量，关闭 shell 终端失效。</li>
+<li>按照作用域来分，也可以分为两类：<br>系统环境变量：系统环境变量对该系统中所有用户都有效。<br>用户环境变量：这种类型的环境变量只对特定的用户有效。</li>
+</ul>
+<ol start="8">
+<li>Unix &#x2F; Linux 中有两个 profile 文件</li>
+</ol>
+<ul>
+<li>&#x2F;etc&#x2F;profile，是全局 profile 文件，设置后会影响到所有用户。</li>
+<li>&#x2F;home&#x2F;username&#x2F;.profile 或 &#x2F;home&#x2F;username&#x2F;.bash_profile，是特定用户的环境变量。</li>
+<li>补充：profile 文件是 Unix 上才有的；.bash_profile 文件是 Linux 下有的【Linux下，用户目录没有 .profile 文件】</li>
+</ul>
+<ol start="9">
+<li><p>epoll、kqueue机制</p>
+</li>
+<li><p>传给脚本的参数</p>
+</li>
+</ol>
+<ul>
+<li>$# 是传给脚本的参数个数</li>
+<li>$0 是脚本本身的名字</li>
+<li>$1  是传递给该shell脚本的第一个参数</li>
+<li>$2  是传递给该shell脚本的第二个参数</li>
+<li>$@  是传给脚本的所有参数的列表</li>
+</ul>
+<ol start="11">
+<li>profile 文件的执行顺序</li>
+</ol>
+<ul>
+<li>bash 登录的时候，先执行全局的 profile 文件：&#x2F;etc&#x2F;profile</li>
+<li>接着 bash 会检查当前用户的 home 目录中，是否有 .bash_profile 或 .bash_login 或 .profile 文件，若有，则会执行其中一个，执行顺序为：.bash_profile -&gt; .bash_login -&gt; .profile。</li>
+</ul>
+<ol start="12">
+<li><p>etc&#x2F;hosts 文件<br>在 etc&#x2F;hosts 文件中手动配置域名和 IP 的映射，这样就可以不用 DNS 就可以解析域名了。<br>留有疑问，我本地自定义了一个域名，并在hosts文件中配置了映射为百度的IP地址，但是就是访问不了？</p>
+</li>
+<li><p>Linux下安装软件的方式</p>
+</li>
+</ol>
+<ul>
+<li>工具安装。<br>软件包管理工具有：apt、rpm、yum 等。</li>
+</ul>
+<p>apt，即 advanced package tools。apt 是现今最成熟的软件包管理系统，它可以自动检测软件依赖问题，下载和安装所有文件。甚至只需要一条命令，就可以更新整个系统上所有的软件包。<br>apt 工具最初被设计运行于 Debian 系统上，只支持 .deb 格式的软件包文件。<br>如今 apt 工具已经被移植到使用 rpm 软件包机制的发行版 Linux 系统上，可以从 apt-rpm.org 获得 apt 的 rpm 版本。<br>apt 工具最常用的有两个命令：<br>apt-get：用于执行和软件包安装有关的所有操作。<br>apt-cache：用于查找软件包的相关信息。<br>apt 工具是 Ubuntu、Debian 下软件包管理工具。</p>
+<p>rpm，即 redhat package manager，原本是 Red Hat Linux 发行版专门用来管理 Linux 各项套件的程序，由于它遵循 GPL 规则且功能强大方便，因而广受欢迎。逐渐受到其他 Linux 发行版的采用。 rpm 套件管理方式的出现，让 Linux 易于安装、升级，间接提升了 Linux 的适用度。<br>rpm 此名词既可以指 .rpm 文件格式的软件包，也可以指其本身的软件包管理器。<br>rpm 工具最早由 Red Hat 研制，现在也由开源社区开发。<br>rpm 工具通常随附于 Linux 发行版，但也有单独将 rpm 作为应用软件发行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">使用 rpm 工具安装软件包的语法为：rpm -ivh</span><br><span class="line">rpm -Uvh ...</span><br><span class="line">-U &lt;套件档&gt; 或 --upgrade &lt;套件档&gt;  //升级指定的套件档。</span><br><span class="line">-h 或 --hash  //安装套件时列出标记。</span><br><span class="line">-v  //显示指令执行过程。</span><br></pre></td></tr></table></figure>
+<p>rpm 包的安装有一个很大的缺点：文件的关联性太大，有时候装一个软件要安装很多其他的软件包，管理软件间关联关系很麻烦。<br>为此 RedHat 开发了 yum 安装方法，yum 并不是一种包，而是安装包的软件。yum 可以彻底解决这个关联性的问题，很方便，只要配置两个文件即可安装，安装方法是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install ...</span><br></pre></td></tr></table></figure>
+<p>简单点说，rpm 只能安装已经下载到本地机器上的 rpm 包。<br>yum 能从指定服务器在线下载并安装 rpm 包，还能更新系统，且还能自动处理包与包之间的依赖问题，这个是 rpm 工具所不具备的。</p>
+<p>rpm &amp; tar<br>rpm 一般都是预先编译好的文件，它可能已经绑定到某种 CPU 或者 Linux 发行版上面了。<br>tar 一般包括编译脚本，你可以在你的环境下编译，所以具有通用性；tar 只是一种压缩文件格式，一般都是软件的源码打包成的，需要自己解包，然后进行安装三部曲 <code>./configure, make, make install</code> 来安装软件。<br>如果你的包不想开放源代码，你可以制作成 rpm，如果开源，用 tar 更方便。</p>
+<p>yum 工具是 CentOS、Redhat 下的软件包管理工具。</p>
+<ul>
+<li><p>源代码安装。<br>源代码压缩文件包的格式后缀可以是：.tar、tar.gz、tar.bz2、tar.Z。<br>解压好源代码压缩文件后，一般依次执行如下的命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure  （检查编译环境）</span><br><span class="line">make  （对源代码进行编译）</span><br><span class="line">sudo make install  （将生成的可执行文件安装到当前计算机中）</span><br><span class="line">make clean  (选择执行，主要是用来清除一些临时文件)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>二进制文件安装。<br>二进制文件是机器能直接执行的文件，二进制包的安装比较简单，我们需要做的只是将从网络上下载的二进制包解压后放到合适的目录，然后将包含可执行的主程序文件的目录添加进PATH环境变量即可。</p>
+</li>
+</ul>
+<ol start="14">
+<li><p>文件属性<br>Linux系统中，文件属性<br>“l”是链接文件，相当于windows的快捷方式; <br>“b”是块设备,硬盘就是一个例子; <br>“c”是字符设备文件,鼠标,键盘算是; <br>“d”是目录文件,相当于windows的文件夹；</p>
+</li>
+<li><p>硬连接和软连接<br>Linux 链接分两种，一种被称为硬链接（Hard Link），另一种被称为符号链接（Symbolic Link）。默认情况下，ln 命令产生硬链接。<br>硬连接<br>硬连接指通过索引节点来进行连接。在 Linux 的文件系统中，保存在磁盘分区中的文件不管是什么类型都给它分配一个编号，称为索引节点号(Inode Index)。在 Linux 中，多个文件名指向同一索引节点是存在的。比如：A 是 B 的硬链接（A 和 B 都是文件名），则 A 的目录项中的 inode 节点号与 B 的目录项中的 inode 节点号相同，即一个 inode 节点对应两个不同的文件名，两个文件名指向同一个文件，A 和 B 对文件系统来说是完全平等的。删除其中任何一个都不会影响另外一个的访问。<br>硬连接的作用是允许一个文件拥有多个有效路径名，这样用户就可以建立硬连接到重要文件，以防止“误删”的功能。其原因如上所述，因为对应该目录的索引节点有一个以上的连接。只删除一个连接并不影响索引节点本身和其它的连接，只有当最后一个连接被删除后，文件的数据块及目录的连接才会被释放。也就是说，文件真正删除的条件是与之相关的所有硬连接文件均被删除。<br>软连接<br>另外一种连接称之为符号连接（Symbolic Link），也叫软连接。软链接文件有类似于 Windows 的快捷方式。它实际上是一个特殊的文件。在符号连接中，文件实际上是一个文本文件，其中包含的有另一文件的位置信息。比如：A 是 B 的软链接（A 和 B 都是文件名），A 的目录项中的 inode 节点号与 B 的目录项中的 inode 节点号不相同，A 和 B 指向的是两个不同的 inode，继而指向两块不同的数据块。但是 A 的数据块中存放的只是 B 的路径名（可以根据这个找到 B 的目录项）。A 和 B 之间是“主从”关系，如果 B 被删除了，A 仍然存在（因为两个是不同的文件），但指向的是一个无效的链接。</p>
+</li>
+</ol>
+<ul>
+<li>删除符号连接f3，对f1、f2无影响；</li>
+<li>删除硬连接f2，对f1、f3也无影响；</li>
+<li>删除原文件f1，对硬连接f2没有影响，而符号连接f3失效；</li>
+<li>同时删除原文件f1，硬连接f2，整个文件会真正的被删除。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">touch f1  //创建一个测试文件f1</span><br><span class="line">ln f1 f2  //创建f1的一个硬连接文件f2</span><br><span class="line">ln -s f1 f3  //创建f1的一个符号连接文件f3</span><br><span class="line">ls -li  //-i参数显示文件的inode节点信息</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="16">
+<li>firewall 和阿里云 ECS 的安全组的关系？<br>阿里云的安全组是一种虚拟防火墙，具有状态检测和数据包过滤的功能。<br>控制台安全组放行某个端口，只能说明安全组没有限制这个端口的访问，不能说明这个端口已经开启。<br>如需外网访问 ECS 服务器的端口需要满足以下三个必要条件：</li>
+</ol>
+<ul>
+<li>安全组规则放行该端口；</li>
+<li>对应端口的程序软件是启动运行状态，并且监听地址为 0.0.0.0（您可通过执行 netstat -ano | grep 端口号命令来检测端口是否处于监听状态）；</li>
+<li>已关闭 ECS 实例内部防火墙firewall，或者防火墙firewall已放行该端口；</li>
+</ul>
+<ol start="17">
+<li><p>内核 &amp; Shell &amp; 终端模拟器<br>管理计算机硬件的其实是内核，而用户通过 Shell 来与计算机的内核通信。<br>Shell 是一个用 C 语言编写的程序，它是用户使用 Linux 的桥梁。Shell 是指一种应用程序，这个应用程序提供了一个界面，用户通过这个界面访问操作系统内核的服务。Ken Thompson 的 sh 是第一种 Unix Shell，Windows Explorer 是一个典型的图形界面 Shell。Shell 本质上就是能执行各种命令的宏处理器，而 bash(&#x2F;bin&#x2F;bash) 是 Linux 系统默认的 shell。<br>如果是不带有图形环境的 Linux 系统（比如专用于服务器的系统），启动后就直接是命令行环境。不过，现在大部分的 Linux 发行版，尤其是针对普通用户的发行版，都是图形环境。用户登录系统后，自动进入图形环境，需要自己启动终端模拟器，才能进入命令行环境。所谓“终端模拟器”（terminal emulator）就是一个模拟命令行窗口的程序，让用户在一个窗口中使用命令行环境，并且提供各种附加功能，比如调整颜色、字体大小、行距等等。不同 Linux 发行版（准确地说是不同的桌面环境）带有的终端程序是不一样的，比如 KDE 桌面环境的终端程序是 konsole，Gnome 桌面环境的终端程序是 gnome-terminal，用户也可以安装第三方的终端程序。所有终端程序，尽管名字不同，基本功能都是一样的，就是让用户可以进入命令行环境，使用 Shell。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[查看所有的Shell]</span><br><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">[查看当前设备的默认Shell]</span><br><span class="line">echo $SHELL</span><br><span class="line"></span><br><span class="line">[退出当前Shell]</span><br><span class="line">exit</span><br><span class="line"></span><br><span class="line">[查看当前 Shell 的提示符样式风格]</span><br><span class="line">echo $PS1</span><br><span class="line"></span><br><span class="line">[更改 Shell 提示符样式]</span><br><span class="line">export PS1=&quot;[\u@\H \W]\$ &quot;</span><br><span class="line">永久修改需要进一步在相关 profile 文件中设置并 source。</span><br><span class="line"></span><br><span class="line">[进入bash命令行]</span><br><span class="line">bash</span><br><span class="line"></span><br><span class="line">Shell 中</span><br><span class="line">[-h file] 检测是否是符号链接</span><br><span class="line">[-z string] “string”的长度为零则为真</span><br><span class="line">[-r file] 如果file存在且是可读的则为真</span><br><span class="line">[-t FD] 如果文件描述符FD打开且指向一个终端则为真</span><br><span class="line">[-x file] 如果file存在且是可执行的则为真</span><br><span class="line">[-e file] 如果file文件存在则为真</span><br><span class="line">[-p file] 如果file存在且是一个名字管道（F如果O）则为真</span><br></pre></td></tr></table></figure>
+<p>更多 bash 用法见<a target="_blank" rel="noopener" href="https://wangdoc.com/">文档链接</a></p>
+</li>
+<li><p><strong>CPU</strong></p>
+</li>
+</ol>
+<ul>
+<li>cpi<br>全称为 clock cycle per instruction，即每条计算机指令执行所需的 cpu 时钟周期。</li>
+<li>cpu 时钟周期<br>是一个时钟脉冲所需要的时间，也叫节拍脉冲或 T 周期，它是 cpu 中最小的时间单位。</li>
+<li>脉冲<br>通常是指电子技术中经常运用的一种像脉搏似的短暂起伏的电冲击(电压或电流)。 主要特性有波形、幅度、宽度和重复频率。 脉冲是相对于连续信号在整个信号周期内短时间发生的信号，大部分信号周期内没有信号。 就像人的脉搏一样。</li>
+<li>cpu 时钟频率<br>也叫主频，是 1 秒钟内的时钟脉冲个数，即 cpu 时钟周期的倒数。</li>
+<li>cpu 执行时间<br>运行一个程序所需要的 cpu 执行时间 &#x3D; 总时钟周期数 &#x2F; 主频 &#x3D; 总指令条数 * cpi &#x2F; 主频。</li>
+<li>相关概念——物理 cpu 数（Socket）、核心core、thread<br>（1）物理 cpu 数<br>主板上实际插入的 cpu 硬件个数（socket），由于在主板上引入多个 cpu 插槽需要更复杂的硬件支持（连接不同插槽的 cpu 到内存和其他资源），通常只会在服务器上才这样做，在家用电脑中，一般主板上只会有一个 cpu 插槽。<br>（2）核心 core<br>起初，每个物理 cpu 上只有一个核心 core，对操作系统而言，也就是同一时刻只能运行一个进程&#x2F;线程。 为了提高性能，cpu 厂商开始在单个物理 cpu 上增加核心（实实在在的硬件存在），也就出现了双核心 cpu 以及多核心 cpu。双核心 cpu 也就是同一时刻能够运行两个进程&#x2F;线程的 cpu。<br>（3）同时多线程技术（simultaneous multithreading）和 超线程技术（hyper–threading&#x2F;HT）<br>本质同样是为了提高单个 core 同一时刻能够执行的多线程数的技术，充分利用单个 core 的计算能力，尽量让其”一刻也不得闲”。simultaneous multithreading 缩写是 SMT，是 AMD 和其他 cpu 厂商的称呼。 hyper–threading 是 Intel 的称呼，也可以认为 hyper–threading 是 SMT 的一种具体技术实现。</li>
+<li>Linux下查看 cpu 的信息<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lscpu</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="19">
+<li><p>centos 系统下删除 mysql 及 mysqld。<br>先利用 rpm 找出所有的 sql 相关的文件：Rpm -q -a | grep sql<br>然后利用rpm删除找到的文件：Rpm -e …</p>
+</li>
+<li><p>Poller 的 fd 集合</p>
+</li>
+<li><p>部分编译器下，比如gcc， 两个long合用,即long long类型，表示C语言目前最长的系统整型类型，每个long long类型占8字节，64位。其格式化字符为”%lld”。</p>
+</li>
+<li><p>Source 设置环境变量只在当前 shell 窗口下生效，重新打开一个窗口要重新 source setenv.sh 而且要注意直接 .&#x2F; 执行和 source 执行的差别。</p>
+</li>
+<li><p>UINT64_MAX 再增加的溢出问题；例如 UINT64_MAX + 常数，就会产生溢出问题，得到意想不到的结果或直接报错。</p>
+</li>
+<li><p>常用的环境变量如下：</p>
+</li>
+</ol>
+<ul>
+<li>PATH 决定了 shell 将到哪些目录中寻找命令或程序</li>
+<li>HOME 当前用户主目录</li>
+<li>HISTSIZE 历史记录数</li>
+<li>LOGNAME 当前用户的登录名</li>
+<li>HOSTNAME 指主机的名称</li>
+<li>SHELL 当前用户Shell类型</li>
+<li>LANGUGE 语言相关的环境变量，多语言可以修改此环境变量</li>
+<li>MAIL 当前用户的邮件存放目录</li>
+<li>PS1 基本提示符，对于root用户是＃，对于普通用户是＄</li>
+</ul>
+<ol start="25">
+<li>SSH<br>SSH 只是一种协议，存在多种实现，既有商业实现，也有开源实现。本人用的是开源自由实现 OpenSSH。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[查看 SSH 版本]</span><br><span class="line">ssh -v</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>SSH 密码登录 &amp; 公钥登录。<br>加上 -v -l pi 可以将连接时候的日志都打印出来。<br>见<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2011/12/ssh_remote_login.html">公钥登录</a></li>
+<li>SSH 远程连接时，报错”ssh_exchange_identification: Connection closed by remote host”，可能原因如下。<br>（1）远程主机启用了 DenyHosts 服务。<br>如果远程主机安装了 DenyHosts 服务，需要查看远程主机 &#x2F;etc&#x2F;hosts.deny 文件是否有本机的记录，如有则将记录删除，并执行如下命令重启 sshd 和 rsyslog 服务。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br><span class="line">systemctl restart rsyslog</span><br></pre></td></tr></table></figure>
+（2）客户端连接数过多。<br>缺省情况下，SSH终端连接个数最大为 10，这种情况下，需要修改 SSH 的配置文件并重启 SSHD。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">修改 /etc/ssh/sshd_config 中默认参数 #MaxStartups 10，将其改为 MaxStartups 100，或改为合适值。</span><br><span class="line"></span><br><span class="line">[重启 SSHD 服务]</span><br><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure></li>
+<li>mac 添加 ssh config 配置，快速登录 linux 系统。<br>（1）访问根目录下 .ssh 文件夹并通过如下命令生成本机的 id_rsa（私钥）与 id_rsa.pub（公钥）文件。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~/.ssh/</span><br><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+（2）创建并编辑配置文件 config。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">vim config</span><br><span class="line"></span><br><span class="line">[添加如下配置内容]</span><br><span class="line">Host myServer # 设置ssh host缩写</span><br><span class="line">  Hostname 47.***.***.10 # 服务器ip</span><br><span class="line">  User root # 服务器用户名</span><br><span class="line">  Port 22 # 服务器端口</span><br><span class="line">  IdentityFile ~/.ssh/id_rsa # 私钥</span><br></pre></td></tr></table></figure>
+（3）在远程主机的目标用户根目录下的 .ssh 文件目录下创建文件 authorized_keys，已有则忽略；并追加本机公钥内容。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[已在远程主机用户根目录下]</span><br><span class="line">cat 本机公钥内容 &gt;&gt; .ssh/authorized_keys</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="26">
+<li>stdin &amp; stdout<br>Linux下，当一个用户进程被创建的时候，系统会自动为该进程创建三个数据流，分别为 stdin、stdout、stderr。</li>
+</ol>
+<ul>
+<li>符号 &gt; 可以将程序的标准输出 stdout 重定向到文件中。</li>
+<li>符号 &lt; 将程序的标准输入重定向为从文件输入。</li>
+</ul>
+<ol start="27">
+<li><p>执行当前工作目录中的 program 时还是老老实实的 .&#x2F;program 这样执行<br>当前工作目录 .&#x2F; 一般并未在搜索范围之列，也就是 PATH 环境变量的值中并不包含 .&#x2F; 这个当前工作目录。<br>为什么一般不能加入这个当前工作目录呢？<br>主要原因在于安全问题。<br>试想，一个evil 用户在自己的家目录 &#x2F;home&#x2F;evil&#x2F; 中放了一个名字叫ls的程序，当root用户或其它用户来到这个&#x2F;home&#x2F;evil&#x2F;目录时，想查看这个目录中有些啥子文件，于是执行ls命令，这时如果.&#x2F;目录在PATH环境变量中且搜索时先搜索这个.&#x2F;目录的话，则执行到的程序是&#x2F;home&#x2F;evil&#x2F;ls而不是&#x2F;bin&#x2F;ls程序，这样就会造成极大地安全问题。</p>
+</li>
+<li><p>Linux 上进程有 5 种状态：<br>运行（正在运行或在运行队列中等待）<br>中断（休眠中，受阻，在等待某个条件的形成或接受到信号）<br>不可中断（收到信号不唤醒和不可运行，进程必须等待直到有中断发生）<br>僵死（进程已终止, 但进程描述符存在, 直到父进程调用 wait4() 系统调用后释放）<br>停止（进程收到 SIGSTOP、SIGSTP、SIGTIN、SIGTOU 信号后停止运行）</p>
+</li>
+<li><p>BSD 格式和 SystemV 格式</p>
+</li>
+<li><p>SSD HMB 和 CMB</p>
+</li>
+</ol>
+<h2 id="2-命令"><a href="#2-命令" class="headerlink" title="2. 命令"></a>2. 命令</h2><h3 id="2-1-阅览｜筛选文件内容"><a href="#2-1-阅览｜筛选文件内容" class="headerlink" title="2.1. 阅览｜筛选文件内容"></a>2.1. 阅览｜筛选文件内容</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">more filename  [分页读取]</span><br><span class="line">cat 某文件 | more  [分页读取，有限查看，按回车键才会显示更多内容]</span><br><span class="line">cat filename | wc -l [显示文件的行数]</span><br><span class="line"></span><br><span class="line">tail -f filename  [从文件尾部开始读]</span><br><span class="line">head -f filename  [从文件头部开始读]</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># grep 命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本</span></span></span><br><span class="line">grep &quot;11&quot; filename  [关键字搜索，在文件 filename 中搜索内容 11]</span><br><span class="line">grep -n “11” filename  [在文件 filename 中搜素内容 11，并且在展示时带上行号]</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-查看当前的操作系统信息【CentOS】"><a href="#2-2-查看当前的操作系统信息【CentOS】" class="headerlink" title="2.2. 查看当前的操作系统信息【CentOS】"></a>2.2. 查看当前的操作系统信息【CentOS】</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/redhat-release</span><br><span class="line">或</span><br><span class="line">cat /etc/system-release</span><br><span class="line">或</span><br><span class="line">cat /etc/centos-release</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-输出某个目录下所有内容"><a href="#2-3-输出某个目录下所有内容" class="headerlink" title="2.3. 输出某个目录下所有内容"></a>2.3. 输出某个目录下所有内容</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat 目录名/*</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-控制用户对文件的权限"><a href="#2-4-控制用户对文件的权限" class="headerlink" title="2.4. 控制用户对文件的权限"></a>2.4. 控制用户对文件的权限</h3><p>chmod 全称是 change mode，该命令是控制用户对文件的权限的命令，Linux&#x2F;Unix 的文件调用权限分为三级: 文件所有者（Owner）、用户组（Group）、其它用户（Other Users），只有文件所有者和超级用户可以修改文件或目录的权限，可以使用如下两种模式指定文件的权限。</p>
+<ul>
+<li>符号模式</li>
+<li>绝对模式（八进制数字模式）<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[符号模式]</span><br><span class="line">chmod [ugoa][+-=][rwxX] 文件名</span><br><span class="line">u 表示该文件的拥有者，g 表示与该文件的拥有者属于同一个群体(group)者，o 表示其他以外的人，a 表示这三者皆是。</span><br><span class="line">+ 表示增加权限、- 表示取消权限、= 表示唯一设定权限。</span><br><span class="line">r 表示可读取，w 表示可写入，x 表示可执行，X 表示只有当该文件是个子目录或者该文件已经被设定过为可执行。</span><br><span class="line">例如：</span><br><span class="line">chmod u=rw,go= file  [对file的所有者设置读写权限，清空该用户组和其他用户对file的所有权限（空格代表无权限）]</span><br><span class="line"></span><br><span class="line">[八进制数字模式]</span><br><span class="line">chmod 777 文件名  [三个数字分别表示Owner、Group、Other Users的权限，每个数字由 r:4 w:2 x:1 组成，则777代表rwx-rwx-rwx]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-5-定时任务"><a href="#2-5-定时任务" class="headerlink" title="2.5. 定时任务"></a>2.5. 定时任务</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[crontab 定时任务很有用，例如可以用来做备份任务]</span><br><span class="line"></span><br><span class="line">[进行定时任务的编辑]</span><br><span class="line">crontab -e</span><br><span class="line"></span><br><span class="line">[列出已有的定时任务设置]</span><br><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
+<p>例如可以使用 crontab 定时执行某 shell 脚本，但是可能会出现 shell 脚本无法执行问题，具体情况如下。<br>如果我们使用 crontab 来定时执行脚本，无法执行，但是直接通过命令（如：.／test.sh）又可以正常执行，这主要是因为无法读取环境变量。<br>解决方法：</p>
+<ol>
+<li>所有命令需要写成绝对路径形式，如：&#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker。</li>
+<li>在 shell 脚本开头使用以下代码：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"></span><br><span class="line">. /etc/profile</span><br><span class="line">. ~/.bash_profile</span><br></pre></td></tr></table></figure></li>
+<li>在 &#x2F;etc&#x2F;crontab 中添加环境变量，在可执行命令之前添加命令 <code>. /etc/profile;/bin/sh</code>，使得环境变量生效。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如：</span><br><span class="line">20 03 * * * . /etc/profile;/bin/sh /var/www/runoob/test.sh</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="2-6-查看机器的硬件情况"><a href="#2-6-查看机器的硬件情况" class="headerlink" title="2.6. 查看机器的硬件情况"></a>2.6. 查看机器的硬件情况</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">df -h  </span><br><span class="line">[df 命令可以显示挂载的每个磁盘中的可用磁盘空间量。df 报告的可用磁盘空间只反映全部容量的 90%，因为报告统计信息留出总可用空间的 10% 以上。此头空间通常保持为空，以实现更好的性能。以人类能看懂的形式展示磁盘的使用情况。]</span><br><span class="line"></span><br><span class="line">[查看内存的使用情况，单位为 M]</span><br><span class="line">free -m</span><br><span class="line">https://www.xmmup.com/linux-free-minglingxiafreeheavailablequbie.html#wei_shen_me_yao_qing_chu_buffers_hecaches</span><br><span class="line"></span><br><span class="line">[查看负载情况]</span><br><span class="line">w 或 top</span><br><span class="line"></span><br><span class="line">[查看 CPU 的情况]</span><br><span class="line">cat /proc/cpuinfo</span><br><span class="line">lscpu</span><br><span class="line"></span><br><span class="line">[格式化磁盘]</span><br><span class="line">fdisk</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-删除文件｜文件夹"><a href="#2-7-删除文件｜文件夹" class="headerlink" title="2.7. 删除文件｜文件夹"></a>2.7. 删除文件｜文件夹</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm fileName  [删除一个文件]</span><br><span class="line">rm -r folderName  [循环删除一个文件夹，会有挨个提示]</span><br><span class="line">rm -rf folderName  [循环强制删除一个文件夹，没有提示]</span><br><span class="line">mkdir -p content1/content2/content3  [循环创建目录]</span><br></pre></td></tr></table></figure>
+<h3 id="2-8-用户操作"><a href="#2-8-用户操作" class="headerlink" title="2.8. 用户操作"></a>2.8. 用户操作</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd  [查看所有的用户]</span><br><span class="line">cat /etc/group  [查看所有用户组]</span><br><span class="line">useradd 用户名  [添加用户，其实就在 home 目录文件夹下创建一个用户目录文件夹]</span><br><span class="line">userdel -r 用户名  [删除用户，-r 是彻底删除]</span><br><span class="line">passwd 用户名  [设置用户的密码]</span><br></pre></td></tr></table></figure>
+<h3 id="2-9-压缩｜显示内容｜解压-tar-amp-tar-gz-文件"><a href="#2-9-压缩｜显示内容｜解压-tar-amp-tar-gz-文件" class="headerlink" title="2.9. 压缩｜显示内容｜解压 tar &amp; tar.gz 文件"></a>2.9. 压缩｜显示内容｜解压 tar &amp; tar.gz 文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf|tvf|xvf [压缩、显示内容、解压 .tar 文件]</span><br><span class="line"></span><br><span class="line">tar -czvf|tzvf|xzvf [压缩、显示内容、解压 .tar.gz 文件]</span><br><span class="line">[v是列出详细信息、c-压缩文件、t-列出压缩文件里内容、x-解压]</span><br></pre></td></tr></table></figure>
+<h3 id="2-10-查找文件｜文件夹"><a href="#2-10-查找文件｜文件夹" class="headerlink" title="2.10. 查找文件｜文件夹"></a>2.10. 查找文件｜文件夹</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[查找当前目录下所有名为filename的文件/文件夹，可以使用正则表达式匹配目标文件或目录]</span><br><span class="line">find . -name filename</span><br><span class="line"></span><br><span class="line">[查找当前目录下所有的文件]</span><br><span class="line">find . -type f </span><br><span class="line"></span><br><span class="line">[查找当前目录下所有的文件夹]</span><br><span class="line">find . -type d </span><br><span class="line"></span><br><span class="line">[查找当前目录下所有名为 __pycache__ 的目录，并执行删除操作]</span><br><span class="line">[-exec rm -rf &#123;&#125; 是 exec 要执行的命令]</span><br><span class="line">find . -type d -name &quot;__pycache__&quot; -exec rm -rf &#123;&#125; \;</span><br><span class="line"></span><br><span class="line">[查找当前目录下所有以 .xlsx 为后缀的文件]</span><br><span class="line">find . -name *.xlsx</span><br></pre></td></tr></table></figure>
+<h3 id="2-11-显示目前资源限制的设定"><a href="#2-11-显示目前资源限制的设定" class="headerlink" title="2.11. 显示目前资源限制的设定"></a>2.11. 显示目前资源限制的设定</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[ulimit 是 shell 内建命令，可用来控制 shell 执行程序的资源]</span><br><span class="line">ulimit -a</span><br></pre></td></tr></table></figure>
+<h3 id="2-12-Netcat"><a href="#2-12-Netcat" class="headerlink" title="2.12. Netcat"></a>2.12. Netcat</h3><p>Netcat 是一款简单的 Unix 工具，是一个功能强大的网络工具，使用 UDP 和 TCP 协议。</p>
+<ul>
+<li>它是一个可靠的容易被其他程序所启用的后台操作工具；</li>
+<li>同时它也被用作网络的测试工具或黑客工具。使用它你可以轻易的建立任何连接。内建有很多实用的工具。</li>
+</ul>
+<h3 id="2-13-复制文件和目录"><a href="#2-13-复制文件和目录" class="headerlink" title="2.13. 复制文件和目录"></a>2.13. 复制文件和目录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">本地复制文件命令 cp</span><br><span class="line">命令格式：</span><br><span class="line">cp [option] source1 source2 source3 ...  directory</span><br><span class="line">cp [-adfilprsu] 源文件(source) 目标文件(destination)</span><br><span class="line">参数说明：</span><br><span class="line">-r: 递归复制，用于目录的复制操作。</span><br><span class="line">-a: 是指 archive 的意思，也说是指复制所有的目录。</span><br><span class="line">-d: 若源文件为链接文件(link file)，则复制链接文件属性而非文件本身。</span><br><span class="line">-f: 强制(force)，若有重复或其它疑问时，不会询问用户，而强制复制。</span><br><span class="line">-i: 若目标文件(destination)已存在，在覆盖时会先询问是否真的操作。</span><br><span class="line">-l: 建立硬连接(hard link)的连接文件，而非复制文件本身。</span><br><span class="line">-s: 复制成符号连接文件(symbolic link)，即“快捷方式”文件。</span><br><span class="line">-p: 与文件的属性一起复制，而非使用默认属性。</span><br><span class="line">-u: 若目标文件比源文件旧，更新目标文件。</span><br><span class="line">例如将 /test1 目录下的 file1 复制到 /test3 目录，并将文件名改为 file2 ,可输入以下命令：</span><br><span class="line">cp /test1/file1 /test3/file2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[scp 是 secure copy 的缩写，scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令]</span><br><span class="line">[scp 是加密的，rcp 是不加密的，scp 是 rcp 的加强版]</span><br><span class="line"></span><br><span class="line">scp 本地文件 username@ip:path  [将本地文件复制到远程主机指定路径下，需要输入远程密码]</span><br><span class="line">scp -r 本地文件夹 username@ip:path  [将本地目录整个递归复制到远程主机指定路径下，需要输入远程密码]</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">[通过指定的代理服务器，登录连接指定服务器]</span><br><span class="line">scp -o ProxyCommand=&#x27;nc -x ux3.in.nopadding.com:12080 %h %p&#x27; backend-1.0.0.jar root@10.199.64.1:/root</span><br><span class="line"></span><br><span class="line">rsync -avzh -P -e &quot;ssh -o ProxyCommand=&#x27;nc -x 192.168.1.23:12080 %h %p&#x27;&quot; backend-1.0.0.jar root@10.199.64.1:/root</span><br><span class="line"></span><br><span class="line">[区别在于第二个命令更快，因为只会上传有所改变的地方]</span><br><span class="line">rsync 是一个常用的 Linux 应用程序，用于文件同步。</span><br><span class="line">它名称里面的r指的是 remote，rsync 其实就是&quot;远程同步&quot;（remote sync）的意思。与其他文件传输工具（如 FTP 或 scp）不同，rsync 的最大特点是会检查发送方和接收方已有的文件，仅传输有变动的部分（默认规则是文件大小或修改时间有变动）。</span><br><span class="line">注意，传输的双方都必须安装 rsync。</span><br></pre></td></tr></table></figure>
+<h3 id="2-14-显示电脑以及操作系统信息"><a href="#2-14-显示电脑以及操作系统信息" class="headerlink" title="2.14. 显示电脑以及操作系统信息"></a>2.14. 显示电脑以及操作系统信息</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uname -a</span><br></pre></td></tr></table></figure>
+<h3 id="2-15-端口"><a href="#2-15-端口" class="headerlink" title="2.15. 端口"></a>2.15. 端口</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[查看某个端口被什么进程占用]</span><br><span class="line">lsof -i tcp:port  [tcp 协议]</span><br><span class="line"></span><br><span class="line">[查看某个进程的端口]</span><br><span class="line">netstat -nap | grep 进程pid</span><br><span class="line"></span><br><span class="line">[查看所有的随机端口的范围，显示结果32768 61000，表示端口值在32768与61000间]</span><br><span class="line">cat /proc/sys/net/ipv4/ip_local_port_range</span><br><span class="line"></span><br><span class="line">[更改随机端口的范围为 10000 61000]</span><br><span class="line">echo &quot;10000 61000&quot; &gt; /proc/sys/net/ipv4/ip_local_port_range</span><br></pre></td></tr></table></figure>
+<h3 id="2-16-显示系统中已存在的环境变量"><a href="#2-16-显示系统中已存在的环境变量" class="headerlink" title="2.16. 显示系统中已存在的环境变量"></a>2.16. 显示系统中已存在的环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env</span><br></pre></td></tr></table></figure>
+<h3 id="2-17-文件追加内容"><a href="#2-17-文件追加内容" class="headerlink" title="2.17. 文件追加内容"></a>2.17. 文件追加内容</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;内容&#x27; &gt; example.txt  //往 example.txt 中写内容，且会覆盖原来的内容。</span><br><span class="line"></span><br><span class="line">cat example.txt &gt;&gt; example1.txt  //将 example.txt 中的内容追加到 example1.txt 中，追加到文件末尾不会覆盖。</span><br></pre></td></tr></table></figure>
+<h3 id="2-18-建立软链接"><a href="#2-18-建立软链接" class="headerlink" title="2.18. 建立软链接"></a>2.18. 建立软链接</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s  [源文件或目录]  [目标文件或目录]</span><br></pre></td></tr></table></figure>
+<h3 id="2-19-查看软件的安装路径"><a href="#2-19-查看软件的安装路径" class="headerlink" title="2.19. 查看软件的安装路径"></a>2.19. 查看软件的安装路径</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[查看 node 的安装路径]</span><br><span class="line">which node</span><br></pre></td></tr></table></figure>
+<h3 id="2-20-sudo-权限管理"><a href="#2-20-sudo-权限管理" class="headerlink" title="2.20. sudo 权限管理"></a>2.20. sudo 权限管理</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo 是一种权限管理机制，依赖于/etc/sudoers，其定义了授权给哪个用户可以以管理员的身份能够执行什么样的管理命令。</span><br><span class="line">格式 sudo -u USERNAME COMMAND</span><br><span class="line">默认情况下，系统只有root用户可以执行sudo命令；</span><br><span class="line">需要root用户通过使用visudo命令编辑sudo的配置文件/etc/sudoers，才可以授权其他普通用户执行sudo命令。</span><br><span class="line"></span><br><span class="line">sudo chown -R user:user context</span><br><span class="line">循环修改context目录以及下属文件的所属用户和所属分组为user</span><br></pre></td></tr></table></figure>
+<h3 id="2-21-su-切换用户"><a href="#2-21-su-切换用户" class="headerlink" title="2.21. su 切换用户"></a>2.21. su 切换用户</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">su是switch user的缩写</span><br><span class="line">格式为两种：</span><br><span class="line">1.su -l USERNAME（-l为login，即登陆的简写）</span><br><span class="line">2.su USERNAME</span><br><span class="line">su USERNAME 与 su - USERNAME 的不同之处如下：</span><br><span class="line">su - USERNAME 切换用户后，同时切换到新用户的工作环境中；</span><br><span class="line">su USERNAME 切换用户后，不改变原用户的工作目录，及其他环境变量目录。</span><br><span class="line"></span><br><span class="line">如果不指定 username 的话，默认为root</span><br><span class="line">su - 命令默认转换成root用户，也会改变当前的工作目录、PATH变量、HOME、SHELL、USER、LOGNAME；</span><br><span class="line">su命令，不带参数，只是拥有root的权限，其他不改变。</span><br><span class="line">切换到root还可以：su -root、su -、su root、su；</span><br></pre></td></tr></table></figure>
+<h3 id="2-22-ps"><a href="#2-22-ps" class="headerlink" title="2.22. ps"></a>2.22. ps</h3><p>Linux 中的 ps 命令是 Process Status 的缩写。<br>ps 命令用来列出系统中当前运行的进程，提供进程信息的一次性查看。<br>ps 命令列出的是当前那些进程的快照，就是执行 ps 命令的那个时刻的进程，如果想要动态的显示进程信息，就可以使用 top 命令。</p>
+<p>ps 工具标识进程的5种状态码: <br>D 不可中断 uninterruptible sleep (usually IO) <br>R 运行 runnable (on run queue) <br>S 中断 sleeping <br>T 停止 traced or stopped <br>Z 僵死 a defunct (“zombie”) process</p>
+<p>ps 命令参数 aux 和 -ef<br>ps aux 可以列出所有的正在运行的进程，最近发现还是有些缺陷，用 ps aux 和 ps -ef 得到的结果居然不一样，以后尽量用 -ef 参数吧。<br>例如，用<code>/bmrt/blaph/blaph/bmgctl</code>来启动进程，<br>由于 ps aux 是用 <code>BSD</code> 格式来显示结果，所以 <code>ps aux | grep bmgctl</code> 可能只会显示到 <code>/bmrt/blaph/blaph</code>，后面的会被截掉。这样，如果用 <code>ps aux | grep bmgctl </code> 来过滤该进程，可能就会误伤，获取不到 bmgctl 进程。<br>而 <code>ps -ef</code> 是用全格式的 System V 格式来显示结果的，显示的就是带全路径的进程名，会显示出 bmgctl，使用 <code>ps -ef | grep bmgctl</code> 命令就可以完整显示该进程了。</p>
+<h3 id="2-23-jps"><a href="#2-23-jps" class="headerlink" title="2.23. jps"></a>2.23. jps</h3><p>很多人都用过 Unix 系统里的 ps 命令，ps 命令主要是用来显示当前系统的进程情况，例如有哪些进程以及进程 pid。<br>jps，全称 Java Virtual Machine Process Status Tool，即 Java 虚拟机进程状态工具。jps 是 jdk 提供的一个查看当前 java 进程的小工具，能够显示当前所有 java 进程的 pid，适合在 linux&#x2F;unix 平台上简单查看当前 java 进程的一些简单情况。<br>我们可以通过 jps 命令来查看我们到底启动了多少个 java 进程（因为每一个 java 程序都会独占一个 JVM 实例）。</p>
+<h3 id="2-24-firewall"><a href="#2-24-firewall" class="headerlink" title="2.24. firewall"></a>2.24. firewall</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl start/stop/restart firewalld  [启动/停止/重启防火墙]</span><br><span class="line"></span><br><span class="line">firewall-cmd --list-all-zones</span><br></pre></td></tr></table></figure>
+<h3 id="2-25-查询-DNS-的记录"><a href="#2-25-查询-DNS-的记录" class="headerlink" title="2.25. 查询 DNS 的记录"></a>2.25. 查询 DNS 的记录</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[nslookup 命令用于查询 DNS 的记录，查看域名解析是否正常，在网络故障的时候用来诊断网络问题。]</span><br><span class="line"></span><br><span class="line">nslookup 域名</span><br></pre></td></tr></table></figure>
+<h3 id="2-26-tmux-工具"><a href="#2-26-tmux-工具" class="headerlink" title="2.26. tmux 工具"></a>2.26. tmux 工具</h3><p>tmux 是一个终端复用器（terminal multiplexer），属于常用的开发工具。<br>命令行的典型使用方式是，打开一个终端窗口（terminal window，以下简称”窗口”），在里面输入命令。<br>用户与计算机的这种临时的交互，称为一次”会话”（session） 。<br>会话的一个重要特点是，窗口与其中启动的进程是连在一起的：打开窗口，会话开始；关闭窗口，会话结束，会话内部的进程也会随之终止，不管有没有运行完。一个典型的例子就是，SSH 登录远程计算机，打开一个远程窗口执行命令，如果网络突然断线，再次登录是找不回上一次执行的命令的，因为上一次 SSH 会话已经终止了，里面的进程也随之消失了。<br>为了解决这个问题，会话与窗口可以【解绑】：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话【绑定】其他窗口。<br>Tmux 就是会话与窗口的【解绑】工具，将它们彻底分离。</p>
+<ul>
+<li>它允许在单个窗口中，同时访问多个会话，这对于同时运行多个命令行程序很有用。</li>
+<li>它可以让新窗口”接入”已经存在的会话。</li>
+<li>它允许每个会话有多个连接窗口，因此可以多人实时共享会话。</li>
+<li>它还支持窗口任意的垂直和水平拆分。<br>类似的终端复用器还有 GNU Screen。Tmux 与它功能相似，但是更易用，也更强大。<br>以下是命令行交互命令：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[进入 tmux 窗口]</span><br><span class="line">tmux</span><br><span class="line"></span><br><span class="line">[查看当前所有的 tmux 会话。]</span><br><span class="line">tmux ls</span><br><span class="line"></span><br><span class="line">[接入会话，重新接入某个已存在的会话。]</span><br><span class="line">tmux attach -t 0  //接入编号为 0 的会话。</span><br><span class="line"></span><br><span class="line">[杀死某个会话。]</span><br><span class="line">tmux kill-session -t 0  //杀死编号为 0 的会话。</span><br><span class="line"></span><br><span class="line">[切换会话。]</span><br><span class="line">tmux switch -t 0  //切换到编号为 0 的会话。</span><br></pre></td></tr></table></figure>
+键盘快捷键<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ctrl + b 激活控制台，此时以下命令才生效。</span><br><span class="line">w 通过窗口列表切换窗口</span><br><span class="line">c 创建新的窗口</span><br><span class="line">&amp; 关闭当前窗口</span><br><span class="line">数字键 切换至指定窗口</span><br><span class="line">, 重命名当前窗口，便于识别</span><br><span class="line">. 修改当前窗口编号，窗口重新排序</span><br></pre></td></tr></table></figure>
+更多用法见<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2019/10/tmux.html">Tmux教程</a></li>
+</ul>
+<h3 id="2-27-kill"><a href="#2-27-kill" class="headerlink" title="2.27. kill"></a>2.27. kill</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kill -9 进程号 杀死jar包运行进程</span><br><span class="line"></span><br><span class="line">命令 kill -9 `ps -ef | grep graphlite | awk &#x27;&#123;print $2&#125;’` 可以用来批量删除名字中含有 graphlite 的进程。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-28-mv-移动包"><a href="#2-28-mv-移动包" class="headerlink" title="2.28. mv 移动包"></a>2.28. mv 移动包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv jar包 /opt/passionweb将新的jar包移动至项目的指定目录下</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-29-nohup"><a href="#2-29-nohup" class="headerlink" title="2.29. nohup"></a>2.29. nohup</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">执行命令 nohup java -jar jar包 &gt; passionweb.log&amp;</span><br><span class="line"></span><br><span class="line">这将运行jar包，启动新的进程。同时会将日志写进目录下的passionweb.log文件内。</span><br><span class="line"></span><br><span class="line">如果直接执行java -jar jar包名，也能执行，这不会将日志写进文件，直接显示在终端，并且随着终端连接中断，程序停止执行。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-30-管道输出-–stdin"><a href="#2-30-管道输出-–stdin" class="headerlink" title="2.30. 管道输出 –stdin"></a>2.30. 管道输出 –stdin</h3><p>这个选项用于从标准输入管道读入新的密码。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">例如:</span><br><span class="line">passwd –stdin &quot;用户名&quot;  //可以设置用户密码，自己手动输入。</span><br><span class="line">echo &quot;新密码&quot; | passwd –stdin &quot;用户名&quot;  //为用户设置新的密码，无需手动输入。</span><br><span class="line"></span><br><span class="line">这种方式虽然简单，但是可以在 history 中查到，不安全。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-31-seq命令"><a href="#2-31-seq命令" class="headerlink" title="2.31. seq命令"></a>2.31. seq命令</h3><p>seq 是 sequence 的缩写，主要用来产生整数序列。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">命令格式如下：</span><br><span class="line">seq [选项] 尾数</span><br><span class="line">seq [选项] 首数 尾数</span><br><span class="line">seq [选项] 首数 增量 尾数  //以指定增量从首数开始打印数字到尾数。</span><br><span class="line"></span><br><span class="line">常用的选项含义如下：</span><br><span class="line">-f(format)，使用 printf 样式的浮点格式。</span><br><span class="line">例如：</span><br><span class="line">seq -f &quot;%3g&quot; 9 11</span><br><span class="line">-f指定格式，% 后面指定3位数，默认是 %g，%3g不够位数的地方都是空格填补。</span><br><span class="line">seq -f &quot;%03g&quot; 9 11</span><br><span class="line">打印三位，不足的地方用0填补。</span><br><span class="line">seq -f &quot;str%03g&quot; 9 11</span><br><span class="line">打印三位不足的地方以0填补，在前面加上str。</span><br><span class="line"></span><br><span class="line">-s(separator)，使用指定字符串分隔数字(默认使用：\n) </span><br><span class="line"></span><br><span class="line">-w，在列前添加 0 使得宽度相同。</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-32-xargs命令"><a href="#2-32-xargs命令" class="headerlink" title="2.32. xargs命令"></a>2.32. xargs命令</h3><p>xargs(extended arguments)，是给命令传递参数的一个过滤器，也是组合多个命令的一个工具。<br>xargs 可以将管道或标准输入（stdin）数据转换成命令行参数，也能够从文件的输出中读取数据。<br>xargs 也可以将单行或多行文本输入转换为其他格式，例如多行变单行，单行变多行。<br>xargs 默认的命令是 echo，这意味着通过管道传递给 xargs 的输入将会包含换行和空白，不过通过 xargs 的处理，换行和空白将被空格取代。<br>xargs 是一个强有力的命令，它能够捕获一个命令的输出，然后传递给另外一个命令。<br>之所以能用到这个命令，<code>关键是由于很多命令不支持 | 管道来传递参数</code>，而日常工作中有有这个必要，所以就有了 xargs 命令，例如：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">find /sbin -perm +700 | ls -l       #这个命令是错误的</span><br><span class="line">find /sbin -perm +700 | xargs ls -l   #这样才是正确的</span><br></pre></td></tr></table></figure>
+<p>xargs 一般是和管道 | 一起使用。</p>
+<p>参数含义：</p>
+<ul>
+<li>-i 或者是 -I，这得看linux支持了，将 xargs 的每项名称，一般是一行一行赋值给 {}，可以用 {} 代替。</li>
+<li>-i 是默认使用大括号 {} 作为替换符号，而 -I 则可以自定义其他符号、字母、数字、字符串作为替换符号，但需要使用引号引起来。通常使用 -i 选项，因为简单，但如果要接收的命令中已经使用了大括号 {}（如 touch {1..100}.txt），那么就不能使用 -i 选项了，需要使用 -I 选项。</li>
+<li>-L num，从标准输入一次读取 num 行送给 command 命令。</li>
+<li>-l 同 -L。<br>例如：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfs -ls /apps/hbase/data/data/default/test-rs/lob/ | grep test.pcap | awk ‘&#123;print $8&#125;’ | xargs -i hdfs fsck “&#123;&#125;” -locations -files -blocks | grep DatanodeInfoWithStorage</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-33-dd命令"><a href="#2-33-dd命令" class="headerlink" title="2.33. dd命令"></a>2.33. dd命令</h3><p>Linux dd 命令用于读取、转换并输出数据。<br>dd 可从标准输入或文件中读取数据，根据指定的格式来转换数据，再输出到文件、设备或标准输出。</p>
+<p>参数含义：</p>
+<ul>
+<li>if&#x3D;文件名：输入文件名，默认为标准输入，即指定源文件。</li>
+<li>of&#x3D;文件名：输出文件名，默认为标准输出，即指定目的文件。</li>
+<li>ibs&#x3D;bytes：一次读入bytes个字节，即指定一个块大小为bytes个字节。  </li>
+<li>obs&#x3D;bytes：一次输出bytes个字节，即指定一个块大小为bytes个字节。  </li>
+<li>bs&#x3D;bytes：同时设置读入&#x2F;输出的块大小为bytes个字节。</li>
+<li>count&#x3D;blocks：仅拷贝blocks个块，块大小等于ibs指定的字节数。</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">综上2.31-2.33，</span><br><span class="line">例如如下的命令，将创建 100 个文件，文件名依次为：1.pcap，2.pcap，...，100.pcap，且每个文件的大小都为 2048 bytes，内容为 null。</span><br><span class="line"></span><br><span class="line">seq 100 | xargs -i dd if=/dev/zero of=&#123;&#125;.pcap bs=1024 count=2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-34-wc命令"><a href="#2-34-wc命令" class="headerlink" title="2.34. wc命令"></a>2.34. wc命令</h3><p>wc 命令用于计算字数，利用 wc 指令我们可以计算文件的 Byte 数、字数、或是行数。<br>若不指定文件名称，或是所给予的文件名为”-“，则 wc 指令会从标准输入设备读取数据。</p>
+<p>参数含义：</p>
+<ul>
+<li>-c 或 –bytes 或 –chars 只显示 Bytes 数。</li>
+<li>-l 或 –lines 显示行数。</li>
+<li>-w 或 –words 只显示字数。<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[在默认的情况下，wc将计算指定文件的行数、字数，以及字节数。]</span><br><span class="line"></span><br><span class="line">wc testfile  # testfile文件的统计信息</span><br><span class="line">3 92 598 testfile  # testfile文件的行数为3、单词数92、字节数598</span><br><span class="line"></span><br><span class="line">wc -l testfile  # testfile文件的行数</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="2-35-网口"><a href="#2-35-网口" class="headerlink" title="2.35. 网口"></a>2.35. 网口</h3><p>Linux ip 命令与 ifconfig 命令类似，但比 ifconfig 命令更加强大，主要功能是用于显示或设置网络设备。ip 命令是 Linux 加强版的的网络配置工具，用于代替 ifconfig 命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[列出所有的网口信息]</span><br><span class="line">ip a</span><br><span class="line">或</span><br><span class="line">ifconfig</span><br><span class="line"></span><br><span class="line">[查看某个网口的信息]</span><br><span class="line">ethtool &#x27;网口名称&#x27;</span><br><span class="line"></span><br><span class="line">[停掉/开启某个网口]</span><br><span class="line">ifconfig &#x27;网口名称&#x27; down</span><br><span class="line">ifconfig &#x27;网口名称&#x27; up</span><br></pre></td></tr></table></figure>
+<h4 id="2-35-1-网络带宽单位"><a href="#2-35-1-网络带宽单位" class="headerlink" title="2.35.1. 网络带宽单位"></a>2.35.1. 网络带宽单位</h4><p>10GE&#x2F;s</p>
+<h4 id="2-35-2-网络设备的物理接口类型"><a href="#2-35-2-网络设备的物理接口类型" class="headerlink" title="2.35.2. 网络设备的物理接口类型"></a>2.35.2. 网络设备的物理接口类型</h4><p>光口和电口是计算机网络中常用的术语，用于描述网络设备的物理接口类型。它们的区别在于数据传输的方式是通过光信号还是电信号。<br>光口（Optical port）是指通过光纤传输数据的接口，它使用光纤作为传输介质，利用光的反射和折射进行信号的传输。光口可以分为单模光口（Single-mode optical port）和多模光口（Multimode optical port），单模光口适用于长距离的光纤传输，多模光口适用于短距离的光纤传输。<br>电口（Electrical port）是指通过电缆传输数据的接口，它使用电信号作为传输介质，利用电流的变化进行信号的传输。电口可以分为RJ45电口和SFP电口，RJ45电口适用于局域网的连接，SFP电口适用于远程网络设备的连接。<br>在网络设备中，光口和电口通常可以互相转换，以便在不同的网络环境中进行连接。例如，可以使用光口转换器【光模块】将光口转换为电口，以便连接到局域网中的设备。<br>另外，一些网络设备也可以同时支持光口和电口，以便在不同的传输介质中进行选择。</p>
+<h3 id="2-36-命令行快捷键"><a href="#2-36-命令行快捷键" class="headerlink" title="2.36. 命令行快捷键"></a>2.36. 命令行快捷键</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[光标快速到行末]</span><br><span class="line">ctrl + e</span><br><span class="line"></span><br><span class="line">[光标快速到行首]</span><br><span class="line">ctrl + a</span><br></pre></td></tr></table></figure>
+<h3 id="2-38-交换空间Swap"><a href="#2-38-交换空间Swap" class="headerlink" title="2.38. 交换空间Swap"></a>2.38. 交换空间Swap</h3><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000008125116">https://segmentfault.com/a/1190000008125116</a></p>
+<h3 id="2-39-内存"><a href="#2-39-内存" class="headerlink" title="2.39. 内存"></a>2.39. 内存</h3><p>在 Linux 上如何清除内存的 Cache、Buffer 和交换空间<br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/200627">https://developer.aliyun.com/article/200627</a></p>
+<p>内核是如何管理内存的？<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54578749">https://zhuanlan.zhihu.com/p/54578749</a></p>
+<p>Linux内存占用分析的几个方法？<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/lianhunqianr1/article/details/121724851">https://blog.csdn.net/lianhunqianr1/article/details/121724851</a></p>
+<h4 id="2-39-1-内存数据页"><a href="#2-39-1-内存数据页" class="headerlink" title="2.39.1. 内存数据页"></a>2.39.1. 内存数据页</h4><p>内存数据页（Memory page）是计算机中管理和分配内存的基本单位。在操作系统中，内存被分割成多个数据页，每个页的大小通常为4KB或者更大。每个数据页都有一个唯一的标识符，称为页框号（Page Frame Number, PFN），用于在物理内存中定位该页的位置。<br>当程序需要访问内存中的数据时，如果程序需要访问的数据不在物理内存中，操作系统会触发一个缺页异常，将该页从磁盘中读取到物理内存中，然后再将数据返回给程序。<br>内存数据页的大小对计算机的性能和内存管理有着重要的影响，在选择数据页大小时需要权衡各种因素，根据具体的应用场景和硬件平台来进行选择。</p>
+<ul>
+<li>过小的页面大小会带来较大的页表项，增加寻址时 TLB（Translation lookaside buffer）的查找时间和额外开销；</li>
+<li>过大的页面大小会浪费内存空间，造成内存碎片，降低内存的利用率；</li>
+</ul>
+<h4 id="2-39-2-查看页大小"><a href="#2-39-2-查看页大小" class="headerlink" title="2.39.2.查看页大小"></a>2.39.2.查看页大小</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">getconf PAGE_SIZE</span><br></pre></td></tr></table></figure>
+<p>TLB:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/79607142">https://zhuanlan.zhihu.com/p/79607142</a></p>
+<h3 id="2-40-sar命令"><a href="#2-40-sar命令" class="headerlink" title="2.40. sar命令"></a>2.40. sar命令</h3><h3 id="2-41-时钟同步"><a href="#2-41-时钟同步" class="headerlink" title="2.41. 时钟同步"></a>2.41. 时钟同步</h3><p>linux 时间同步，ntpd、ntpdate 命令<br>系统时间&#x2F;硬件时间</p>
+
+      </div>
+    </div>
+  </div>
+  
+    <div class="post-category">
+      <div id="p-meta-i">
+        
+          
+            <a class="hover-with-bg" href="/categories/manuals/">manuals</a>
+          
+        
+        
+      </div>
+    </div>
+  
+  <div class="post-footer">
+    
+    
+  </div>
+  
+</article>
+
+
+        </div>
+        
+<footer>
+    
+    
+    
+    
+    
+      <p>
+        Copyright &copy;
+         
+          2023 - 
+        
+        2023
+        Young
+      </p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+        <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+          <i id="i-up"></i>
+        </a>
+    
+    
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+                toggleClass(".post-header", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div id="css-loading">
+        <h3 class="text-center">加载中...</h3>
+    </div>
+</body>
+</html>

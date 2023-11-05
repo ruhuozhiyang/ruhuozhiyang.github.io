@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="apple-touch-icon" sizes="76x76" href="/null">
+    <link rel="icon" type="image/png" href="/null">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>HBase Problems Encountered - young&#39;s personal tech manuals</title>
+    
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    
+    
+    <meta name="description" content="">
+    <meta name="author" content="young">
+    <meta name="keywords" content="">
+    <meta property="og:title" content="HBase Problems Encountered"/>
+    <style>
+
+
+    
+    :root{
+        --shadow-color: rgba(0,0,0,0.2);
+        --sec-shadow: rgba(0,0,0,0.03);
+        --shadow-hover-color: rgba(0,0,0,0.28);
+        --first-text-color: #475b6d;
+        --second-text-color: #37475b;
+        --third-text-color: #858585;
+        --default-text-color: #505050;
+        --default-link-color: #007bff;
+        --link-color: #000000;
+        --second-link-color: #4F9BFA;
+        --code-color:rgba(27,31,35,.05);
+        --post-bkg-color: #fff;
+        --page-bkg-color: #f2f5f8;
+        --nav-a-hover-color: #3498db;
+        --post-sec-text-color: #718096;
+        --sec-bkg: #f2f5f8;
+        --color-mode: 'light';
+        --bkg-h: rgba(255,255,255,0.6);
+        --bkg-m: #e1e4e8;
+        --home-title-color: #4169E1;
+        --shadow: 0 4px 10px rgba(0,2,4,0.06),0 0 1px rgba(0,2,4,0.11);
+        --hr-color: #ddd;
+        --bg-t: #f4f4f4;
+        --nav-bkg: rgba(255,255,255,0.6);
+    }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-mode: 'dark';
+  }
+
+  :root:not([data-theme]) {
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+  }
+}
+
+[data-theme='dark'] {
+    --shadow-color: rgba(0,0,0,0.2);
+    --shadow-hover-color: rgba(0,0,0,0.28);
+    --first-text-color: hsla(0,0%,100%,0.92);
+    --second-text-color: hsla(0,0%,100%,0.86);
+    --third-text-color: #a7a9ad;
+    --default-text-color: #505050;
+    --default-link-color: #1589e9;
+    --link-color: #000000;
+    --second-link-color: #30a9de;
+    --post-bkg-color: #252d38;
+    --page-bkg-color: #181c27;
+    --nav-a-hover-color: #3498db;
+    --post-sec-text-color: #a7a9ad;
+    --sec-bkg: #364151;
+    --bkg-h: rgba(255,255,255,0.2);
+    --bkg-m: rgba(255,255,255,0.1);
+    --home-title-color: rgb(226, 82, 90);
+    --code-color:#3e4b5e;
+    --shadow: none;
+    --hr-color: #718096;
+    --bg-t: #364151;
+    --nav-bkg: rgba(13,17,23,0.6);
+}
+
+</style>
+
+
+
+<style>
+#page-main,footer,.p-btn {
+    display: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+body {
+    background-color: var(--page-bkg-color);
+    color: var(--second-text-color);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all .3s;
+}
+a {
+    color: var(--default-link-color);
+    text-decoration: none;
+    background-color: transparent;
+}
+a:hover{
+    color: var(--second-link-color);
+}
+.main-content,.post-card-main{
+    margin: 30px;
+}
+
+
+
+@media (max-width: 410px){
+    .post-card-main{
+        max-width: 350px!important;
+    }
+}
+
+@media (max-width: 980px){
+    .post-card-main{
+        max-width: 520px!important;
+    }
+}
+
+
+@media (min-width: 780px){ 
+    h3{
+        font-size: 1.5rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 1280px){ 
+    h3{
+        font-size: 1.7rem;
+        line-height: 1.5em;
+    }
+}
+@media (min-width: 2096px){ 
+    h3{
+        font-size: 1.8rem;
+        line-height: 1.5em;
+    }
+}
+
+.text-center{
+    text-align: center!important;
+}
+.middle-center{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    height: 100%;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    height: 54px;
+    padding: 0 1.25rem;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--bkg-m);
+    background-color: var(--nav-bkg);
+    backdrop-filter: blur(4px);
+    transition: all .3s;
+}
+header .header__left, header .header__right {
+    display: flex;
+    align-items: center;
+    font-family: rubik,sans-serif,Varela Round;
+}
+header .header__left .logo__text {
+    font-size: 18px;
+    font-weight: 450;
+    padding: 14.5px 10px;
+    border-radius: 5px;
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus {
+    height: 54px;
+    padding: 0 0 0 15px;
+}
+header .header__right .button {
+    color: var(--second-text-color);
+}
+header .header__right .navbar__menus .navbar-menu {
+    display: inline-block;
+    align-items: center;
+    height: 54px;
+    padding: 0 10px;
+    font-size: 16px;
+    line-height: 54px;
+}
+header .header__right .dropdown-icon {
+    display: none;
+    height: 54px;
+    padding: 15px 10px;
+    border: 0;
+    background-color: transparent;
+}
+header .header__right .dropdown-menus {
+    line-height: 2rem;
+    animation: slide-in .15s ease 1;
+    display: none;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: calc(54px + 10px);
+    border-radius: 6px;
+    padding: 24px;
+    background-color: var(--page-bkg-color);
+    border: 1px solid var(--bkg-m);
+    z-index: 9999;
+    justify-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+header .header__right #btn-search, header .header__right #btn-toggle-dark{
+    display: inline-block;
+    padding:  18px 10px;
+    height: 25px;
+}
+header .header__right #btn-dropdown{
+  display: inline-block;
+  padding:  13.5px 0;
+}
+header .header__right .dropdown-menus .dropdown-menu {
+    padding: 10px;
+    color: var(--second-text-color);
+}
+@media screen and (max-width: 764px){
+.navbar__menus {
+    display: none!important;
+}
+.dropdown-icon {
+    display: inline-block!important;
+}
+}
+.p-btn{
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    contain: layout;
+}
+.toc-btn,.click-btn{
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    align-items: center;
+    margin-top: .5rem;
+    font-size: .75rem;
+    background-color: none;
+    display: block;
+    padding: 0rem;
+    box-shadow: 0 0.3rem 0.6rem rgba(48,55,66,.15);
+    border: none;
+    border-radius: 0.5rem;
+    line-height: 1;
+    color: var(--first-text-color);
+}
+.toc-link{
+    color: var(--second-text-color);
+}
+
+#css-loading h3{
+    font-weight: 500;
+    font-size: 1.4rem;
+    text-align: center;
+    position: fixed;
+    top: 200px;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    animation: cssLoad;
+    animation-delay: 0.3s;
+    -webkit-animation: cssLoad;
+    -webkit-animation-delay: 0.3s;
+}
+@keyframes cssLoad {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 0.9;
+    }
+}
+
+
+.memorial {
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1); filter:gray;
+}
+
+
+    .post-copyright:after {
+        position: absolute;
+        color: #fff;
+        background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 496 512'%3E%3Cpath fill='gray' d='M245.8 214.9l-33.2 17.3c-9.4-19.6-25.2-20-27.4-20-22.2 0-33.3 14.6-33.3 43.9 0 23.5 9.2 43.8 33.3 43.8 14.4 0 24.6-7 30.5-21.3l30.6 15.5a73.2 73.2 0 01-65.1 39c-22.6 0-74-10.3-74-77 0-58.7 43-77 72.6-77 30.8-.1 52.7 11.9 66 35.8zm143 0l-32.7 17.3c-9.5-19.8-25.7-20-27.9-20-22.1 0-33.2 14.6-33.2 43.9 0 23.5 9.2 43.8 33.2 43.8 14.5 0 24.7-7 30.5-21.3l31 15.5c-2 3.8-21.3 39-65 39-22.7 0-74-9.9-74-77 0-58.7 43-77 72.6-77C354 179 376 191 389 214.8zM247.7 8C104.7 8 0 123 0 256c0 138.4 113.6 248 247.6 248C377.5 504 496 403 496 256 496 118 389.4 8 247.6 8zm.8 450.8c-112.5 0-203.7-93-203.7-202.8 0-105.5 85.5-203.3 203.8-203.3A201.7 201.7 0 01451.3 256c0 121.7-99.7 202.9-202.9 202.9z'/%3E%3C/svg%3E");
+        content: ' ';
+        height: 10rem;
+        width: 10rem;
+        right: -2rem;
+        top: -2rem;
+        opacity: .1;
+    }
+
+</style>
+
+    
+
+    
+        <!--
+        <link rel="stylesheet" href="/css/page.css" media="print"
+            onload="this.media='all';this.onload=null">
+        <noscript>-->
+            <link rel="stylesheet" href="/css/page.css">
+        <!--</noscript>-->
+    
+    
+    <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all';this.onload=null">
+    <noscript>
+        <link rel="stylesheet" href="/css/main.css">
+    </noscript>
+
+    
+    <script src="/js/main.js"></script>
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+    <div id="top"></div>
+    <div id="page-main" class="main-content">
+        <div class="mg-top">
+            <div class="post-header">
+  <!-- 一款简洁的单栏 Hexo -->
+  
+    <a href="/">
+      <span class="navbar-menu">Home</span>
+    </a>
+  
+    <a href="/archives/">
+      <span class="navbar-menu">Archives</span>
+    </a>
+  
+    <a href="/categories/">
+      <span class="navbar-menu">Categories</span>
+    </a>
+  
+    <a href="/tags/">
+      <span class="navbar-menu">Tags</span>
+    </a>
+  
+</div>
+
+<article class="page">
+  <div id="post-meta-m">
+    <div class="post-meta" id="post-meta">
+  <h3 style="color: rgb(41,177,119);font-family: 'Menlo', 'Meslo LG', monospace">
+    HBase Problems Encountered
+  </h3>
+  
+    <span class="post-meta-label">
+      young
+    </span>
+  
+  
+    <span class="post-meta-label">
+      <span class="p-dot"></span>
+      <time datetime="2023-05-14 23:07" pubdate>
+        2023-05-14
+      </time>
+    </span>
+  
+  
+  
+  
+</div>
+  
+  </div>
+  <div class="article-m">
+    <div class="post-toc">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-hbase-meta-is-not-online"><span class="toc-text">1.hbase:meta is not online</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-hbase-namespace-is-not-online"><span class="toc-text">2.hbase:namespace is not online</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Not-running-balancer-because-265-regions-found-not-on-an-online-server"><span class="toc-text">3.Not running balancer because 265 regions found not on an online server.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E4%BD%BF%E7%94%A8-YCSB-%E6%B5%8B%E8%AF%95-HBase-%E7%9A%84-TPS%EF%BC%8CTPS-%E5%8F%AA%E6%9C%89%E5%87%A0%E7%99%BE%EF%BC%8C%E4%B8%94-HBase-%E7%9A%84%E6%95%B0%E6%8D%AE%E4%B8%8D%E8%90%BD%E7%9B%98%E3%80%81%E5%8F%AA%E5%88%B7%E5%86%99%E5%87%A0MB%E6%95%B0%E6%8D%AE%E3%80%82"><span class="toc-text">4.使用 YCSB 测试 HBase 的 TPS，TPS 只有几百，且 HBase 的数据不落盘、只刷写几MB数据。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E6%B0%B8%E4%B9%85-Region-In-Transition"><span class="toc-text">5.永久 Region In Transition</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-HMaster-%E6%98%AF%E5%90%A6%E5%87%BA%E7%8E%B0%E5%86%85%E5%AD%98%E4%B8%AD%E4%BF%A1%E6%81%AF%E4%B8%8D%E4%B8%80%E8%87%B4%E9%97%AE%E9%A2%98"><span class="toc-text">5.1.HMaster 是否出现内存中信息不一致问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-HBase-%E6%98%AF%E5%90%A6%E5%87%BA%E7%8E%B0%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-text">5.2.HBase 是否出现数据一致性问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-HDFS-%E6%95%B0%E6%8D%AE%E6%98%AF%E5%90%A6%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98"><span class="toc-text">5.3.HDFS 数据是否出现问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-4-%E5%86%8D%E8%B5%B0%E4%B8%80%E9%81%8D5-1%E6%B5%81%E7%A8%8B%E3%80%82"><span class="toc-text">5.4.再走一遍5.1流程。</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%88%A0%E9%99%A4%E8%A1%A8%E6%8A%A5%E9%94%99"><span class="toc-text">6.删除表报错</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E7%BC%96%E8%AF%91-HBase-%E6%BA%90%E7%A0%81%E6%8A%A5%E9%94%99-%E2%80%9Cenforce-hadoop3-profile-required-%E2%80%9D"><span class="toc-text">7.编译 HBase 源码报错 “enforce (hadoop3-profile-required)”</span></a></li></ol>
+      
+    </div>
+    <div id="article">
+      <div id="post-content" class="markdown-body textretty">
+        <h2 id="1-hbase-meta-is-not-online"><a href="#1-hbase-meta-is-not-online" class="headerlink" title="1.hbase:meta is not online"></a>1.hbase:meta is not online</h2><ul>
+<li>停止 HBase 服务;</li>
+<li>删除 Zookeeper 上 HBase 对应的节点;</li>
+<li>删除 HDFS 上 MasterWAL 目录下的日志文件;</li>
+<li>重启 HBase 服务;</li>
+</ul>
+<h2 id="2-hbase-namespace-is-not-online"><a href="#2-hbase-namespace-is-not-online" class="headerlink" title="2.hbase:namespace is not online"></a>2.hbase:namespace is not online</h2><ul>
+<li>删除 hbase:namespace 及相关的所有 region 在 hbase:meta 表中的所有记录;</li>
+<li>删除 HDFS 上 hbase:namespace 对应的目录下的数据;</li>
+<li>重启 HBase 服务;</li>
+</ul>
+<h2 id="3-Not-running-balancer-because-265-regions-found-not-on-an-online-server"><a href="#3-Not-running-balancer-because-265-regions-found-not-on-an-online-server" class="headerlink" title="3.Not running balancer because 265 regions found not on an online server."></a>3.Not running balancer because 265 regions found not on an online server.</h2><p>问题表现：</p>
+<ul>
+<li>hbase:meta 表和 hbase:namespace 表都在线;</li>
+<li>且通过 HMaster 的 Web 监控界面显示所有表的 region 都 online;</li>
+<li>但是 regionserver 模块所有的 regionserver 的 Num.Regions 都为 0;<br>解决方法：</li>
+<li>将 hbase:meta 表中所有的 region 的 info:state 值都修改成 OFFLINE，修改方法可以通过写SH脚本的方法实现;</li>
+<li>清理 HMaster 的 MasterWAL 目录下的日志文件数据;</li>
+<li>然后重启 HBase 服务;</li>
+</ul>
+<h2 id="4-使用-YCSB-测试-HBase-的-TPS，TPS-只有几百，且-HBase-的数据不落盘、只刷写几MB数据。"><a href="#4-使用-YCSB-测试-HBase-的-TPS，TPS-只有几百，且-HBase-的数据不落盘、只刷写几MB数据。" class="headerlink" title="4.使用 YCSB 测试 HBase 的 TPS，TPS 只有几百，且 HBase 的数据不落盘、只刷写几MB数据。"></a>4.使用 YCSB 测试 HBase 的 TPS，TPS 只有几百，且 HBase 的数据不落盘、只刷写几MB数据。</h2><p>HBase 不进行 region 的均衡操作。<br>&#x3D;&gt;<br>集群内部网络存在问题，出现丢包10%以内的现象。<br>&#x3D;&gt;<br>HBase 不写数据。</p>
+<h2 id="5-永久-Region-In-Transition"><a href="#5-永久-Region-In-Transition" class="headerlink" title="5.永久 Region In Transition"></a>5.永久 Region In Transition</h2><p>Hbase永久RIT异常：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zhangshenghang/article/details/104835735">https://blog.csdn.net/zhangshenghang/article/details/104835735</a><br><a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/601096">https://developer.aliyun.com/article/601096</a></p>
+<h4 id="5-1-HMaster-是否出现内存中信息不一致问题"><a href="#5-1-HMaster-是否出现内存中信息不一致问题" class="headerlink" title="5.1.HMaster 是否出现内存中信息不一致问题"></a>5.1.HMaster 是否出现内存中信息不一致问题</h4><ul>
+<li>修改表 hbase:meta 中 region 的状态信息为 OFFLINE。</li>
+<li>清除 HDFS 上 MasterWAL 目录下的日志数据。</li>
+<li>并重启 HBase 服务。</li>
+</ul>
+<h4 id="5-2-HBase-是否出现数据一致性问题"><a href="#5-2-HBase-是否出现数据一致性问题" class="headerlink" title="5.2.HBase 是否出现数据一致性问题"></a>5.2.HBase 是否出现数据一致性问题</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase hback path</span><br></pre></td></tr></table></figure>
+<p>通过 <code>hbase hbck</code> 检查出几张表存在 inconsistent 的问题，具体报错如下。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ERROR: Empty REGIONINFO_QUALIFIER found in hbase:meta</span><br><span class="line">Multiple regions have the same startkey: user9771</span><br><span class="line">There is an overlap in the region chain</span><br><span class="line">There is a hole in the region chain between ... and ...【数据空洞】</span><br></pre></td></tr></table></figure>
+<h4 id="5-3-HDFS-数据是否出现问题"><a href="#5-3-HDFS-数据是否出现问题" class="headerlink" title="5.3.HDFS 数据是否出现问题"></a>5.3.HDFS 数据是否出现问题</h4><ul>
+<li><p>发现有 DataNode 节点挂掉。<br>重启挂掉的 DataNode 节点，如果通过 Ambari 无法快速定位有问题的 DataNode 节点，可以使用如下命令显示所有 Datanode 健康状态，快速找到问题 DataNode 节点。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop dfsadmin -report</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>检查数据健康情况。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[检查路径 path 下是否有坏块][hdfs fsck path]</span><br><span class="line">hdfs fsck /apps/hbase/data2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除数据坏块。<br>发现 MISSING BLOCKS 有 98 个，CORRUPT FILES 有 93 个，CORRUPT BLOCKS 有 3 个，因为又是一副本存的，所以修复没什么意义。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[检查路径 path 下是否有坏块，并删除坏块][hdfs fsck path -delete]</span><br><span class="line">hdfs fsck /apps/hbase/data2 -delete</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果报错 HDFS 中的数据块 Block 找不到对应的 DataNode 管理。<br>如果检测没有坏块问题，可能是 NameNode 出现了信息不一致问题，可以尝试重启 NameNode。</p>
+</li>
+</ul>
+<h4 id="5-4-再走一遍5-1流程。"><a href="#5-4-再走一遍5-1流程。" class="headerlink" title="5.4.再走一遍5.1流程。"></a>5.4.再走一遍5.1流程。</h4><h2 id="6-删除表报错"><a href="#6-删除表报错" class="headerlink" title="6.删除表报错"></a>6.删除表报错</h2><p>问题表现：<br>hbase shell 中将某个表状态修改为了 CLOSED，但是 drop 删除时报错，称需要先 disabled。</p>
+<ul>
+<li>先查看表 hbase:meta 中指定表的状态，发现为 disabling。</li>
+<li>修改表状态为 disabled。</li>
+</ul>
+<h2 id="7-编译-HBase-源码报错-“enforce-hadoop3-profile-required-”"><a href="#7-编译-HBase-源码报错-“enforce-hadoop3-profile-required-”" class="headerlink" title="7.编译 HBase 源码报错 “enforce (hadoop3-profile-required)”"></a>7.编译 HBase 源码报错 “enforce (hadoop3-profile-required)”</h2><p>插件 maven-enforce<br>使用 JDK11 编译源码要求 profile 为 Hadoop3，但是我要编译的是分支 branch-2.5 的源码。<br>可以调整 JDK 为 JDK8。</p>
+
+      </div>
+    </div>
+  </div>
+  
+    <div class="post-category">
+      <div id="p-meta-i">
+        
+          
+            <a class="hover-with-bg" href="/categories/hadoop/">hadoop</a>
+          
+            <a class="hover-with-bg" href="/categories/hadoop/hbase/">hbase</a>
+          
+            <a class="hover-with-bg" href="/categories/hadoop/hbase/hbase-advanced/">hbase_advanced</a>
+          
+        
+        
+      </div>
+    </div>
+  
+  <div class="post-footer">
+    
+    
+  </div>
+  
+</article>
+
+
+        </div>
+        
+<footer>
+    
+    
+    
+    
+    
+      <p>
+        Copyright &copy;
+         
+          2023 - 
+        
+        2023
+        Young
+      </p>
+    
+    <!-- <p>Powered by <a href="https://hexo.io" target="_blank">Hexo</a> | Theme by <a href="https://github.com/oCoke/hexo-theme-miracle" target="_blank">Miracle</a></p> -->
+</footer>
+
+<div class="p-btn">
+    
+        <a class="toc-btn" id="toc-btn"><i id="i-menu"></i></a>
+        <a href="javascript:window.scrollTo({top:0,behavior:'smooth'});" class="click-btn">
+          <i id="i-up"></i>
+        </a>
+    
+    
+</div>
+
+<!-- SCRIPTS -->
+
+
+
+
+
+
+<script>
+    document.getElementById("btn-dropdown").addEventListener('click', () => {
+      toggleClass("#dropdown-menus","display-inline");
+    });
+    console.log('\n' + ' %c Powered by Hexo Theme Miracle ' + ' %c https://github.com/oCoke/hexo-theme-miracle ' + '\n' + '\n', 'color: #fff; background: #4F9BFA; padding:5px 0;', 'background: #FFF; padding:5px 0;');
+
+    
+
+    
+  /* 小彩蛋: 饮茶先啦 */
+  setTimeout(() => {
+    var time = new Date();
+    if (time.getHours() == 15) {
+      let comment = document.createComment(' 三点几嚟！饮茶先啦！ ');
+      document.body.insertBefore(comment, document.getElementsByTagName('header')[0]);
+    }
+  },1);
+    
+</script>
+
+
+<script>
+    var postImg = document.querySelectorAll("article[class=page] img");
+    for (let imgi = 0; imgi < postImg.length; imgi++) {
+        postImg[imgi].onclick = () => {
+            let zoomImg = document.createElement("div");
+            zoomImg.id = "zoomImg";
+            zoomImg.innerHTML = `<div id="zoom-picture"></div>
+    <div class="poptrox-overlay"
+        style="position: fixed; left: 0px; top: 0px; z-index: 20000; width: 100%; height: 100%; text-align: center; cursor: zoom-out; opacity: 1;">
+        <div style="display:inline-block;height:100%;vertical-align:middle;"></div>
+        <div
+            style="position:absolute;left:0;top:0;width:100%;height:100%;background:#000000;opacity:0;filter:alpha(opacity=0);">
+        </div>
+        <div class="poptrox-popup"
+            style="display: inline-block; vertical-align: middle; position: relative; z-index: 1; cursor: zoom-out; min-width: 10px; min-height: 10px; width: auto; height: auto;">
+            <div class="loader" style="display: none;"></div>
+            <div class="pic" style="text-indent: 0px;"><img
+                    src="${ postImg[imgi].srcset || postImg[imgi].src }" alt="Loading..."
+                    style="vertical-align: bottom; max-width: 85vw; max-height: 85vh;"></div>
+        </div>
+    </div>`;
+            document.body.appendChild(zoomImg);
+                document.querySelector("#zoomImg").onclick = () => {
+                    document.querySelector("#zoomImg").remove();
+                }
+        }
+    }
+    
+</script>
+
+
+
+
+    <script>
+        query("#toc-btn")[0].onclick = () => {
+            if (query(".post-toc")[0].innerHTML) {
+                toggleClass(".post-toc", "display-inline");
+                toggleClass(".post-header", "display-inline");
+            }
+        }
+
+        if (!query(".post-toc")[0].innerHTML) {
+            addClass("#toc-btn","display-none");
+        }
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <div id="css-loading">
+        <h3 class="text-center">加载中...</h3>
+    </div>
+</body>
+</html>
